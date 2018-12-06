@@ -1,0 +1,241 @@
+# Customize the Guis Shown
+# Each Number is for that slot in the GUI
+# There is a total of 45 slots for each GUI Menu
+
+# This is the GUI which shows the players info when you click on their skull
+# after typing /player
+# For the Display Items, make sure to use the BUKKIT NAME
+# You can get the full list of Bukkit Item Names from here:
+#   https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
+# If you want a slot to be empty, set it to ""
+
+# For the Execute: "" set it to one of the Moderation Executables from the list below, 
+# This will run the command on the player when clicked
+# For the %player% placeholder is the name of the player you selected in the player list.
+
+# Full List of Executables:
+#  TeleportToPlayer  - teleports you to the player selected
+#  TeleportPlayer  - teleports the player to your location
+#  HealPlayer  - restores the player to full health 
+#  FeedPlayer  - restores the players hunger bars
+#  ToggleFly  - toggles wether the player can fly or not
+#  FreezePlayer  - freezes the player
+#  UnfreezePlayer  - unfreezes the player
+#  SetGamemode  - opens a menu to set the players gamemode
+#  KickPlayer  - kicks the player with the specified message
+#  BanPlayer  - bans the player for the time specified in the config
+#  UnBanPlayer  - unbans the player, only possible if using the command /sp unban [player] bcuz of logic... u know...
+#  MutePlayer  - mutes the player for the time specified in the config
+#  UnMutePlayer  - un-mutes the player
+#  ClearInventory  - clears the players' inventory
+#  KillPlayer  - kills the player ;p
+
+
+# For the GamemodeInventory set the Mode: "" to whatever gamemode you want each one to change,
+# The GamemodeInventory is only 36 slots... so any slot from 1 - 36 is allowed
+# Modes:
+#  Survival  - survival gamemode - this is normal for all players
+#  Adventure  - adventure mode - this prevents the player from breaking any blocks
+#  Creative  -  creative mode - you know what this is... :> if you don't... rip your server.
+#  Spectator  - spectator mode - this puts the player in a state of perpetual torture, he cannot do anything except fly around... dying... xD
+#  BackButton  - goes back to the players menu
+
+# For the Report UI there are several options to use as the GUI...
+# 1 - ANVIL - this opens up an 'Anvil' gui where the player can type a short report reason.
+# 2 - SIGN - this opens a temporary sign where the player can type their report reason.
+# 3 - CHAT - this uses a traditional Chat messages to report the player (recommended)
+
+# The InventoryTitle: ""   will be the text which is shown at the top of whichever option you choose. basically the id.
+# if you choose to use the 'CHAT' option, you can customize the GUI the same way as the Inventory GUI and Gamemode GUI are done.
+# If you have any more questions about how it's setup... simply contact me on discord or Spigot and i'll be happy to help!
+
+# For CloseInventory:  if not specified or not included it will default to false.
+# if set to true, it will close the player inventory when you click that button.
+
+# The Header is permanent, it shows the information of the player selected.
+# If no slot is specified or the slot is invalid, it will put it in slot number 5 by default.
+
+# The FillerItem: "" is the item which fills the empty space in the inventory if the option is 
+# enabled in the config, you can get a full list of 1.13 item names from here:
+#   https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
+
+Header:
+  NameColor: "&a"
+  Info:
+  - "&bIsFrozen&8: &e%frozen_status%"
+  - "&bIsMuted&8: &e%mute_status%"
+  - "&6Gamemode&8: &7%player_gamemode%"
+  - "&2Health&8: &7%player_health%"
+  
+  
+FillerItem: "Gray_stained_glass_pane"
+
+
+PlayerInfo:
+
+  Header:
+    Slot: 5
+
+  11:
+    Item: "Compass"
+    Name: "&aTeleport to %player%"
+    Lore:
+    - "&7click to teleport"
+    Execute: "TeleportToPlayer"
+    CloseInventory: true
+    
+  12:
+    Item: "Ender_Pearl"
+    Name: "&aSummon %player% to you"
+    Lore:
+    - "&7click to teleport"
+    Execute: "TeleportPlayer"
+    CloseInventory: true
+    
+  13:
+    Item: "Feather"
+    Name: "&bToggle fly for %player%"
+    Lore:
+    - "&7click to toggle fly"
+    Execute: "ToggleFly"
+    
+  14:
+    Item: "Crafting_Table"
+    Name: "&6Set %player%'s Gamemode"
+    Lore:
+    - "&7click to open"
+    - "&7the gamemode selector"
+    Execute: "SetGamemode"
+    
+  15:
+    Item: "Ice"
+    Name: "&bFreeze %player%"
+    Lore:
+    - "&7click to freeze %player%"
+    - "&7for eternity... ;3"
+    Execute: "FreezePlayer"
+    
+  16:
+    Item: "Blaze_Powder"
+    Name: "&eUnfreeze %player%"
+    Lore:
+    - "&7click to unfreeze"
+    Execute: "UnfreezePlayer"
+  
+  17:
+    Item: "Cooked_Beef"
+    Name: "&2Feed %player%"
+    Lore:
+    - "&7click to feed player"
+    Execute: "FeedPlayer"
+    
+  20:
+    Item: "GOLDEN_APPLE"
+    Name: "&aHeal %player%"
+    Lore:
+    - "&7click to heal player"
+    Execute: "HealPlayer"
+    
+  21:
+    Item: "Iron_Boots"
+    Name: "&cKick %player%"
+    Lore:
+    - "&7kick player from"
+    - "&7the server with a message"
+    Execute: "KickPlayer"
+    
+  22:
+    Item: "Diamond_Axe"
+    Name: "&4Ban %player%"
+    Lore:
+    - "&7ban this player"
+    - "&7with the message"
+    - "&7set in the config.yml"
+    Execute: "BanPlayer"
+    
+  23:
+    Item: "Sugar"
+    Name: "&eUnban %player%"
+    Lore:
+    - "&7unban this player"
+    Execute: "UnbanPlayer"
+    
+  24:
+    Item: "Anvil"
+    Name: "&cMute %player%"
+    Lore:
+    - "&7click to mute this player"
+    Execute: "MutePlayer"
+    
+  25:
+    Item: "Glowstone_Dust"
+    Name: "&eUnMute %player%"
+    Lore:
+    - "&7click to unmute"
+    Execute: "UnmutePlayer"
+    
+    
+    
+GamemodeInventory:
+
+  Title: "&aSet %player%'s gamemode"
+  
+  Header:
+    Slot: 5
+    
+  11:
+    Item: "Grass_Block"
+    Name: "&aSurvival"
+    Lore:
+    - "&7click to change"
+    - "&7player's gamemode"
+    - "&7to survival"
+    Mode: "survival"
+    
+  13:
+    Item: "Barrier"
+    Name: "&eAdventure"
+    Lore:
+    - "&7click to change"
+    - "&7%player%'s gamemode"
+    - "&7to adventure"
+    Mode: "adventure"
+    
+  15:
+    Item: "Wooden_Pickaxe"
+    Name: "&6Creative"
+    Lore:
+    - "&7click to change"
+    - "&7%player%'s gamemode"
+    - "&7to creative"
+    Mode: "creative"
+    
+  17:
+    Item: "Feather"
+    Name: "&3Spectator"
+    Lore:
+    - "&7click to change"
+    - "&7%player%'s gamemode"
+    - "&7to spectator"
+    Mode: "spectator"
+    
+  32:
+    Item: "Redstone"
+    Name: "&c&nBack"
+    Lore:
+    - "&7click to go back"
+    Mode: "BackButton"
+    
+  
+ReportGui:
+  
+  InventoryType: ANVIL
+  
+  
+    
+    
+    
+    
+    
+
+

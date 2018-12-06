@@ -1,0 +1,116 @@
+main: me.flail.SlashPlayer.SlashPlayer
+name: SlashPlayer
+author: [FlailoftheLord, WulfGamesYT]
+description: player managment GUI system
+version: 2.1.0-ALPHA
+api-version: 1.13
+softdepend: [Vault, WorldEdit]
+
+commands:
+  slashplayer:
+    usage: /slashplayer [reload:report:player-name]
+    description: opens the player list menu
+    aliases: [player, sp, players, report, reportplayer]
+    
+permissions:
+  slashplayer.command:
+    description: use the /player command
+    default: op
+      
+  # This makes the permisison holder exempt from all kills, mutes, bans and inventory clears.
+  slashplayer.exempt:
+    description: exempt from bans, mutes and freezes
+    default: op
+  slashplayer.notify:
+    description: notifies these players of unbans and unmutes
+    default: true
+    
+  slashplayer.ban:
+    description: ability to ban and unban players through the gui
+    default: op
+  slashplayer.mute:
+    description: ability to mute and unmute players through the gui
+    default: op
+  slashplayer.freeze:
+    description: ability to freeze and unfreeze players through the gui
+    default: op
+  slashplayer.gamemode:
+    description: ability to change a players' gamemode through the gui
+    default: op
+    slashplayer.gamemode.survival: true
+    slashplayer.gamemode.creative: true
+    slashplayer.gamemode.adventure: true
+    slashplayer.gamemode.spectator: true
+  slashplayer.heal:
+    description: ability to heal a player through the gui
+    default: op
+  slashplayer.feed:
+    description: ability to feed a player through the gui
+    default: op
+  slashplayer.teleport:
+    description: ability to teleport to the player through the gui
+    default: op
+  slashplayer.summon:
+    description: ability to summon the player to you through the gui
+    default: op
+  slashplayer.kick:
+    description: ability to kick a player through the gui
+    default: op
+  slashplayer.fly:
+    description: ability to toggle the fly of the player through the gui
+    default: op
+  slashplayer.kill:
+    description: ability to kill the player through the gui
+    default: op
+    
+  slashplayer.moderator:
+    description: a set of permissions for moderators
+    default: false
+    children:
+      slashplayer.mute: true
+      slashplayer.fly: true
+      slashplayer.heal: true
+      slashplayer.feed: true
+      slashplayer.kick: true
+      slashplayer.summon: true
+      slashplayer.teleport: true
+      slashplayer.clearinv: true
+      slashplayer.gamemode.survival: true
+      slashplayer.gamemode.spectator: true
+      slashplayer.gamemode.adventure: true
+    
+  slashplayer.admin:
+    description: gives access to all executables
+    default: false
+    children:
+      slahsplayer.moderator: true
+      slashplayer.gamemode.creative: true
+      slashplayer.ban: true
+      slashplayer.kill: true
+  
+  slashplayer.op:
+    description: every permission
+    default: op
+    children:
+      slashplayer.admin: true
+      slashplayer.moderator: true
+      slashplayer.command: true
+      slashplayer.exempt: true
+      slashplayer.notify: true
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  

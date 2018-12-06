@@ -1,0 +1,64 @@
+#-----------------------------------------------------------------
+#==================================================================#
+#                                                                  #
+#                 Plugin by FlailoftheLord.                        #
+#        -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-                   #
+#   for questions please pm me on discord at FlailoftheLord#6842   #
+#          Join my discord server for faster support:              #
+#                https://discord.gg/wuxW5PS                        #
+#   ______               __        _____                           #
+#   |       |           /  \         |        |                    #
+#   |__     |          /____\        |        |                    #
+#   |       |         /      \       |        |                    #
+#   |       |_____   /        \    __|__      |______              #
+#                                                                  #
+#==================================================================#
+#-----------------------------------------------------------------
+
+
+# Prefix for Messages and Commands
+Prefix: "&8[&2Server&8]"
+
+# Fill the empty space with a filler item?
+# You can set the filler item info in the 'GuiConfig.yml' file.
+FillEmptySpace: true
+
+# Title for the player list GUI
+PlayerListTitle: "&2&lOnline Players"
+
+# Title for the individual player's menu
+# %player% = the players name of the skull you clicked on
+PlayerMenuTitle: "&2&lManage %player%"
+
+# used for the %website% placeholder in messages
+Website: "www.myserver.com/ban-appeals"
+
+# The time to ban the player for in Minutes.
+# 1 hour = 60 minutes
+# 1 day = 24 hours = 1440 minutes
+# 1 week = 7 days = 10080 minutes
+BanTime: 60
+
+# Mute time in minutes.
+MuteTime: 5
+
+# Settings for when a player is frozen.
+Freeze:
+  AdventureMode: true
+  Interact: deny
+  Chat: deny
+  Inventory: deny
+
+# Broadcast options, enable or disable for each one
+Broadcast:
+  Ban: true
+  Mute: true
+  UnBan: true
+  UnMute: true
+  Kick: false
+  
+  
+
+
+
+
