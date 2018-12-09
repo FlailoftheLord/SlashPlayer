@@ -1,4 +1,6 @@
 # Set all messages here
+# Color codes are fully supported... lol
+#
 # If you want to use multiple lines simply set the message 
 # from ->
 #  Message: "%prefix% &aExample messags..."
@@ -7,7 +9,7 @@
 #    %prefix% &aExample messages...
 #     &cthese mssages have two lines.. hehe :>
 #     &a and a thirDDddDd!!!
-
+#
 # = = = # Placeholders # = = = #
 # %player% the subject of the command
 # %operator% the player doing the action
@@ -25,7 +27,14 @@
 ReloadMesage: "%prefix% &aSuccessfully reloaded plugin files!"
 AccessDenied: "%prefix% &4YOU'RE NOT ALLOWED TO USE %executable%"
 NoPermission: "%prefix% &cYou don't have permission to use this!" 
-CommandUsage: "%prefix% &cProper usage: &7/%command% [reload:player-name]"
+CommandUsage: "%prefix% &cProper usage: &7/%command% [reload:player-name:unban]"
+
+# = = = # Help Messages # = = = #
+HelpMessage:
+- "&7&m-----| &3&lSlashPlayer &r&3Help Menu &7&m|-----"
+- "&atype &e/%command% &ato open the player-list GUI"
+- "&ause the command &e/%command% [player-name] &to open a specific players' menu"
+- "&cto unban a player, type &e/%command% unban [player-name]"
 
 # = = = # Ban Messages # = = = #
 BanPlayer: "%prefix% &abanned player for %ban-duration% minutes."
@@ -87,6 +96,11 @@ PlayerFlyOff: "%prefix% &aset fly mode &coff &afor %player%"
 InvCleared: "%prefix% &cyour inventory was wiped clean by staff."
 PlayerInvCleared: "%prefix% &ayou cleared %player%s' inventory."
 CantClearInv: "%player% you cannot clear that players' inventory!"
+
+# = = = # Kill Messages # = = = #
+Killed: "%prefix% &cyou were slain by staff."
+KillPlayer: "%prefix% &ckilled %player%"
+CantKillPlayer: "%prefix% &cyou can't kill this player!"
 
 # = = = # Report Messages # = = = #
 PlayerReported: "%prefix% &e%player% &ahas been reported by &e%reporter% &afor &c%reason%"

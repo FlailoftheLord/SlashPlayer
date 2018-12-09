@@ -57,6 +57,9 @@ Broadcast:
   UnMute: true
   Kick: false
   
+# More Console output?
+ConsoleVerbose: true
+  
   
 
 

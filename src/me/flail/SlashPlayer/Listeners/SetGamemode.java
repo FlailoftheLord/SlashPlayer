@@ -3,7 +3,6 @@ package me.flail.SlashPlayer.Listeners;
 import java.util.List;
 import java.util.UUID;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.command.ConsoleCommandSender;
@@ -21,16 +20,16 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import me.flail.SlashPlayer.SlashPlayer;
-import me.flail.SlashPlayer.Utilities;
+import me.flail.SlashPlayer.Tools;
 import me.flail.SlashPlayer.GUI.PlayerInfoInventory;
 
 public class SetGamemode implements Listener {
 
 	private SlashPlayer plugin = SlashPlayer.getPlugin(SlashPlayer.class);
 
-	private Utilities chat = new Utilities();
+	private Tools chat = new Tools();
 
-	private ConsoleCommandSender console = Bukkit.getConsoleSender();
+	private ConsoleCommandSender console = plugin.console;
 
 	@EventHandler
 	public void setGamemode(InventoryClickEvent event) {
@@ -59,11 +58,11 @@ public class SetGamemode implements Listener {
 
 				loreUid = ChatColor.stripColor(lore.get(0));
 
-				pInfoPlayer = plugin.server.getPlayer(UUID.fromString(loreUid));
+				pInfoPlayer = plugin.players.get(UUID.fromString(loreUid));
 
 			}
 
-			if (pInfoPlayer.equals(subject)) {
+			if ((subject != null) && pInfoPlayer.equals(subject)) {
 
 				String invTitle = chat
 						.m(guiConfig.getString("GamemodeInventory.Title").replace("%player%", subject.getName()));

@@ -1,3 +1,4 @@
+
 # Customize the Guis Shown
 # Each Number is for that slot in the GUI
 # There is a total of 45 slots for each GUI Menu
@@ -98,6 +99,7 @@ PlayerInfo:
     Lore:
     - "&7click to toggle fly"
     Execute: "ToggleFly"
+    CloseInventory: true
     
   14:
     Item: "Crafting_Table"
@@ -106,6 +108,7 @@ PlayerInfo:
     - "&7click to open"
     - "&7the gamemode selector"
     Execute: "SetGamemode"
+    CloseInventory: false
     
   15:
     Item: "Ice"
@@ -114,6 +117,7 @@ PlayerInfo:
     - "&7click to freeze %player%"
     - "&7for eternity... ;3"
     Execute: "FreezePlayer"
+    CloseInventory: true
     
   16:
     Item: "Blaze_Powder"
@@ -121,6 +125,7 @@ PlayerInfo:
     Lore:
     - "&7click to unfreeze"
     Execute: "UnfreezePlayer"
+    CloseInventory: true
   
   17:
     Item: "Cooked_Beef"
@@ -128,6 +133,7 @@ PlayerInfo:
     Lore:
     - "&7click to feed player"
     Execute: "FeedPlayer"
+    CloseInventory: true
     
   20:
     Item: "GOLDEN_APPLE"
@@ -135,6 +141,7 @@ PlayerInfo:
     Lore:
     - "&7click to heal player"
     Execute: "HealPlayer"
+    CloseInventory: true
     
   21:
     Item: "Iron_Boots"
@@ -143,6 +150,7 @@ PlayerInfo:
     - "&7kick player from"
     - "&7the server with a message"
     Execute: "KickPlayer"
+    CloseInventory: true
     
   22:
     Item: "Diamond_Axe"
@@ -152,6 +160,7 @@ PlayerInfo:
     - "&7with the message"
     - "&7set in the config.yml"
     Execute: "BanPlayer"
+    CloseInventory: false
     
   23:
     Item: "Sugar"
@@ -159,6 +168,7 @@ PlayerInfo:
     Lore:
     - "&7unban this player"
     Execute: "UnbanPlayer"
+    CloseInventory: true
     
   24:
     Item: "Anvil"
@@ -166,6 +176,7 @@ PlayerInfo:
     Lore:
     - "&7click to mute this player"
     Execute: "MutePlayer"
+    CloseInventory: true
     
   25:
     Item: "Glowstone_Dust"
@@ -173,6 +184,7 @@ PlayerInfo:
     Lore:
     - "&7click to unmute"
     Execute: "UnmutePlayer"
+    CloseInventory: true
     
     
     
@@ -230,6 +242,15 @@ GamemodeInventory:
 ReportGui:
   
   InventoryType: ANVIL
+  InventoryTitle: "&2Report %player%"
+  
+  ReportList:
+    
+    Name: "&3%player%"
+    Lore:
+    - "&aReported by: &7%reporter%"
+    - "&aReason: &7%reason%"
+    
   
   
     

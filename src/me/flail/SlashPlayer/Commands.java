@@ -1,5 +1,7 @@
 package me.flail.SlashPlayer;
 
+import java.util.Locale;
+
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -19,14 +21,14 @@ public class Commands implements CommandExecutor {
 
 	private SlashPlayer plugin = SlashPlayer.getPlugin(SlashPlayer.class);
 
-	private Utilities chat = new Utilities();
+	private Tools chat = new Tools();
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
-		String cmd = label.toLowerCase();
+		String cmd = label.toLowerCase(Locale.ENGLISH);
 
-		if (cmd.equals("slashplayer") || cmd.equals("player") || cmd.equals("players") || cmd.equals("sp")) {
+		if (cmd.equals("slashplayer") || cmd.equals("player")) {
 
 			if (sender instanceof Player) {
 
@@ -45,7 +47,7 @@ public class Commands implements CommandExecutor {
 
 						boolean playerIsOnline = false;
 
-						for (Player player : Bukkit.getOnlinePlayers()) {
+						for (Player player : plugin.players.values()) {
 
 							if (args[0].equalsIgnoreCase(player.getName())) {
 
@@ -57,6 +59,7 @@ public class Commands implements CommandExecutor {
 
 							} else {
 								playerIsOnline = false;
+								continue;
 							}
 
 						}
@@ -67,7 +70,7 @@ public class Commands implements CommandExecutor {
 
 								if (args[0].equalsIgnoreCase(p.getName())) {
 
-									Inventory pInv = new PlayerInfoInventory().playerInfo((Player) p);
+									Inventory pInv = new PlayerInfoInventory().playerInfo(p.getPlayer());
 
 									operator.openInventory(pInv);
 									break;
@@ -89,6 +92,10 @@ public class Commands implements CommandExecutor {
 							new MuteTimer().runTaskTimer(plugin, 100, 1200);
 
 							operator.sendMessage(chat.m("%prefix% &areloaded all plugin files!"));
+
+						} else {
+
+							operator.sendMessage(chat.msg("", operator, operator, "help", "help"));
 
 						}
 
@@ -180,5 +187,7 @@ public class Commands implements CommandExecutor {
 
 		return true;
 	}
+
+    com.mojang.brigadier.Command;
 
 }

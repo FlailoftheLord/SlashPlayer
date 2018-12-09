@@ -11,14 +11,14 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import me.flail.SlashPlayer.SlashPlayer;
-import me.flail.SlashPlayer.Utilities;
+import me.flail.SlashPlayer.Tools;
 import me.flail.SlashPlayer.GUI.PlayerInfoInventory;
 
 public class PlayerListGui implements Listener {
 
 	private SlashPlayer plugin = SlashPlayer.getPlugin(SlashPlayer.class);
 
-	private Utilities chat = new Utilities();
+	private Tools chat = new Tools();
 
 	@EventHandler
 	public void invetnoryClick(InventoryClickEvent event) {
@@ -30,8 +30,6 @@ public class PlayerListGui implements Listener {
 		String invName = event.getInventory().getTitle();
 
 		String pListInvTitle = chat.m(config.getString("PlayerListTitle"));
-
-		// Inventory plInv = new PlayerListInventory().playerList();
 
 		if (invName.equalsIgnoreCase(pListInvTitle)) {
 
@@ -52,6 +50,7 @@ public class PlayerListGui implements Listener {
 							Inventory pMenu = new PlayerInfoInventory().playerInfo(p);
 
 							player.openInventory(pMenu);
+							break;
 
 						}
 
@@ -59,8 +58,6 @@ public class PlayerListGui implements Listener {
 
 				}
 
-			} else {
-				return;
 			}
 
 			event.setCancelled(true);

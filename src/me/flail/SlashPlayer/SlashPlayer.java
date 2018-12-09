@@ -2,6 +2,10 @@ package me.flail.SlashPlayer;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+import java.util.UUID;
 import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
@@ -11,6 +15,10 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -22,7 +30,7 @@ import me.flail.SlashPlayer.Listeners.MuteTimer;
 import me.flail.SlashPlayer.Listeners.PlayerListGui;
 import me.flail.SlashPlayer.Listeners.SetGamemode;
 
-public class SlashPlayer extends JavaPlugin {
+public class SlashPlayer extends JavaPlugin implements Listener {
 
 	private File guiConfigFile;
 	private FileConfiguration guiConfig;
@@ -32,6 +40,9 @@ public class SlashPlayer extends JavaPlugin {
 
 	private File messagesFile;
 	private FileConfiguration messagesConfig;
+
+	private File reportedPlayers;
+	private FileConfiguration reportedPlayersConfig;
 
 	public ConsoleCommandSender console = Bukkit.getConsoleSender();
 
@@ -43,8 +54,12 @@ public class SlashPlayer extends JavaPlugin {
 
 	private String serverVersion = getServer().getBukkitVersion();
 
+	public Map<UUID, Player> players = new HashMap<>();
+
 	@Override
 	public void onEnable() {
+
+		Tools chat = new Tools();
 
 		// Load up the Files
 		saveDefaultConfig();
@@ -53,14 +68,10 @@ public class SlashPlayer extends JavaPlugin {
 		loadMessages();
 
 		// Register Commands and Events
-		handleAliases();
 		registerCommands();
+		pm.registerEvents(this, this);
 
 		registerEvents();
-
-		// Begin the Ban and Mute Timers
-		new BanTimer().runTaskTimer(this, 100, 1200);
-		new MuteTimer().runTaskTimer(this, 100, 1200);
 
 		// Friendly console spam :>
 		console.sendMessage("SlashPlayer running under " + serverVersion);
@@ -71,6 +82,17 @@ public class SlashPlayer extends JavaPlugin {
 		console.sendMessage(ChatColor.YELLOW + " to manage your players!");
 		console.sendMessage(ChatColor.BLUE + "=============================");
 
+		// Load up the players and store them in a map for later access ;>
+		for (Player p : Bukkit.getOnlinePlayers()) {
+			UUID pUuid = p.getUniqueId();
+			players.put(pUuid, p);
+		}
+
+		// And finally initiate the Ban and Mute Timers
+		new BanTimer().runTaskTimer(this, 100, 1200);
+		console.sendMessage(chat.m("%prefix% Updating bans..."));
+		new MuteTimer().runTaskTimer(this, 100, 1200);
+
 	}
 
 	@Override
@@ -80,16 +102,15 @@ public class SlashPlayer extends JavaPlugin {
 
 	}
 
-	private void handleAliases() {
+	@EventHandler
+	private void handleAliases(PlayerCommandPreprocessEvent event) {
 
-		boolean spcmdExists = server.getCommandAliases().containsKey("sp");
-		boolean playercmdExists = server.getCommandAliases().containsKey("player");
-		if (spcmdExists) {
-			server.getCommandAliases().remove("sp");
-		}
+		String commandLabel = event.getMessage().toLowerCase(Locale.ENGLISH);
 
-		if (playercmdExists) {
-			server.getCommandAliases().remove("player");
+		if (commandLabel.startsWith("/sp")) {
+
+			event.setMessage(commandLabel.replaceAll("/sp", "/slashplayer"));
+
 		}
 
 	}
@@ -127,7 +148,7 @@ public class SlashPlayer extends JavaPlugin {
 		messagesConfig = new YamlConfiguration();
 		try {
 			messagesConfig.load(messagesFile);
-		} catch (Exception e) {
+		} catch (InvalidConfigurationException | IOException e) {
 			getLogger().log(Level.SEVERE, "Could not load " + messagesFile, e);
 		}
 
@@ -140,8 +161,43 @@ public class SlashPlayer extends JavaPlugin {
 
 		try {
 			getMessages().save(messagesFile);
-		} catch (Exception e) {
+		} catch (IOException | IllegalArgumentException e) {
 			getLogger().log(Level.SEVERE, "Could not save " + messagesFile, e);
+		}
+	}
+
+	public FileConfiguration getReportedPlayers() {
+		if (reportedPlayersConfig == null) {
+			loadReportedPlayers();
+		}
+		return reportedPlayersConfig;
+	}
+
+	public void loadReportedPlayers() {
+		reportedPlayers = new File(getDataFolder(), "ReportedPlayers.yml");
+		if (!reportedPlayers.exists()) {
+			reportedPlayers.getParentFile().mkdirs();
+			saveResource("ReportedPlayers.yml", false);
+		}
+
+		reportedPlayersConfig = new YamlConfiguration();
+		try {
+			reportedPlayersConfig.load(reportedPlayers);
+		} catch (InvalidConfigurationException | IOException e) {
+			getLogger().log(Level.SEVERE, "Couldn't load " + reportedPlayers, e);
+		}
+
+	}
+
+	public void saveReportedPlayers() {
+		if ((reportedPlayersConfig == null) || (reportedPlayers == null)) {
+			return;
+		}
+
+		try {
+			getReportedPlayers().save(reportedPlayers);
+		} catch (IOException | IllegalArgumentException e) {
+			getLogger().log(Level.SEVERE, "Couldn't save file " + reportedPlayers, e);
 		}
 	}
 

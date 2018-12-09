@@ -7,13 +7,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import me.flail.SlashPlayer.SlashPlayer;
-import me.flail.SlashPlayer.Utilities;
+import me.flail.SlashPlayer.Tools;
 
 public class MuteTimer extends BukkitRunnable {
 
 	private SlashPlayer plugin = SlashPlayer.getPlugin(SlashPlayer.class);
 	// private ConsoleCommandSender console = Bukkit.getConsoleSender();
-	private Utilities chat = new Utilities();
+	private Tools chat = new Tools();
 
 	@Override
 	public void run() {

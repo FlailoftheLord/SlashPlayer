@@ -2,7 +2,7 @@ main: me.flail.SlashPlayer.SlashPlayer
 name: SlashPlayer
 author: [FlailoftheLord, WulfGamesYT]
 description: player managment GUI system
-version: 2.1.0-ALPHA
+version: 2.1.0
 api-version: 1.13
 softdepend: [Vault, WorldEdit]
 
@@ -10,7 +10,7 @@ commands:
   slashplayer:
     usage: /slashplayer [reload:report:player-name]
     description: opens the player list menu
-    aliases: [player, sp, players, report, reportplayer]
+    aliases: [player, sp, report, reportplayer]
     
 permissions:
   slashplayer.command:
@@ -24,6 +24,9 @@ permissions:
   slashplayer.notify:
     description: notifies these players of unbans and unmutes
     default: true
+  slashplayer.staff:
+    description: permission to receive and process reports
+    default: op
     
   slashplayer.ban:
     description: ability to ban and unban players through the gui
@@ -62,42 +65,6 @@ permissions:
   slashplayer.kill:
     description: ability to kill the player through the gui
     default: op
-    
-  slashplayer.moderator:
-    description: a set of permissions for moderators
-    default: false
-    children:
-      slashplayer.mute: true
-      slashplayer.fly: true
-      slashplayer.heal: true
-      slashplayer.feed: true
-      slashplayer.kick: true
-      slashplayer.summon: true
-      slashplayer.teleport: true
-      slashplayer.clearinv: true
-      slashplayer.gamemode.survival: true
-      slashplayer.gamemode.spectator: true
-      slashplayer.gamemode.adventure: true
-    
-  slashplayer.admin:
-    description: gives access to all executables
-    default: false
-    children:
-      slahsplayer.moderator: true
-      slashplayer.gamemode.creative: true
-      slashplayer.ban: true
-      slashplayer.kill: true
-  
-  slashplayer.op:
-    description: every permission
-    default: op
-    children:
-      slashplayer.admin: true
-      slashplayer.moderator: true
-      slashplayer.command: true
-      slashplayer.exempt: true
-      slashplayer.notify: true
-  
   
   
   

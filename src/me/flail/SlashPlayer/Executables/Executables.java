@@ -18,14 +18,14 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import me.flail.SlashPlayer.SlashPlayer;
-import me.flail.SlashPlayer.Utilities;
+import me.flail.SlashPlayer.Tools;
 import me.flail.SlashPlayer.GUI.GamemodeInventory;
 
 public class Executables implements Listener {
 
 	private SlashPlayer plugin = SlashPlayer.getPlugin(SlashPlayer.class);
 
-	private Utilities chat = new Utilities();
+	private Tools chat = new Tools();
 
 	@EventHandler
 	public void executables(InventoryClickEvent event) {
@@ -62,9 +62,11 @@ public class Executables implements Listener {
 
 				pInfoPlayer = plugin.server.getPlayer(UUID.fromString(loreUid));
 
+			} else {
+
 			}
 
-			if (pInfoPlayer.equals(subject)) {
+			if (pInfoPlayer.equals(subject) && (pInfoPlayer != null)) {
 
 				String invTitle = chat.m(config.getString("PlayerMenuTitle").replace("%player%", subject.getName()));
 
@@ -261,8 +263,7 @@ public class Executables implements Listener {
 
 								case "banplayer":
 
-									if (operator.hasPermission("slashplayer.ban")
-											&& !player.hasPermission("slashplayer.op")) {
+									if (operator.hasPermission("slashplayer.ban")) {
 
 										if (player.hasPermission("slashplayer.exempt")) {
 
@@ -326,7 +327,7 @@ public class Executables implements Listener {
 											player.setAllowFlight(false);
 
 											player.sendMessage(
-													chat.m("%prefix% + &cyour flight has been disabled by staff."));
+													chat.m("%prefix% &cyour flight has been disabled by staff."));
 
 											operator.sendMessage(chat.m("%prefix% &edisabled flight for %player%.")
 													.replace("%player%", player.getName()));
@@ -409,6 +410,11 @@ public class Executables implements Listener {
 								case "killplayer":
 
 									if (operator.hasPermission("slahsplayer.kill")) {
+										player.damage(696969, operator);
+										player.sendMessage(chat.msg(messages.getString("Killed"), player, operator,
+												"KillPlayer", "kill"));
+										operator.sendMessage(chat.msg(messages.getString("KillPlayer"), player,
+												operator, "KillPlayer", "kill"));
 
 									}
 
@@ -421,9 +427,8 @@ public class Executables implements Listener {
 
 					}
 
-					event.setCancelled(true);
 				}
-
+				event.setCancelled(true);
 			}
 
 		}

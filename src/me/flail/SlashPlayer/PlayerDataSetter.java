@@ -9,34 +9,38 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+import me.flail.SlashPlayer.Executables.FlyControl;
+
 public class PlayerDataSetter implements Listener {
 
 	private SlashPlayer plugin = SlashPlayer.getPlugin(SlashPlayer.class);
 
-	private Utilities chat = new Utilities();
+	private Tools chat = new Tools();
 
 	@EventHandler
 	public void playerJoin(PlayerJoinEvent event) {
 
 		FileConfiguration pData = plugin.getPlayerData();
 
-		FileConfiguration config = plugin.getConfig();
+		FileConfiguration messages = plugin.getMessages();
 
 		Player player = event.getPlayer();
 
 		UUID pUuid = player.getUniqueId();
 
+		plugin.players.put(pUuid, player);
+
+		new FlyControl().flyLogin(player);
+
 		boolean isBanned = pData.getBoolean(pUuid + ".IsBanned");
 
-		String helpLink = config.getString("HelpLink");
-
-		String banMessage = config.getString("DefaultBanMessage");
+		String banMessage = messages.getString("Banned");
 
 		String pName = player.getName().toString();
 
 		if (isBanned) {
 
-			player.kickPlayer(chat.m("%prefix% " + banMessage.replace("%help_link%", helpLink)));
+			player.kickPlayer(chat.msg(banMessage, player, player, "Ban", "ban"));
 			pData.set(pUuid + ".IsBanned", isBanned);
 		}
 
@@ -54,6 +58,8 @@ public class PlayerDataSetter implements Listener {
 		FileConfiguration pData = plugin.getPlayerData();
 
 		Player player = event.getPlayer();
+
+		plugin.players.remove(player.getUniqueId());
 
 		String pUuid = player.getUniqueId().toString();
 

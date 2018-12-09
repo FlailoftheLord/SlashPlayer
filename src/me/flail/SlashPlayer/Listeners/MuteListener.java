@@ -7,13 +7,13 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import me.flail.SlashPlayer.SlashPlayer;
-import me.flail.SlashPlayer.Utilities;
+import me.flail.SlashPlayer.Tools;
 
 public class MuteListener implements Listener {
 
 	private SlashPlayer plugin = SlashPlayer.getPlugin(SlashPlayer.class);
 
-	private Utilities chat = new Utilities();
+	private Tools chat = new Tools();
 
 	@EventHandler
 	public void playerChat(AsyncPlayerChatEvent event) {

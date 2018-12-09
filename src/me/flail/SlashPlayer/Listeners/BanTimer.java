@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import me.flail.SlashPlayer.SlashPlayer;
-import me.flail.SlashPlayer.Utilities;
+import me.flail.SlashPlayer.Tools;
 
 public class BanTimer extends BukkitRunnable {
 
@@ -16,7 +16,7 @@ public class BanTimer extends BukkitRunnable {
 
 	private ConsoleCommandSender console = Bukkit.getConsoleSender();
 
-	private Utilities chat = new Utilities();
+	private Tools chat = new Tools();
 
 	@Override
 	public void run() {
@@ -53,14 +53,15 @@ public class BanTimer extends BukkitRunnable {
 
 					if (broadcastUnban) {
 						plugin.getServer().broadcastMessage(
-								chat.msg(unbanMsg, (Player) player, (Player) player, "AutoUnban", "AutoUnban"));
+								chat.msg(unbanMsg, player.getPlayer(), player.getPlayer(), "AutoUnban", "ban"));
 					} else {
 
 						for (Player op : Bukkit.getOnlinePlayers()) {
 
-							if (op.isOp() || op.hasPermission("slashplayer.notify")) {
+							if (op.hasPermission("slashplayer.notify")) {
 
-								op.sendMessage(chat.m(unbanMsg).replace("%player%", player.getName()));
+								op.sendMessage(chat.msg(unbanMsg, player.getPlayer(), op, "AutoUnban", "ban"));
+								continue;
 
 							}
 
@@ -68,13 +69,13 @@ public class BanTimer extends BukkitRunnable {
 
 					}
 
+					console.sendMessage(chat.m(unbanMsg.replaceAll("%player%", player.getName())));
+
 				}
 
 			}
 
 		}
-
-		console.sendMessage(chat.m("%prefix% Updating bans..."));
 
 	}
 

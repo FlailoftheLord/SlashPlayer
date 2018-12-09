@@ -1,7 +1,7 @@
 package me.flail.SlashPlayer.GUI;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Collection;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -14,13 +14,13 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import me.flail.SlashPlayer.SlashPlayer;
-import me.flail.SlashPlayer.Utilities;
+import me.flail.SlashPlayer.Tools;
 
 public class PlayerListInventory {
 
 	private SlashPlayer plugin = SlashPlayer.getPlugin(SlashPlayer.class);
 
-	private Utilities chat = new Utilities();
+	private Tools chat = new Tools();
 
 	public ItemStack playerSkull(Player p) {
 
@@ -57,15 +57,11 @@ public class PlayerListInventory {
 
 		int startSlot = 0;
 
-		Iterator<? extends Player> onlinePlayers = Bukkit.getOnlinePlayers().iterator();
-
-		Player p;
+		Collection<Player> onlinePlayers = plugin.players.values();
 
 		try {
 
-			while (onlinePlayers.hasNext()) {
-
-				p = onlinePlayers.next();
+			for (Player p : onlinePlayers) {
 
 				pList.setItem(startSlot, playerSkull(p));
 				startSlot += 1;

@@ -16,13 +16,13 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import me.flail.SlashPlayer.SlashPlayer;
-import me.flail.SlashPlayer.Utilities;
+import me.flail.SlashPlayer.Tools;
 
 public class PlayerInfoInventory {
 
 	private SlashPlayer plugin = SlashPlayer.getPlugin(SlashPlayer.class);
 
-	private Utilities chat = new Utilities();
+	private Tools chat = new Tools();
 
 	public ItemStack pHead(Player player) {
 
@@ -96,118 +96,124 @@ public class PlayerInfoInventory {
 
 		FileConfiguration guiConfig = plugin.getGuiConfig();
 
-		String pInfoTitle = chat.m(config.getString("PlayerMenuTitle").replace("%player%", player.getName()));
+		Inventory pInfo = null;
 
-		Inventory pInfo = Bukkit.createInventory(player, 45, pInfoTitle);
+		if (player != null) {
 
-		int slot = 0;
+			String pInfoTitle = chat.m(config.getString("PlayerMenuTitle").replace("%player%", player.getName()));
 
-		while (slot <= pInfo.getSize()) {
+			pInfo = Bukkit.createInventory(player, 45, pInfoTitle);
 
-			ConfigurationSection sCheck = guiConfig.getConfigurationSection("PlayerInfo." + slot);
+			int slot = 0;
 
-			if (sCheck != null) {
+			while (slot <= pInfo.getSize()) {
 
-				String item = sCheck.getString("Item").toUpperCase();
+				ConfigurationSection sCheck = guiConfig.getConfigurationSection("PlayerInfo." + slot);
 
-				ItemStack slotItem;
+				if (sCheck != null) {
 
-				ItemMeta itemMeta;
+					String item = sCheck.getString("Item").toUpperCase();
 
-				if (item != null) {
+					ItemStack slotItem;
 
-					List<String> lore = new ArrayList<>();
+					ItemMeta itemMeta;
 
-					List<String> itemLore = sCheck.getStringList("Lore");
+					if (item != null) {
 
-					String itemName = sCheck.getString("Name");
+						List<String> lore = new ArrayList<>();
 
-					slotItem = new ItemStack(Material.getMaterial(item));
-					itemMeta = slotItem.getItemMeta();
+						List<String> itemLore = sCheck.getStringList("Lore");
 
-					itemMeta.addEnchant(Enchantment.MENDING, slot, true);
+						String itemName = sCheck.getString("Name");
 
-					itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-					itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+						slotItem = new ItemStack(Material.getMaterial(item));
+						itemMeta = slotItem.getItemMeta();
 
-					if (itemLore != null) {
+						itemMeta.addEnchant(Enchantment.MENDING, slot, true);
 
-						for (String s : itemLore) {
-							lore.add(chat.m(s).replace("%player%", player.getName()));
+						itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+						itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+
+						if (itemLore != null) {
+
+							for (String s : itemLore) {
+								lore.add(chat.m(s).replace("%player%", player.getName()));
+
+							}
+
+							itemMeta.setLore(lore);
 
 						}
 
-						itemMeta.setLore(lore);
+						if (itemName != null) {
+
+							itemMeta.setDisplayName(chat.m(itemName).replace("%player%", player.getName()));
+
+						}
+
+						slotItem.setItemMeta(itemMeta);
+
+						pInfo.setItem(slot - 1, slotItem);
 
 					}
 
-					if (itemName != null) {
+				} else {
 
-						itemMeta.setDisplayName(chat.m(itemName).replace("%player%", player.getName()));
+					boolean fillSpace = config.getBoolean("FillEmptySpace");
+
+					if (fillSpace) {
+
+						String fI = guiConfig.getString("FillerItem").toUpperCase();
+
+						if (Material.matchMaterial(fI) != null) {
+
+							ItemStack fillItem = new ItemStack(Material.getMaterial(fI));
+
+							ItemMeta fMeta = fillItem.getItemMeta();
+
+							fMeta.setDisplayName(" ");
+
+							fillItem.setItemMeta(fMeta);
+
+							if ((slot > 0) && (slot <= pInfo.getSize())) {
+
+								pInfo.setItem(slot - 1, fillItem);
+
+							}
+
+						} else {
+
+							ItemStack fillItem = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
+
+							ItemMeta fMeta = fillItem.getItemMeta();
+
+							fMeta.setDisplayName(" ");
+
+							fillItem.setItemMeta(fMeta);
+
+							if ((slot > 0) && (slot <= pInfo.getSize())) {
+
+								pInfo.setItem(slot - 1, fillItem);
+
+							}
+
+						}
 
 					}
-
-					slotItem.setItemMeta(itemMeta);
-
-					pInfo.setItem(slot - 1, slotItem);
 
 				}
 
-			} else {
-
-				boolean fillSpace = config.getBoolean("FillEmptySpace");
-
-				if (fillSpace) {
-
-					String fI = guiConfig.getString("FillerItem").toUpperCase();
-
-					if (Material.matchMaterial(fI) != null) {
-
-						ItemStack fillItem = new ItemStack(Material.getMaterial(fI));
-
-						ItemMeta fMeta = fillItem.getItemMeta();
-
-						fMeta.setDisplayName(" ");
-
-						fillItem.setItemMeta(fMeta);
-
-						if ((slot > 0) && (slot <= pInfo.getSize())) {
-
-							pInfo.setItem(slot - 1, fillItem);
-
-						}
-
-					} else {
-
-						ItemStack fillItem = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
-
-						ItemMeta fMeta = fillItem.getItemMeta();
-
-						fMeta.setDisplayName(" ");
-
-						fillItem.setItemMeta(fMeta);
-
-						if ((slot > 0) && (slot <= pInfo.getSize())) {
-
-							pInfo.setItem(slot - 1, fillItem);
-
-						}
-
-					}
-
-				}
-
+				slot += 1;
 			}
 
-			slot += 1;
-		}
+			int hSlot = guiConfig.getInt("PlayerInfo.Header.Slot");
 
-		int hSlot = guiConfig.getInt("PlayerInfo.Header.Slot");
+			if ((hSlot <= pInfo.getSize()) && (hSlot >= 1)) {
+				pInfo.setItem(hSlot - 1, pHead(player));
+			} else {
+				pInfo.setItem(4, pHead(player));
+			}
 
-		if ((hSlot <= pInfo.getSize()) && (hSlot >= 1)) {
-			pInfo.setItem(hSlot - 1, pHead(player));
-		} else {
-			pInfo.setItem(4, pHead(player));
 		}
 
 		return pInfo;
