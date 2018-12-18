@@ -27,7 +27,8 @@
 ReloadMesage: "%prefix% &aSuccessfully reloaded plugin files!"
 AccessDenied: "%prefix% &4YOU'RE NOT ALLOWED TO USE %executable%"
 NoPermission: "%prefix% &cYou don't have permission to use this!" 
-CommandUsage: "%prefix% &cProper usage: &7/%command% [reload:player-name:unban]"
+CommandUsage: "%prefix% &cProper usage: &7/%command% [player-name:unban:reload]"
+InvalidPlayer: "%prefix% &4Invalid player! &4%arg% is not a valid player or has never joined this server."
 
 # = = = # Help Messages # = = = #
 HelpMessage:
@@ -50,8 +51,9 @@ AutoUnban: "%prefix% &e%player% &ahas been unbanned as their time has run out!"
 MutePlayer: "%prefix% &amuted %player% for %mute-duration% minutes."
 UnmutePlayer: "%prefix% &aunmuted %player%."
 PlayerNotMuted: "%prefix% &cplayer is not muted!"
+MuteExempt: "%prefix% &cYou may not mute this player!"
 Muted: "%prefix% &cyou may not speak for another %time% minutes, you've been muted."
-UnMute: "%prefix% &ayou may now speak again, you've been unmuted!"
+Unmuted: "%prefix% &ayou may now speak again, you've been unmuted!"
 MuteBroadcast: "%prefix% &c%player% has been muted for %mute-duration% minutes."
 AutoUnmute: "%prefix% &e%player% &ahas been unmuted as their time has run out!"
 
@@ -60,13 +62,14 @@ FreezePlayer: "%prefix% &bSuccessfully frozen %player%!"
 Frozen: "%prefix% &cYou have been frozen by staff, please do not move!"
 FreezeMove: "&cYou have been frozen, please stay still!"
 FreezeInteract: "&cYou have been frozen, and cannot interact with stuff."
-FreezeOther: "&cYou've been frozen, OMG, you can't do annyythiinnngggg!!"
+FreezeOther: "&4&oYou've been frozen, OMG, you can't do annyythiinnngggg!!"
 UnfreezePlayer: "%prefix% &6unfroze %player%."
 Unfrozen: "%prefix% &ayou've been unfrozen, depart in peace."
 
 # = = = # Gamemode Messages # = = = # 
 GamemodeChanged: "%prefix% &ayour gamemode has been changed by staff."
 PlayerGamemodeChanged: "%prefix% &achanged %player%'s gamemode to &c%gamemode%"
+PlayerExempt: "%prefix% &cyou're not allowed to change %player%'s gamemode!"
 
 # = = = # Kick Messages # = = = #
 PlayerKicked: "%prefix% &cKicked %player%"

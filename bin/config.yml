@@ -19,6 +19,15 @@
 # Prefix for Messages and Commands
 Prefix: "&8[&2Server&8]"
 
+# The number of the highest ranking player.
+# minimum rank is 1
+# you can add the players' rank with the permission 
+# slashplayer.rank.[number]
+# Recommended is max of 99 or 100
+# any more than that is unecessary
+# Set to 0 to disable
+HighestRank: 99
+
 # Fill the empty space with a filler item?
 # You can set the filler item info in the 'GuiConfig.yml' file.
 FillEmptySpace: true
@@ -47,7 +56,6 @@ Freeze:
   AdventureMode: true
   Interact: deny
   Chat: deny
-  Inventory: deny
 
 # Broadcast options, enable or disable for each one
 Broadcast:

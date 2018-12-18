@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
@@ -42,7 +43,7 @@ public class Executables implements Listener {
 
 		InventoryHolder holder = event.getInventory().getHolder();
 
-		if (holder instanceof Player) {
+		if ((holder != null) && (holder instanceof Player)) {
 
 			Player subject = (Player) holder;
 
@@ -66,7 +67,7 @@ public class Executables implements Listener {
 
 			}
 
-			if (pInfoPlayer.equals(subject) && (pInfoPlayer != null)) {
+			if ((pInfoPlayer != null) && pInfoPlayer.equals(subject)) {
 
 				String invTitle = chat.m(config.getString("PlayerMenuTitle").replace("%player%", subject.getName()));
 
@@ -75,6 +76,10 @@ public class Executables implements Listener {
 					Player operator = (Player) event.getWhoClicked();
 
 					Player player = subject;
+
+					if (event.getSlotType().equals(SlotType.OUTSIDE)) {
+						operator.closeInventory();
+					}
 
 					String pUuid = player.getUniqueId().toString();
 
@@ -96,6 +101,8 @@ public class Executables implements Listener {
 
 							if ((exe != null) && (exe != "")) {
 
+								boolean closeInv = cs.getBoolean("CloseInventory");
+
 								switch (exe.toLowerCase()) {
 
 								case "teleporttoplayer":
@@ -111,14 +118,14 @@ public class Executables implements Listener {
 										operator.sendMessage(chat.msg(cantUseExe, player, operator, exe, "teleport"));
 									}
 
-									operator.closeInventory();
+									if (closeInv != false) {
+										operator.closeInventory();
+									}
 									break;
 
 								case "teleportplayer":
 
 									if (operator.hasPermission("slashplayer.summon")) {
-
-										player.closeInventory();
 
 										player.teleport(operator);
 
@@ -132,7 +139,9 @@ public class Executables implements Listener {
 										operator.sendMessage(chat.msg(cantUseExe, player, operator, exe, "summon"));
 									}
 
-									operator.closeInventory();
+									if (closeInv != false) {
+										operator.closeInventory();
+									}
 									break;
 
 								case "setgamemode":
@@ -143,7 +152,9 @@ public class Executables implements Listener {
 										operator.openInventory(gmInv);
 
 									} else {
-										operator.closeInventory();
+										if (closeInv != false) {
+											operator.closeInventory();
+										}
 										operator.sendMessage(chat.msg(cantUseExe, player, operator, exe, "gamemode"));
 									}
 
@@ -165,7 +176,9 @@ public class Executables implements Listener {
 										operator.sendMessage(chat.msg(cantUseExe, player, operator, exe, "heal"));
 									}
 
-									operator.closeInventory();
+									if (closeInv != false) {
+										operator.closeInventory();
+									}
 									break;
 
 								case "feedplayer":
@@ -183,7 +196,9 @@ public class Executables implements Listener {
 										operator.sendMessage(chat.msg(cantUseExe, player, operator, exe, "feed"));
 									}
 
-									operator.closeInventory();
+									if (closeInv != false) {
+										operator.closeInventory();
+									}
 									break;
 
 								case "freezeplayer":
@@ -203,14 +218,16 @@ public class Executables implements Listener {
 										player.sendMessage(chat.msg(messages.getString("Frozen"), player, operator, exe,
 												"freeze"));
 
-										operator.sendMessage(chat.msg(messages.getString("FreezeListener"), player,
+										operator.sendMessage(chat.msg(messages.getString("FreezePlayer"), player,
 												operator, exe, "freeze"));
 
 									} else {
 										operator.sendMessage(chat.msg(cantUseExe, player, operator, exe, "freeze"));
 									}
 
-									operator.closeInventory();
+									if (closeInv != false) {
+										operator.closeInventory();
+									}
 									break;
 
 								case "unfreezeplayer":
@@ -239,7 +256,9 @@ public class Executables implements Listener {
 										operator.sendMessage(chat.msg(cantUseExe, player, operator, exe, "unfreeze"));
 									}
 
-									operator.closeInventory();
+									if (closeInv != false) {
+										operator.closeInventory();
+									}
 									break;
 
 								case "kickplayer":
@@ -258,7 +277,9 @@ public class Executables implements Listener {
 										operator.sendMessage(chat.msg(cantUseExe, player, operator, exe, "kick"));
 									}
 
-									operator.closeInventory();
+									if (closeInv != false) {
+										operator.closeInventory();
+									}
 									break;
 
 								case "banplayer":
@@ -291,8 +312,11 @@ public class Executables implements Listener {
 										}
 
 									} else {
-										operator.closeInventory();
+
 										operator.sendMessage(chat.msg(cantUseExe, player, operator, exe, "ban"));
+									}
+									if (closeInv != false) {
+										operator.closeInventory();
 									}
 
 									break;
@@ -311,7 +335,9 @@ public class Executables implements Listener {
 										operator.sendMessage(chat.msg(cantUseExe, player, operator, exe, "unban"));
 									}
 
-									operator.closeInventory();
+									if (closeInv != false) {
+										operator.closeInventory();
+									}
 									break;
 
 								case "togglefly":
@@ -326,11 +352,11 @@ public class Executables implements Listener {
 
 											player.setAllowFlight(false);
 
-											player.sendMessage(
-													chat.m("%prefix% &cyour flight has been disabled by staff."));
+											player.sendMessage(chat.msg(messages.getString("FlyOff"), player, operator,
+													"TogglFly", "fly"));
 
-											operator.sendMessage(chat.m("%prefix% &edisabled flight for %player%.")
-													.replace("%player%", player.getName()));
+											operator.sendMessage(chat.msg(messages.getString("PlayerFlyOff"), player,
+													operator, "ToggleFly", "fly"));
 
 										} else {
 
@@ -338,18 +364,20 @@ public class Executables implements Listener {
 
 											player.setAllowFlight(true);
 
-											player.sendMessage(
-													chat.m("%prefix% &aflight has been enabled for you by staff."));
+											player.sendMessage(chat.msg(messages.getString("FlyOn"), player, operator,
+													"ToggleFly", "fly"));
 
-											operator.sendMessage(chat.m("%prefix% &aenabled flight for %player%!")
-													.replace("%player%", player.getName()));
+											operator.sendMessage(chat.msg(messages.getString("PlayerFlyOn"), player,
+													operator, "ToggleFly", "fly"));
 										}
 
 									} else {
-										operator.sendMessage(chat.msg(cantUseExe, player, operator, exe, "teleport"));
+										operator.sendMessage(chat.msg(cantUseExe, player, operator, exe, "fly"));
 									}
 
-									operator.closeInventory();
+									if (closeInv != false) {
+										operator.closeInventory();
+									}
 									break;
 
 								case "muteplayer":
@@ -358,7 +386,8 @@ public class Executables implements Listener {
 
 										if (player.hasPermission("slashplayer.exempt")) {
 
-											operator.sendMessage(chat.m("%prefix% &cyou cannot mute this player!"));
+											operator.sendMessage(chat.msg(messages.getString("MuteExempt"), player,
+													operator, "MutePlayer", "mute"));
 
 										} else {
 
@@ -368,55 +397,82 @@ public class Executables implements Listener {
 
 											pData.set(pUuid + ".MuteDuration", muteTime);
 
-											player.sendMessage(chat
-													.m("%prefix% &cyou have been muted by staff for %time% minutes.")
-													.replace("%time%", muteTime + ""));
+											player.sendMessage(chat.msg(messages.getString("Muted"), player, operator,
+													"MutePlayer", "mute"));
 
-											operator.sendMessage(
-													chat.m("%prefix% &aSuccessfully muted %player% for %time% minutes.")
-															.replace("%player%", player.getName())
-															.replace("%time%", muteTime + ""));
+											operator.sendMessage(chat.msg(messages.getString("MutePlayer"), player,
+													operator, "MutePlayer", "mute"));
 
 										}
 
 									} else {
-										operator.sendMessage(chat.msg(cantUseExe, player, operator, exe, "teleport"));
+										operator.sendMessage(chat.msg(cantUseExe, player, operator, exe, "mute"));
 									}
 
-									operator.closeInventory();
+									if (closeInv != false) {
+										operator.closeInventory();
+									}
 									break;
 
 								case "unmuteplayer":
 
 									if (operator.hasPermission("slashplayer.mute")) {
 
-										pData.set(pUuid + ".IsMuted", false);
+										boolean isMuted = pData.getBoolean(pUuid + ".IsMuted");
 
-										pData.set(pUuid + ".MuteDuration", null);
+										if (isMuted) {
 
-										player.sendMessage(
-												chat.m("%prefix% &ayou have been unmuted, you may now talk again!"));
+											pData.set(pUuid + ".IsMuted", false);
 
-										operator.sendMessage(chat.m("%prefix% &ayou have unmuted %player%.")
-												.replace("%player%", player.getName()));
+											pData.set(pUuid + ".MuteDuration", null);
+
+											player.sendMessage(chat.msg(messages.getString("Unmuted"), player, operator,
+													"UnmutePlayer", "mute"));
+
+											operator.sendMessage(chat.msg(messages.getString("UnmutePlayer"), player,
+													operator, "UnmutePlayer", "mute"));
+
+										} else {
+
+											String notMuted = messages.getString("NotMuted");
+
+											operator.sendMessage(
+													chat.msg(notMuted, player, operator, "UnmutePlayer", "mute"));
+
+										}
 
 									} else {
-										operator.sendMessage(chat.msg(cantUseExe, player, operator, exe, "teleport"));
+										operator.sendMessage(chat.msg(cantUseExe, player, operator, exe, "mute"));
 									}
 
-									operator.closeInventory();
+									if (closeInv != false) {
+										operator.closeInventory();
+									}
 									break;
 
 								case "killplayer":
 
 									if (operator.hasPermission("slahsplayer.kill")) {
-										player.damage(696969, operator);
-										player.sendMessage(chat.msg(messages.getString("Killed"), player, operator,
-												"KillPlayer", "kill"));
-										operator.sendMessage(chat.msg(messages.getString("KillPlayer"), player,
-												operator, "KillPlayer", "kill"));
 
+										if (!player.hasPermission("slashplayer.exempt")) {
+											player.damage(696969, operator);
+											player.sendMessage(chat.msg(messages.getString("Killed"), player, operator,
+													"KillPlayer", "kill"));
+											operator.sendMessage(chat.msg(messages.getString("KillPlayer"), player,
+													operator, "KillPlayer", "kill"));
+
+										} else {
+											operator.sendMessage(chat.msg(messages.getString("PlayerExempt"), player,
+													operator, "KillPlayer", "kill"));
+										}
+
+									} else {
+										operator.sendMessage(cantUseExe);
 									}
+									if (closeInv != false) {
+										operator.closeInventory();
+									}
+									break;
 
 								}
 

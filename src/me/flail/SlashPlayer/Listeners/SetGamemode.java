@@ -14,6 +14,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
@@ -35,6 +36,8 @@ public class SetGamemode implements Listener {
 	public void setGamemode(InventoryClickEvent event) {
 
 		FileConfiguration guiConfig = plugin.getGuiConfig();
+
+		FileConfiguration messages = plugin.getMessages();
 
 		Inventory inv = event.getInventory();
 
@@ -62,7 +65,7 @@ public class SetGamemode implements Listener {
 
 			}
 
-			if ((subject != null) && pInfoPlayer.equals(subject)) {
+			if ((subject != null) && (pInfoPlayer != null) && pInfoPlayer.equals(subject)) {
 
 				String invTitle = chat
 						.m(guiConfig.getString("GamemodeInventory.Title").replace("%player%", subject.getName()));
@@ -72,6 +75,12 @@ public class SetGamemode implements Listener {
 					Player operator = (Player) event.getWhoClicked();
 
 					Player player = subject;
+
+					if (event.getSlotType().equals(SlotType.OUTSIDE)) {
+						operator.closeInventory();
+
+						operator.openInventory(new PlayerInfoInventory().playerInfo(player));
+					}
 
 					ItemStack item = event.getCurrentItem();
 
@@ -91,9 +100,18 @@ public class SetGamemode implements Listener {
 
 								if (cs != null) {
 
-									String mode = cs.getString("Mode").toLowerCase();
+									String mode = cs.getString("Mode");
 
 									if ((mode != null) && (mode != "")) {
+
+										String changedGamemode = chat.msg(messages.getString("PlayerGamemodeChanged"),
+												player, operator, "SetGamemode", "gamemode");
+
+										String gamemodeUpdated = chat.msg(messages.getString("GamemodeChanged"), player,
+												operator, "SetGamemode", "gamemode");
+
+										String playerExempt = chat.msg(messages.getString("PlayerExempt"), player,
+												operator, "SetGamemode", "gamemode");
 
 										if (mode.equalsIgnoreCase("backbutton")) {
 
@@ -101,69 +119,89 @@ public class SetGamemode implements Listener {
 
 											operator.openInventory(new PlayerInfoInventory().playerInfo(player));
 
-										} else if (mode.equals("survival")) {
+										} else if (mode.equalsIgnoreCase("survival")) {
 
-											player.setGameMode(GameMode.SURVIVAL);
+											if (operator.hasPermission("slahsplayer.gamemode.survival")) {
 
-											player.sendMessage(
-													chat.m("%prefix% &ayour gamemode has been changed by staff."));
+												player.setGameMode(GameMode.SURVIVAL);
 
-											operator.sendMessage(chat
-													.m("%prefix% &asuccessfully changed gamemode to &7Survival &afor "
-															+ player.getName()));
+												player.sendMessage(gamemodeUpdated);
 
-											operator.closeInventory();
+												operator.sendMessage(changedGamemode);
 
-											operator.openInventory(new PlayerInfoInventory().playerInfo(player));
+												operator.closeInventory();
 
-										} else if (mode.equals("adventure")) {
+												operator.openInventory(new PlayerInfoInventory().playerInfo(player));
 
-											player.setGameMode(GameMode.ADVENTURE);
+											} else {
+												player.sendMessage(playerExempt.replaceAll("%mode%", mode));
+												player.closeInventory();
+											}
 
-											player.sendMessage(
-													chat.m("%prefix% &ayour gamemode has been changed by staff."));
+										} else if (mode.equalsIgnoreCase("adventure")) {
 
-											operator.sendMessage(chat
-													.m("%prefix% &asuccessfully changed gamemode to &7Adventure &afor "
-															+ player.getName()));
+											player.sendMessage("hi");
 
-											operator.closeInventory();
+											if (operator.hasPermission("slashplayer.gamemode.adventure")
+													&& !player.hasPermission("slasplayer.exempt")) {
 
-											operator.openInventory(new PlayerInfoInventory().playerInfo(player));
+												player.setGameMode(GameMode.ADVENTURE);
 
-										} else if (mode.equals("creative")) {
+												player.sendMessage(gamemodeUpdated);
 
-											player.setGameMode(GameMode.CREATIVE);
+												operator.sendMessage(changedGamemode);
 
-											player.sendMessage(
-													chat.m("%prefix% &ayour gamemode has been changed by staff."));
+												operator.closeInventory();
 
-											operator.sendMessage(chat
-													.m("%prefix% &asuccessfully changed gamemode to &7Creative &afor "
-															+ player.getName()));
+												operator.openInventory(new PlayerInfoInventory().playerInfo(player));
 
-											operator.closeInventory();
+											} else {
 
-											operator.openInventory(new PlayerInfoInventory().playerInfo(player));
+												player.sendMessage(playerExempt.replaceAll("%mode%", mode));
+												player.closeInventory();
 
-										} else if (mode.equals("spectator")) {
+											}
 
-											player.setGameMode(GameMode.SPECTATOR);
+										} else if (mode.equalsIgnoreCase("creative")) {
 
-											player.sendMessage(
-													chat.m("%prefix% &ayour gamemode has been changed by staff."));
+											if (operator.hasPermission("slashplayer.gamemode.creative")) {
 
-											operator.sendMessage(chat
-													.m("%prefix% &asuccessfully changed gamemode to &7Spectator &afor "
-															+ player.getName()));
+												player.setGameMode(GameMode.CREATIVE);
 
-											operator.closeInventory();
+												player.sendMessage(gamemodeUpdated);
 
-											operator.openInventory(new PlayerInfoInventory().playerInfo(player));
+												operator.sendMessage(changedGamemode);
+												operator.closeInventory();
+
+												operator.openInventory(new PlayerInfoInventory().playerInfo(player));
+
+											} else {
+												player.sendMessage(playerExempt.replaceAll("%mode%", mode));
+												player.closeInventory();
+											}
+
+										} else if (mode.equalsIgnoreCase("spectator")) {
+
+											if (operator.hasPermission("slashplayer.gamemode.spectator")) {
+
+												player.setGameMode(GameMode.SPECTATOR);
+
+												player.sendMessage(gamemodeUpdated);
+
+												operator.sendMessage(changedGamemode);
+
+												operator.closeInventory();
+
+												operator.openInventory(new PlayerInfoInventory().playerInfo(player));
+
+											} else {
+												player.sendMessage(playerExempt.replaceAll("%mode%", mode));
+												player.closeInventory();
+											}
 
 										} else {
 											console.sendMessage(
-													chat.m("&cInvalid Gamemode Specified in GuiConfig.yml"));
+													chat.m("&cInvalid Gamemode Specified in &o&nGuiConfig.yml"));
 											console.sendMessage(chat.m("&c" + mode + "is not a valid Mode!"));
 										}
 

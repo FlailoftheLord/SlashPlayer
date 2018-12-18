@@ -1,6 +1,5 @@
 package me.flail.SlashPlayer.Listeners;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -31,7 +30,7 @@ public class PlayerListGui implements Listener {
 
 		String pListInvTitle = chat.m(config.getString("PlayerListTitle"));
 
-		if (invName.equalsIgnoreCase(pListInvTitle)) {
+		if (invName.equals(pListInvTitle)) {
 
 			ItemStack item = event.getCurrentItem();
 
@@ -41,7 +40,7 @@ public class PlayerListGui implements Listener {
 
 				if (itemName != null) {
 
-					for (Player p : Bukkit.getOnlinePlayers()) {
+					for (Player p : plugin.players.values()) {
 
 						String pName = ChatColor.stripColor(itemName);
 

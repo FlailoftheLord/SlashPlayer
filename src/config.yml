@@ -56,7 +56,6 @@ Freeze:
   AdventureMode: true
   Interact: deny
   Chat: deny
-  Inventory: deny
 
 # Broadcast options, enable or disable for each one
 Broadcast:

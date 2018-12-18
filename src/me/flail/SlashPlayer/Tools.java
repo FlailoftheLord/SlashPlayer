@@ -1,8 +1,14 @@
 package me.flail.SlashPlayer;
 
+import java.lang.reflect.Constructor;
+import java.util.Iterator;
+import java.util.List;
+
 import org.bukkit.ChatColor;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 
 public class Tools {
 
@@ -62,11 +68,9 @@ public class Tools {
 
 	}
 
-	public int playerRank(Player player) {
+	public static int playerRank(Player player) {
 
-		FileConfiguration config = plugin.getConfig();
-
-		int maxRank = config.getInt("HighestRank");
+		int maxRank = 100;
 
 		int reply = 0;
 
@@ -96,6 +100,45 @@ public class Tools {
 		}
 
 		return reply;
+
+	}
+
+	public static PluginCommand getCommand(String name, Plugin plugin) {
+		PluginCommand command = null;
+
+		try {
+			Constructor<PluginCommand> cmd = PluginCommand.class.getDeclaredConstructor(String.class, Plugin.class);
+			cmd.setAccessible(true);
+			command = cmd.newInstance(name, plugin);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return command;
+	}
+
+	public String listToString(List<String> stringList) {
+
+		if ((stringList != null) && !stringList.isEmpty()) {
+
+			Iterator<String> listIterator = stringList.iterator();
+			String s = "";
+
+			while (listIterator.hasNext()) {
+
+				String word = listIterator.next();
+				if (word != null) {
+					s = s + "\n" + word;
+				} else {
+					s = word;
+				}
+
+			}
+
+			return s;
+		} else {
+			return ChatColor.translateAlternateColorCodes('&', "&4SlashPlayer Formatting ERROR!&r");
+		}
 
 	}
 

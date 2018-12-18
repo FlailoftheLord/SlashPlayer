@@ -14,6 +14,7 @@ import org.bukkit.inventory.Inventory;
 
 import me.flail.SlashPlayer.GUI.PlayerInfoInventory;
 import me.flail.SlashPlayer.GUI.PlayerListInventory;
+import me.flail.SlashPlayer.GUI.ReportInventory;
 import me.flail.SlashPlayer.Listeners.BanTimer;
 import me.flail.SlashPlayer.Listeners.MuteTimer;
 
@@ -28,13 +29,40 @@ public class Commands implements CommandExecutor {
 
 		String cmd = label.toLowerCase(Locale.ENGLISH);
 
+		for (Player p : plugin.players.values()) {
+
+			String pName = p.getName().toLowerCase();
+			if (cmd.equals(pName) || pName.startsWith(cmd) || cmd.startsWith(pName)) {
+
+				if (sender instanceof Player) {
+					Player operator = (Player) sender;
+
+					if (operator.hasPermission("slashplayer.command")) {
+
+						Inventory pInv = new PlayerInfoInventory().playerInfo(p);
+
+						operator.openInventory(pInv);
+						break;
+
+					}
+
+				}
+
+			}
+
+		}
+
+		FileConfiguration reportedPlayers = plugin.getReportedPlayers();
+
+		FileConfiguration pData = plugin.getPlayerData();
+
+		FileConfiguration messages = plugin.getMessages();
+
 		if (cmd.equals("slashplayer") || cmd.equals("player")) {
 
 			if (sender instanceof Player) {
 
 				Player operator = (Player) sender;
-
-				FileConfiguration pData = plugin.getPlayerData();
 
 				if (operator.hasPermission("slashplayer.command")) {
 
@@ -181,13 +209,112 @@ public class Commands implements CommandExecutor {
 
 		}
 
-		if (cmd.equals("report") || cmd.equals("reportplayer")) {
+		if (cmd.equals("report") || cmd.equals("reportplayer") || cmd.equals("spr")) {
+
+			if (sender instanceof Player) {
+
+				Player player = (Player) sender;
+
+				if (player.hasPermission("slashplayer.report")) {
+
+					if (args.length >= 2) {
+
+						boolean validPlayer = false;
+
+						String reportedPlayer = args[0].toLowerCase();
+
+						for (Player p : plugin.players.values()) {
+
+							String pName = p.getName().toLowerCase();
+							if (reportedPlayer.equalsIgnoreCase(pName) || pName.startsWith(reportedPlayer)) {
+
+								String pUuid = p.getUniqueId().toString();
+
+								String reportMsg = "";
+
+								for (int i = 1; i < args.length; i += 1) {
+
+									String arg = args[i];
+
+									reportMsg = reportMsg + " " + arg;
+
+								}
+
+								if (reportMsg.length() > 100) {
+
+									player.sendMessage(chat.m("%prefix% &cPlease keep your report short and concise."));
+									validPlayer = true;
+
+								} else if (reportMsg.length() < 6) {
+									player.sendMessage(
+											chat.m("%prefix% &cyou must give a reason for reporting this player!"));
+									validPlayer = true;
+								} else {
+
+									reportedPlayers.set(pUuid + ".Uuid", pUuid);
+									reportedPlayers.set(pUuid + ".Name", p.getName());
+									reportedPlayers.set(pUuid + ".Reporter", player.getName());
+									reportedPlayers.set(pUuid + ".Reason", reportMsg.trim().toString());
+
+									String reportSuccess = chat.msg(messages.getString("ReportSuccess"), player, p,
+											"ReportPlayer", cmd);
+
+									player.sendMessage(reportSuccess);
+
+									validPlayer = true;
+									break;
+								}
+
+							} else {
+								validPlayer = false;
+								continue;
+							}
+
+						}
+
+						if (!validPlayer) {
+
+							String invalidPlayer = chat.msg(
+									messages.getString("InvalidPlayer").replaceAll("%arg%", reportedPlayer), player,
+									player, "ReportPlayer", cmd);
+
+							player.sendMessage(invalidPlayer);
+
+						}
+
+					} else {
+
+						String usage = chat.msg(messages.getString("CommandUsage"), player, player, "ReportPlayer",
+								cmd);
+						player.sendMessage(usage);
+
+					}
+
+					plugin.saveReportedPlayers();
+
+				} else {
+
+					String noPermission = chat.m(messages.getString("NoPermission"));
+
+					player.sendMessage(noPermission);
+
+				}
+
+			}
+
+		}
+
+		if (cmd.equals("reports")) {
+
+			if (sender instanceof Player) {
+				Player operator = (Player) sender;
+				operator.openInventory(new ReportInventory().reportInv(operator));
+
+			}
 
 		}
 
 		return true;
 	}
-
-    com.mojang.brigadier.Command;
 
 }

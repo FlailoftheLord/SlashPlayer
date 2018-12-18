@@ -53,7 +53,7 @@ public class FlyControl {
 
 				} else {
 					player.setAllowFlight(false);
-					player.setFlying(true);
+					player.setFlying(false);
 					pData.set(pUuid + ".IsFlying", false);
 				}
 

@@ -11,7 +11,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 import me.flail.SlashPlayer.Executables.FlyControl;
 
-public class PlayerDataSetter implements Listener {
+public class PlayerDataSetter extends Tools implements Listener {
 
 	private SlashPlayer plugin = SlashPlayer.getPlugin(SlashPlayer.class);
 
@@ -50,6 +50,8 @@ public class PlayerDataSetter implements Listener {
 
 		plugin.savePlayerData();
 
+		getCommand(pName, plugin).setExecutor(new Commands());
+
 	}
 
 	@EventHandler
@@ -59,7 +61,16 @@ public class PlayerDataSetter implements Listener {
 
 		Player player = event.getPlayer();
 
-		plugin.players.remove(player.getUniqueId());
+		plugin.server.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+
+			plugin.players.clear();
+
+			for (Player p : plugin.server.getOnlinePlayers()) {
+				UUID pUuid = p.getUniqueId();
+				plugin.players.put(pUuid, p);
+			}
+
+		}, 10);
 
 		String pUuid = player.getUniqueId().toString();
 

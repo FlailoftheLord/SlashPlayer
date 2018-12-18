@@ -25,6 +25,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import me.flail.SlashPlayer.Executables.Executables;
 import me.flail.SlashPlayer.Listeners.BanTimer;
 import me.flail.SlashPlayer.Listeners.FreezeListener;
+import me.flail.SlashPlayer.Listeners.InteractEvent;
 import me.flail.SlashPlayer.Listeners.MuteListener;
 import me.flail.SlashPlayer.Listeners.MuteTimer;
 import me.flail.SlashPlayer.Listeners.PlayerListGui;
@@ -53,8 +54,12 @@ public class SlashPlayer extends JavaPlugin implements Listener {
 	private String version = getDescription().getVersion();
 
 	private String serverVersion = getServer().getBukkitVersion();
+	private String serverType = getServer().getVersion();
 
 	public Map<UUID, Player> players = new HashMap<>();
+
+	public SlashPlayer() {
+	}
 
 	@Override
 	public void onEnable() {
@@ -74,7 +79,7 @@ public class SlashPlayer extends JavaPlugin implements Listener {
 		registerEvents();
 
 		// Friendly console spam :>
-		console.sendMessage("SlashPlayer running under " + serverVersion);
+		console.sendMessage("SlashPlayer running under " + serverType + serverVersion);
 		console.sendMessage(ChatColor.BLUE + "=============================");
 		console.sendMessage(ChatColor.YELLOW + " SlashPlayer " + ChatColor.GOLD + "v" + version);
 		console.sendMessage(ChatColor.DARK_GREEN + "   by FlailoftheLord");
@@ -128,6 +133,7 @@ public class SlashPlayer extends JavaPlugin implements Listener {
 		pm.registerEvents(new FreezeListener(), this);
 		pm.registerEvents(new PlayerDataSetter(), this);
 		pm.registerEvents(new MuteListener(), this);
+		pm.registerEvents(new InteractEvent(), this);
 	}
 
 	public FileConfiguration getMessages() {
@@ -139,7 +145,7 @@ public class SlashPlayer extends JavaPlugin implements Listener {
 
 	public void loadMessages() {
 
-		messagesFile = new File(getDataFolder(), "messages.yml");
+		messagesFile = new File(getDataFolder(), "Messages.yml");
 		if (!messagesFile.exists()) {
 			messagesFile.getParentFile().mkdirs();
 			saveResource("Messages.yml", false);

@@ -2,7 +2,7 @@ main: me.flail.SlashPlayer.SlashPlayer
 name: SlashPlayer
 author: [FlailoftheLord, WulfGamesYT]
 description: player managment GUI system
-version: 2.1.0
+version: 2.1.0-BETA-1
 api-version: 1.13
 softdepend: [Vault, WorldEdit]
 
@@ -10,7 +10,7 @@ commands:
   slashplayer:
     usage: /slashplayer [reload:report:player-name]
     description: opens the player list menu
-    aliases: [player, sp, report, reportplayer]
+    aliases: [player, sp, report, reportplayer, spr, reports]
     
 permissions:
   slashplayer.command:
@@ -40,10 +40,16 @@ permissions:
   slashplayer.gamemode:
     description: ability to change a players' gamemode through the gui
     default: op
-    slashplayer.gamemode.survival: true
-    slashplayer.gamemode.creative: true
-    slashplayer.gamemode.adventure: true
-    slashplayer.gamemode.spectator: true
+    
+  slashplayer.gamemode.all:
+    default: op
+    description: all gamemodes
+    children:
+      slashplayer.gamemode.survival: true
+      slashpalyer.gamemode.adventure: true
+      slashplayer.gamemode.creative: true
+      slashplayer.gamemode.spectator: true
+    
   slashplayer.heal:
     description: ability to heal a player through the gui
     default: op
