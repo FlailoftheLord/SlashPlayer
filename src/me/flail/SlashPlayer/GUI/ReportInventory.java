@@ -43,6 +43,7 @@ public class ReportInventory {
 		// ItemMeta headMeta = head.getItemMeta();
 
 		List<String> skullLore = new ArrayList<>();
+		skullLore.add(tools.m("&8" + pUuid));
 
 		String reasonHeader = tools.msg(guiConfig.get("ReportGui.ReportList.Reason.Name").toString(), player, player,
 				"ReportPlayer", "report");
@@ -58,33 +59,31 @@ public class ReportInventory {
 		skullLore.add(" ");
 		skullLore.add(reasonHeader);
 
-		String formattedReport = " ";
-
 		while (reportReason.length() > 16) {
 			int lastIndex = reportReason.lastIndexOf(" ", 16);
 
 			if (lastIndex > -1) {
-				formattedReport = formattedReport.concat(reasonColor + reportReason.substring(0, lastIndex));
-				formattedReport = formattedReport.concat(" \n");
+				skullLore.add(tools.m("  " + reasonColor + reportReason.substring(0, lastIndex)));
 
 				reportReason = reportReason.substring(lastIndex + 1, reportReason.length());
 
 			} else {
-				formattedReport = tools.m(reasonColor + formattedReport + reportReason);
+				skullLore.add(tools.m("  " + reasonColor + reportReason));
 				break;
 			}
 
 		}
 
 		if (reportReason.length() <= 16) {
-			formattedReport = tools.m(reasonColor + formattedReport + reportReason);
+			skullLore.add(tools.m("  " + reasonColor + reportReason));
 		}
 
-		skullLore.add(tools.m(formattedReport));
+		skullLore.add(" ");
+		skullLore.add(tools.m("&8Shift Click to remove."));
 
 		headMeta.setOwningPlayer(player);
 
-		headMeta.setDisplayName(nameFormat);
+		headMeta.setDisplayName(nameFormat + tools.m(" &a&l(Online)"));
 
 		headMeta.setLore(skullLore);
 
@@ -112,6 +111,7 @@ public class ReportInventory {
 		// ItemMeta headMeta = head.getItemMeta();
 
 		List<String> skullLore = new ArrayList<>();
+		skullLore.add(tools.m("&8" + pUuid));
 
 		String reasonHeader = tools.m(guiConfig.get("ReportGui.ReportList.Reason.Name").toString());
 		String reasonColor = guiConfig.get("ReportGui.ReportList.Reason.Color").toString();
@@ -124,20 +124,27 @@ public class ReportInventory {
 		skullLore.add(" ");
 		skullLore.add(reasonHeader);
 
-		String formattedReport = " ";
-
 		while (reportReason.length() > 16) {
 			int lastIndex = reportReason.lastIndexOf(" ", 16);
 
 			if (lastIndex > -1) {
-				formattedReport = formattedReport.concat(reasonColor + reportReason.substring(0, lastIndex));
-				formattedReport = formattedReport.concat("\b");
+				skullLore.add(tools.m("  " + reasonColor + reportReason.substring(0, lastIndex)));
+
+				reportReason = reportReason.substring(lastIndex + 1, reportReason.length());
+
+			} else {
+				skullLore.add(tools.m("  " + reasonColor + reportReason));
+				break;
 			}
 
-			reportReason = reportReason.substring(lastIndex + 1, reportReason.length());
-
 		}
-		skullLore.add(tools.m(formattedReport));
+
+		if (reportReason.length() <= 16) {
+			skullLore.add(tools.m("  " + reasonColor + reportReason));
+		}
+
+		skullLore.add(" ");
+		skullLore.add(tools.m("&8Shift Click to remove."));
 
 		headMeta.setOwningPlayer(player);
 

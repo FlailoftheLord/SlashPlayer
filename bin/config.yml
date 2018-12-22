@@ -17,16 +17,14 @@
 
 
 # Prefix for Messages and Commands
-Prefix: "&8[&2Server&8]"
+Prefix: "&3(&7&lSP&3)"
 
-# The number of the highest ranking player.
-# minimum rank is 1
-# you can add the players' rank with the permission 
-# slashplayer.rank.[number]
-# Recommended is max of 99 or 100
-# any more than that is unecessary
-# Set to 0 to disable
-HighestRank: 99
+# NOTE: Ranks go from 0 - 100 (in which 0 is the lowest rank) and can be applied to a user with the permission:
+#   slashplayer.rank.#   - replace # with any number from 0 - 100, 
+# If a player does not have a rank permisison, their rank will default to 0.
+
+# Wether players of the same ranking can execute on each other.
+EqualsCanExecute: true
 
 # Fill the empty space with a filler item?
 # You can set the filler item info in the 'GuiConfig.yml' file.
@@ -52,6 +50,9 @@ BanTime: 60
 MuteTime: 5
 
 # Settings for when a player is frozen.
+# Set to 'allow' or 'deny'
+# AdventureMode is either 'true' or 'false'
+# If set to true, this will put the player in adventure mode when frozen.
 Freeze:
   AdventureMode: true
   Interact: deny
@@ -61,8 +62,6 @@ Freeze:
 Broadcast:
   Ban: true
   Mute: true
-  UnBan: true
-  UnMute: true
   Kick: false
   
 # More Console output?

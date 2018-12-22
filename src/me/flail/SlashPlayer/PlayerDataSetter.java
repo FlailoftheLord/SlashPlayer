@@ -38,10 +38,29 @@ public class PlayerDataSetter extends Tools implements Listener {
 
 		String pName = player.getName().toString();
 
+		for (String s : pData.getKeys(false)) {
+
+			String oldName = pData.get(s + ".Name").toString();
+			if (oldName.equalsIgnoreCase(pName)) {
+				pData.set(s, null);
+				break;
+			}
+
+		}
+
 		if (isBanned) {
 
-			player.kickPlayer(chat.msg(banMessage, player, player, "Ban", "ban"));
-			pData.set(pUuid + ".IsBanned", isBanned);
+			try {
+
+				String timeLeft = pData.get(pUuid + ".BanDuration").toString();
+
+				player.kickPlayer(chat.msg(banMessage.replaceAll("%time%", timeLeft), player, player, "Ban", "ban"));
+				pData.set(pUuid + ".IsBanned", isBanned);
+
+			} catch (NullPointerException e) {
+				player.kickPlayer(chat.msg(banMessage.replace("%time%", 60 + ""), player, player, "Ban", "ban"));
+				pData.set(pUuid + ".IsBanned", isBanned);
+			}
 		}
 
 		pData.set(pUuid + ".Name", pName);

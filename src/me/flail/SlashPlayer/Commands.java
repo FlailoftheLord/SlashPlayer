@@ -1,5 +1,6 @@
 package me.flail.SlashPlayer;
 
+import java.util.List;
 import java.util.Locale;
 
 import org.bukkit.Bukkit;
@@ -73,47 +74,14 @@ public class Commands implements CommandExecutor {
 						operator.openInventory(pListInv);
 					} else if (args.length == 1) {
 
-						boolean playerIsOnline = false;
-
-						for (Player player : plugin.players.values()) {
-
-							if (args[0].equalsIgnoreCase(player.getName())) {
-
-								Inventory pInv = new PlayerInfoInventory().playerInfo(player);
-
-								operator.openInventory(pInv);
-								playerIsOnline = true;
-								break;
-
-							} else {
-								playerIsOnline = false;
-								continue;
-							}
-
-						}
-
-						if (!playerIsOnline) {
-
-							for (OfflinePlayer p : Bukkit.getOfflinePlayers()) {
-
-								if (args[0].equalsIgnoreCase(p.getName())) {
-
-									Inventory pInv = new PlayerInfoInventory().playerInfo(p.getPlayer());
-
-									operator.openInventory(pInv);
-									break;
-
-								}
-
-							}
-
-						}
-
 						if (args[0].equalsIgnoreCase("reload")) {
 
 							plugin.loadGuiConfig();
 							plugin.loadPlayerData();
+							plugin.loadMessages();
 							plugin.reloadConfig();
+							plugin.savePlayerData();
+							plugin.saveReportedPlayers();
 
 							plugin.server.getScheduler().cancelTasks(plugin);
 							new BanTimer().runTaskTimer(plugin, 100, 1200);
@@ -121,9 +89,51 @@ public class Commands implements CommandExecutor {
 
 							operator.sendMessage(chat.m("%prefix% &areloaded all plugin files!"));
 
+						} else if (args[0].equalsIgnoreCase("help")) {
+
+							List<String> helpMessage = messages.getStringList("HelpMessage");
+
+							for (String msg : helpMessage) {
+								operator.sendMessage(chat.msg(msg, operator, operator, "SlashPlayer-Help", cmd));
+							}
+
 						} else {
 
-							operator.sendMessage(chat.msg("", operator, operator, "help", "help"));
+							boolean playerIsOnline = false;
+
+							for (Player player : plugin.players.values()) {
+
+								if (args[0].equalsIgnoreCase(player.getName())) {
+
+									Inventory pInv = new PlayerInfoInventory().playerInfo(player);
+
+									operator.openInventory(pInv);
+									playerIsOnline = true;
+									break;
+
+								} else {
+									playerIsOnline = false;
+									continue;
+								}
+
+							}
+
+							if (!playerIsOnline) {
+
+								for (OfflinePlayer p : Bukkit.getOfflinePlayers()) {
+
+									if (args[0].equalsIgnoreCase(p.getName())) {
+
+										Inventory pInv = new PlayerInfoInventory().playerInfo(p.getPlayer());
+
+										operator.openInventory(pInv);
+										break;
+
+									}
+
+								}
+
+							}
 
 						}
 
@@ -131,7 +141,7 @@ public class Commands implements CommandExecutor {
 
 						if (args[0].equalsIgnoreCase("unban")) {
 
-							if (operator.hasPermission("slashplayer.ban")
+							if (operator.hasPermission("slashplayer.ban") || operator.hasPermission("slashplayer.unban")
 									|| operator.hasPermission("slashplayer.command.all")) {
 
 								String pUuid;
@@ -160,6 +170,7 @@ public class Commands implements CommandExecutor {
 															.replace("%player%", args[1]));
 
 													plugin.savePlayerData();
+													playerBanned = true;
 
 													break;
 												} else {
@@ -244,11 +255,13 @@ public class Commands implements CommandExecutor {
 
 									player.sendMessage(chat.m("%prefix% &cPlease keep your report short and concise."));
 									validPlayer = true;
+									break;
 
 								} else if (reportMsg.length() < 6) {
 									player.sendMessage(
 											chat.m("%prefix% &cyou must give a reason for reporting this player!"));
 									validPlayer = true;
+									break;
 								} else {
 
 									reportedPlayers.set(pUuid + ".Uuid", pUuid);
@@ -256,10 +269,24 @@ public class Commands implements CommandExecutor {
 									reportedPlayers.set(pUuid + ".Reporter", player.getName());
 									reportedPlayers.set(pUuid + ".Reason", reportMsg.trim().toString());
 
-									String reportSuccess = chat.msg(messages.getString("ReportSuccess"), player, p,
+									String reportSuccess = chat.msg(messages.getString("ReportSuccess"), p, player,
 											"ReportPlayer", cmd);
 
 									player.sendMessage(reportSuccess);
+
+									for (Player op : plugin.players.values()) {
+
+										if (op.hasPermission("slashplayer.staff")) {
+
+											String playerReported = chat.msg(messages.getString("PlayerReported")
+													.replaceAll("%reporter%", player.getName()), p, player,
+													"ReportPlayer", cmd);
+
+											op.sendMessage(playerReported.replaceAll("%reason%", reportMsg));
+
+										}
+
+									}
 
 									validPlayer = true;
 									break;
@@ -294,7 +321,8 @@ public class Commands implements CommandExecutor {
 
 				} else {
 
-					String noPermission = chat.m(messages.getString("NoPermission"));
+					String noPermission = chat.msg(messages.getString("NoPermission"), player, player, "ReportPlayer",
+							cmd);
 
 					player.sendMessage(noPermission);
 
@@ -307,9 +335,63 @@ public class Commands implements CommandExecutor {
 		if (cmd.equals("reports")) {
 
 			if (sender instanceof Player) {
-				Player operator = (Player) sender;
-				operator.openInventory(new ReportInventory().reportInv(operator));
 
+				Player operator = (Player) sender;
+				if (operator.hasPermission("slashplayer.command") && operator.hasPermission("slashplayer.staff")) {
+					operator.openInventory(new ReportInventory().reportInv(operator));
+				} else {
+
+					String noPermission = chat.msg(messages.getString("NoPermission"), operator, operator, "Reports",
+							cmd);
+
+					operator.sendMessage(noPermission);
+
+				}
+
+			}
+
+		}
+
+		if (cmd.equals("spunban")) {
+
+			Tools tools = new Tools();
+
+			if (!(sender instanceof Player)) {
+
+				if (args.length == 1) {
+
+					boolean validPlayer = false;
+
+					for (String player : pData.getKeys(false)) {
+
+						String pName = pData.get(player + ".Name").toString();
+
+						if (pName.equalsIgnoreCase(args[0]) || pName.toLowerCase().startsWith(args[0].toLowerCase())) {
+
+							pData.set(player + ".IsBanned", false);
+
+							plugin.console.sendMessage(
+									tools.m("%prefix% &aUnbanned player &c%player%!").replaceAll("%player%", pName));
+							validPlayer = true;
+							plugin.savePlayerData();
+							break;
+
+						}
+
+					}
+
+					if (!validPlayer) {
+
+						plugin.console.sendMessage(
+								tools.m("%prefix% &cInvalid player &7%player%!").replaceAll("%player%", args[0]));
+
+					}
+				} else {
+					plugin.console.sendMessage(tools.m("%prefix% &cProper usage /spunban [player-name]"));
+				}
+
+			} else {
+				sender.sendMessage(tools.m("%prefix% &cthis command is for console only!"));
 			}
 
 		}

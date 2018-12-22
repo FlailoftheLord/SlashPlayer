@@ -26,26 +26,20 @@ public class MuteListener implements Listener {
 
 		String pUuid = player.getUniqueId().toString();
 
-		String msg = event.getMessage();
-
 		boolean isMuted = pData.getBoolean(pUuid + ".IsMuted");
 
 		if (isMuted) {
 
-			if (!(msg.startsWith("/"))) {
+			if (!(player.hasPermission("slashplayer.exempt")) || !player.isOp()) {
 
-				if (!(player.hasPermission("slashplayer.exempt")) || !player.isOp()) {
+				event.setCancelled(true);
 
-					event.setCancelled(true);
+				String timeLeft = pData.get(pUuid + ".MuteDuration").toString();
 
-					String timeLeft = pData.getInt(pUuid + ".MuteDuration") + "";
+				String cantTalk = chat.msg(messages.getString("Muted").replace("%time%", timeLeft), player, player,
+						"Mute", "mute");
 
-					String cantTalk = chat.msg(messages.getString("Muted").replace("%time%", timeLeft), player, player,
-							"Mute", "mute");
-
-					player.sendMessage(cantTalk);
-
-				}
+				player.sendMessage(cantTalk);
 
 			}
 

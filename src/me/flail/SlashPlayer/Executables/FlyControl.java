@@ -2,6 +2,7 @@ package me.flail.SlashPlayer.Executables;
 
 import java.util.Locale;
 
+import org.bukkit.GameMode;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
@@ -29,6 +30,7 @@ public class FlyControl {
 		}
 
 		plugin.savePlayerData();
+
 	}
 
 	public void flyLogin(Player player) {
@@ -37,26 +39,38 @@ public class FlyControl {
 
 		if (player != null) {
 
-			String pUuid = player.getUniqueId().toString();
+			if (player.getGameMode().equals(GameMode.SURVIVAL)) {
 
-			boolean isFlying = pData.getBoolean(pUuid + ".IsFlying");
+				String pUuid = player.getUniqueId().toString();
 
-			String playerBlock = player.getLocation().add(0, -1, 0).getBlock().getType().toString()
-					.toLowerCase(Locale.ENGLISH);
+				boolean isFlying = pData.getBoolean(pUuid + ".IsFlying");
 
-			if (playerBlock.equals("air")) {
+				String playerBlock = player.getLocation().add(0, -1, 0).getBlock().getType().toString()
+						.toLowerCase(Locale.ENGLISH);
 
-				if (isFlying) {
+				if (playerBlock.equals("air")) {
 
-					player.setAllowFlight(true);
-					player.setFlying(true);
+					if (isFlying) {
 
-				} else {
-					player.setAllowFlight(false);
-					player.setFlying(false);
-					pData.set(pUuid + ".IsFlying", false);
+						player.setAllowFlight(true);
+						player.setFlying(true);
+
+					} else {
+						player.setAllowFlight(false);
+						player.setFlying(false);
+						pData.set(pUuid + ".IsFlying", false);
+					}
+
 				}
 
+			} else if (player.getGameMode().equals(GameMode.CREATIVE)) {
+
+				String pUuid = player.getUniqueId().toString();
+
+				pData.set(pUuid + ".IsFlying", true);
+				pData.set(pUuid + ".Gamemode", "Creative");
+				player.setAllowFlight(true);
+				player.setFlying(true);
 			}
 
 			plugin.savePlayerData();

@@ -2,7 +2,7 @@ main: me.flail.SlashPlayer.SlashPlayer
 name: SlashPlayer
 author: [FlailoftheLord, WulfGamesYT]
 description: player managment GUI system
-version: 2.1.0-BETA-1
+version: 2.1.0
 api-version: 1.13
 softdepend: [Vault, WorldEdit]
 
@@ -10,12 +10,20 @@ commands:
   slashplayer:
     usage: /slashplayer [reload:report:player-name]
     description: opens the player list menu
-    aliases: [player, sp, report, reportplayer, spr, reports]
+    aliases: [player, sp, report, reportplayer, spr, reports, spunban]
     
 permissions:
   slashplayer.command:
     description: use the /player command
     default: op
+    
+  slashplayer.rank:
+    description: base for rank settings
+    default: true
+    
+  slashplayer.rank.0:
+    description: default rank
+    default: true
       
   # This makes the permisison holder exempt from all kills, mutes, bans and inventory clears.
   slashplayer.exempt:
@@ -49,6 +57,19 @@ permissions:
       slashpalyer.gamemode.adventure: true
       slashplayer.gamemode.creative: true
       slashplayer.gamemode.spectator: true
+      
+  slashplayer.gamemode.survival:
+    default: op
+    
+  slashplayer.gamemode.adventure:
+    default: op
+    
+  slashplayer.gamemode.creative:
+    default: op
+    
+  slashplayer.gamemode.spectator:
+    default: op
+    
     
   slashplayer.heal:
     description: ability to heal a player through the gui

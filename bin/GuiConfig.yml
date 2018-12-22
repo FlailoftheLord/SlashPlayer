@@ -99,7 +99,7 @@ PlayerInfo:
     - "&7click to open"
     - "&7the gamemode selector"
     Execute: "SetGamemode"
-    CloseInventory: false
+    CloseInventory: true
     
   15:
     Item: "Ice"
@@ -175,6 +175,14 @@ PlayerInfo:
     Lore:
     - "&7click to unmute"
     Execute: "UnmutePlayer"
+    CloseInventory: true
+    
+  26:
+    Item: "iron_sword"
+    Name: "&cKill %player%"
+    Lore: 
+    - "&7click to kill player"
+    Execute: "KillPlayer"
     CloseInventory: true
     
     

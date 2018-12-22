@@ -1,7 +1,8 @@
 package me.flail.SlashPlayer.Listeners;
 
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -25,9 +26,11 @@ public class BanTimer extends BukkitRunnable {
 		FileConfiguration config = plugin.getConfig();
 		FileConfiguration messages = plugin.getMessages();
 
-		for (OfflinePlayer player : Bukkit.getOfflinePlayers()) {
+		for (String player : pData.getKeys(false)) {
 
-			String pUuid = player.getUniqueId().toString();
+			String pUuid = player;
+
+			Player offlinePlayer = plugin.server.getOfflinePlayer(UUID.fromString(player)).getPlayer();
 
 			boolean isBanned = pData.getBoolean(pUuid + ".IsBanned");
 
@@ -52,15 +55,16 @@ public class BanTimer extends BukkitRunnable {
 					String unbanMsg = messages.getString("AutoUnban");
 
 					if (broadcastUnban) {
-						plugin.getServer().broadcastMessage(
-								chat.msg(unbanMsg, player.getPlayer(), player.getPlayer(), "AutoUnban", "ban"));
+						plugin.getServer().broadcast(
+								chat.msg(unbanMsg, offlinePlayer, offlinePlayer, "AutoUnban", "slashplayer"),
+								"slashplayer.notify");
 					} else {
 
-						for (Player op : Bukkit.getOnlinePlayers()) {
+						for (Player op : plugin.players.values()) {
 
 							if (op.hasPermission("slashplayer.notify")) {
 
-								op.sendMessage(chat.msg(unbanMsg, player.getPlayer(), op, "AutoUnban", "ban"));
+								op.sendMessage(chat.msg(unbanMsg, offlinePlayer, op, "AutoUnban", "ban"));
 								continue;
 
 							}
@@ -69,7 +73,8 @@ public class BanTimer extends BukkitRunnable {
 
 					}
 
-					console.sendMessage(chat.m(unbanMsg.replaceAll("%player%", player.getName())));
+					console.sendMessage(
+							chat.m(unbanMsg.replaceAll("%player%", pData.get(player + ".Name").toString())));
 
 				}
 

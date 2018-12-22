@@ -70,11 +70,14 @@ public class SetGamemode implements Listener {
 				String invTitle = chat
 						.m(guiConfig.getString("GamemodeInventory.Title").replace("%player%", subject.getName()));
 
-				if (inv.getTitle().equalsIgnoreCase(invTitle)) {
+				if (inv.getTitle().equals(invTitle)) {
 
 					Player operator = (Player) event.getWhoClicked();
 
 					Player player = subject;
+
+					int playerRank = Tools.playerRank(player);
+					int operatorRank = Tools.playerRank(operator);
 
 					if (event.getSlotType().equals(SlotType.OUTSIDE)) {
 						operator.closeInventory();
@@ -104,14 +107,11 @@ public class SetGamemode implements Listener {
 
 									if ((mode != null) && (mode != "")) {
 
-										String changedGamemode = chat.msg(messages.getString("PlayerGamemodeChanged"),
-												player, operator, "SetGamemode", "gamemode");
+										String rankTooLow = chat.msg(messages.getString("RankTooLow"), player, operator,
+												"SetGamemode", "slashplayer");
 
-										String gamemodeUpdated = chat.msg(messages.getString("GamemodeChanged"), player,
-												operator, "SetGamemode", "gamemode");
-
-										String playerExempt = chat.msg(messages.getString("PlayerExempt"), player,
-												operator, "SetGamemode", "gamemode");
+										String accessDenied = chat.msg(messages.getString("GamemodeAccessDenied"),
+												player, operator, "SetGamemode", "slashplayer");
 
 										if (mode.equalsIgnoreCase("backbutton")) {
 
@@ -121,20 +121,37 @@ public class SetGamemode implements Listener {
 
 										} else if (mode.equalsIgnoreCase("survival")) {
 
-											if (operator.hasPermission("slahsplayer.gamemode.survival")) {
+											if (operator.hasPermission("slashplayer.gamemode.survival")
+													|| operator.hasPermission("slashplayer.gamemode.all")) {
 
-												player.setGameMode(GameMode.SURVIVAL);
+												if (operatorRank >= playerRank) {
 
-												player.sendMessage(gamemodeUpdated);
+													player.setGameMode(GameMode.SURVIVAL);
 
-												operator.sendMessage(changedGamemode);
+													String gamemodeUpdated = chat.msg(
+															messages.getString("GamemodeChanged"), player, operator,
+															"SetGamemode", "slashplayer");
 
-												operator.closeInventory();
+													String changedGamemode = chat.msg(
+															messages.getString("PlayerGamemodeChanged"), player,
+															operator, "SetGamemode", "slashplayer");
 
-												operator.openInventory(new PlayerInfoInventory().playerInfo(player));
+													player.sendMessage(gamemodeUpdated);
+
+													operator.sendMessage(changedGamemode);
+
+													operator.closeInventory();
+
+													operator.openInventory(
+															new PlayerInfoInventory().playerInfo(player));
+
+												} else {
+													operator.closeInventory();
+													operator.sendMessage(rankTooLow);
+												}
 
 											} else {
-												player.sendMessage(playerExempt.replaceAll("%mode%", mode));
+												player.sendMessage(accessDenied.replaceAll("%mode%", mode));
 												player.closeInventory();
 											}
 
@@ -143,66 +160,118 @@ public class SetGamemode implements Listener {
 											player.sendMessage("hi");
 
 											if (operator.hasPermission("slashplayer.gamemode.adventure")
-													&& !player.hasPermission("slasplayer.exempt")) {
+													|| operator.hasPermission("slashplayer.gamemode.all")) {
 
-												player.setGameMode(GameMode.ADVENTURE);
+												if (operatorRank >= playerRank) {
 
-												player.sendMessage(gamemodeUpdated);
+													player.setGameMode(GameMode.ADVENTURE);
 
-												operator.sendMessage(changedGamemode);
+													String gamemodeUpdated = chat.msg(
+															messages.getString("GamemodeChanged"), player, operator,
+															"SetGamemode", "slashplayer");
 
-												operator.closeInventory();
+													String changedGamemode = chat.msg(
+															messages.getString("PlayerGamemodeChanged"), player,
+															operator, "SetGamemode", "slashplayer");
 
-												operator.openInventory(new PlayerInfoInventory().playerInfo(player));
+													player.sendMessage(gamemodeUpdated);
+
+													operator.sendMessage(changedGamemode);
+
+													operator.closeInventory();
+
+													operator.openInventory(
+															new PlayerInfoInventory().playerInfo(player));
+
+												} else {
+													operator.closeInventory();
+													operator.sendMessage(rankTooLow);
+												}
 
 											} else {
-
-												player.sendMessage(playerExempt.replaceAll("%mode%", mode));
+												player.sendMessage(accessDenied.replaceAll("%mode%", mode));
 												player.closeInventory();
-
 											}
 
 										} else if (mode.equalsIgnoreCase("creative")) {
 
-											if (operator.hasPermission("slashplayer.gamemode.creative")) {
+											if (operator.hasPermission("slashplayer.gamemode.creative")
+													|| operator.hasPermission("slashplayer.gamemode.all")) {
 
-												player.setGameMode(GameMode.CREATIVE);
+												if (operatorRank >= playerRank) {
 
-												player.sendMessage(gamemodeUpdated);
+													player.setGameMode(GameMode.CREATIVE);
 
-												operator.sendMessage(changedGamemode);
-												operator.closeInventory();
+													String gamemodeUpdated = chat.msg(
+															messages.getString("GamemodeChanged"), player, operator,
+															"SetGamemode", "slashplayer");
 
-												operator.openInventory(new PlayerInfoInventory().playerInfo(player));
+													String changedGamemode = chat.msg(
+															messages.getString("PlayerGamemodeChanged"), player,
+															operator, "SetGamemode", "slashplayer");
+
+													player.sendMessage(gamemodeUpdated);
+
+													operator.sendMessage(changedGamemode);
+													operator.closeInventory();
+
+													operator.openInventory(
+															new PlayerInfoInventory().playerInfo(player));
+
+												} else {
+													operator.closeInventory();
+													operator.sendMessage(rankTooLow);
+												}
 
 											} else {
-												player.sendMessage(playerExempt.replaceAll("%mode%", mode));
+												player.sendMessage(accessDenied.replaceAll("%mode%", mode));
 												player.closeInventory();
 											}
 
 										} else if (mode.equalsIgnoreCase("spectator")) {
 
-											if (operator.hasPermission("slashplayer.gamemode.spectator")) {
+											if (operator.hasPermission("slashplayer.gamemode.spectator")
+													|| operator.hasPermission("slashplayer.gamemode.all")) {
 
-												player.setGameMode(GameMode.SPECTATOR);
+												if (operatorRank >= playerRank) {
 
-												player.sendMessage(gamemodeUpdated);
+													player.setGameMode(GameMode.SPECTATOR);
 
-												operator.sendMessage(changedGamemode);
+													String gamemodeUpdated = chat.msg(
+															messages.getString("GamemodeChanged"), player, operator,
+															"SetGamemode", "slashplayer");
 
-												operator.closeInventory();
+													String changedGamemode = chat.msg(
+															messages.getString("PlayerGamemodeChanged"), player,
+															operator, "SetGamemode", "slashplayer");
 
-												operator.openInventory(new PlayerInfoInventory().playerInfo(player));
+													player.sendMessage(gamemodeUpdated);
+
+													operator.sendMessage(changedGamemode);
+
+													operator.closeInventory();
+
+													operator.openInventory(
+															new PlayerInfoInventory().playerInfo(player));
+
+												} else {
+													operator.closeInventory();
+													operator.sendMessage(rankTooLow);
+												}
 
 											} else {
-												player.sendMessage(playerExempt.replaceAll("%mode%", mode));
+												player.sendMessage(accessDenied.replaceAll("%mode%", mode));
 												player.closeInventory();
 											}
 
 										} else {
+											operator.closeInventory();
+											operator.sendMessage(chat.m(
+													"%prefix% &cError with setting gamemode, check console for details."));
 											console.sendMessage(
 													chat.m("&cInvalid Gamemode Specified in &o&nGuiConfig.yml"));
-											console.sendMessage(chat.m("&c" + mode + "is not a valid Mode!"));
+											console.sendMessage(chat.m("&cError @ section &7" + slot));
+											console.sendMessage(chat.m("&c" + mode + " is not a valid Mode!"));
 										}
 
 									} else {

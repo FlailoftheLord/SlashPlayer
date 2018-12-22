@@ -20,22 +20,22 @@ public class Tools {
 
 		String prefix = config.getString("Prefix");
 
-		return ChatColor.translateAlternateColorCodes('&', s.replaceAll("%prefix%", prefix));
+		return ChatColor.translateAlternateColorCodes('&', s.replaceAll("%prefix%", prefix).replaceAll(" ~!~", " \n"));
 
 	}
 
 	public String msg(String s, Player player, Player operator, String exe, String command) {
-		String reply = "";
+		String reply = s;
 
 		FileConfiguration config = plugin.getConfig();
 
-		String banTime = config.getInt("BanTime") + "";
-		String muteTime = config.getInt("MuteTime") + "";
+		String banTime = config.get("BanTime").toString();
+		String muteTime = config.get("MuteTime").toString();
 		String website = config.getString("Website");
 
 		String prefix = config.getString("Prefix");
 
-		if (s != null) {
+		if ((s != null)) {
 
 			if ((player != null) && (operator != null)) {
 
@@ -55,10 +55,10 @@ public class Tools {
 								.replaceAll("%gamemode%", gamemode).replaceAll("%uuid%", pUuid));
 
 			} else {
-				reply = s;
+				reply = ChatColor.translateAlternateColorCodes('&', s.replaceAll("%prefix%", prefix));
 			}
 
-		} else {
+		} else if (s == null) {
 			reply = ChatColor.translateAlternateColorCodes('&',
 					"%prefix% &cAn error occured with SlashPlayer, please contact me on my support server for help!"
 							.replace("%prefix%", prefix));
@@ -76,23 +76,29 @@ public class Tools {
 
 		if (player != null) {
 
-			if (maxRank > 0) {
+			if (player.hasPermission("slashplayer.rank")) {
 
-				int number = maxRank;
+				try {
 
-				while (number <= maxRank) {
+					int number = maxRank;
 
-					String rank = "slashplayer.rank." + number;
+					while (number <= maxRank) {
 
-					if (player.hasPermission(rank)) {
+						String rank = "slashplayer.rank." + number;
 
-						reply = number;
-						break;
-					} else {
-						number -= 1;
-						continue;
+						if (player.hasPermission(rank)) {
+
+							reply = number;
+							break;
+						} else {
+							number -= 1;
+							continue;
+						}
+
 					}
 
+				} catch (Exception e) {
+					reply = 0;
 				}
 
 			}

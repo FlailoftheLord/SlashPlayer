@@ -77,13 +77,18 @@ public class Executables implements Listener {
 
 					Player player = subject;
 
+					int operatorRank = Tools.playerRank(operator);
+					int playerRank = Tools.playerRank(player);
+
 					if (event.getSlotType().equals(SlotType.OUTSIDE)) {
 						operator.closeInventory();
 					}
 
 					String pUuid = player.getUniqueId().toString();
 
-					String cantUseExe = messages.getString("AccessDenied");
+					String cantUseExe = messages.get("AccessDenied").toString();
+
+					String lowRank = messages.get("RankTooLow").toString();
 
 					ItemStack item = event.getCurrentItem();
 
@@ -103,19 +108,35 @@ public class Executables implements Listener {
 
 								boolean closeInv = cs.getBoolean("CloseInventory");
 
+								boolean verbose = config.getBoolean("ConsoleVerbose");
+
 								switch (exe.toLowerCase()) {
 
 								case "teleporttoplayer":
 
 									if (operator.hasPermission("slashplayer.teleport")) {
 
-										operator.teleport(player);
+										if (operatorRank >= playerRank) {
 
-										operator.sendMessage(chat.msg(messages.getString("TeleportPlayer"), player,
-												operator, exe, "teleport"));
+											operator.teleport(player);
+
+											operator.sendMessage(chat.msg(messages.getString("TeleportPlayer"), player,
+													operator, exe, "teleport"));
+
+										} else {
+											operator.sendMessage(
+													chat.msg(lowRank, player, operator, exe, "slashplayer"));
+										}
+
+										if (verbose) {
+											plugin.console.sendMessage(chat.msg(
+													"%prefix% &a%operator% &chas just used &a%executable% &con &a%player%.",
+													player, operator, exe, "slashplayer"));
+										}
 
 									} else {
-										operator.sendMessage(chat.msg(cantUseExe, player, operator, exe, "teleport"));
+										operator.sendMessage(
+												chat.msg(cantUseExe, player, operator, exe, "slashplayer"));
 									}
 
 									if (closeInv != false) {
@@ -127,16 +148,30 @@ public class Executables implements Listener {
 
 									if (operator.hasPermission("slashplayer.summon")) {
 
-										player.teleport(operator);
+										if (operatorRank >= playerRank) {
 
-										player.sendMessage(chat.msg(messages.getString("Summoned"), player, operator,
-												exe, "summon"));
+											player.teleport(operator);
 
-										operator.sendMessage(chat.msg(messages.getString("SummonPlayer"), player,
-												operator, exe, "summon"));
+											player.sendMessage(chat.msg(messages.getString("Summoned"), player,
+													operator, exe, "summon"));
+
+											operator.sendMessage(chat.msg(messages.getString("SummonPlayer"), player,
+													operator, exe, "summon"));
+
+										} else {
+											operator.sendMessage(
+													chat.msg(lowRank, player, operator, exe, "slashplayer"));
+										}
 
 									} else {
-										operator.sendMessage(chat.msg(cantUseExe, player, operator, exe, "summon"));
+										operator.sendMessage(
+												chat.msg(cantUseExe, player, operator, exe, "slashplayer"));
+									}
+
+									if (verbose) {
+										plugin.console.sendMessage(chat.msg(
+												"%prefix% &a%operator% &chas just used &a%executable% &con &a%player%.",
+												player, operator, exe, "slashplayer"));
 									}
 
 									if (closeInv != false) {
@@ -148,14 +183,29 @@ public class Executables implements Listener {
 
 									if (operator.hasPermission("slashplayer.gamemode")) {
 
-										Inventory gmInv = new GamemodeInventory().gamemodeInv(player);
-										operator.openInventory(gmInv);
+										if (operatorRank >= playerRank) {
+
+											Inventory gmInv = new GamemodeInventory().gamemodeInv(player);
+											operator.openInventory(gmInv);
+
+										} else {
+											operator.closeInventory();
+											operator.sendMessage(
+													chat.msg(lowRank, player, operator, exe, "slashplayer"));
+										}
 
 									} else {
 										if (closeInv != false) {
 											operator.closeInventory();
 										}
-										operator.sendMessage(chat.msg(cantUseExe, player, operator, exe, "gamemode"));
+										operator.sendMessage(
+												chat.msg(cantUseExe, player, operator, exe, "slashplayer"));
+									}
+
+									if (verbose) {
+										plugin.console.sendMessage(chat.msg(
+												"%prefix% &a%operator% &chas just used &a%executable% &con &a%player%.",
+												player, operator, exe, "slashplayer"));
 									}
 
 									break;
@@ -166,14 +216,21 @@ public class Executables implements Listener {
 
 										player.setHealth(20);
 
-										player.sendMessage(
-												chat.msg(messages.getString("Healed"), player, operator, exe, "heal"));
+										player.sendMessage(chat.msg(messages.getString("Healed"), player, operator, exe,
+												"slashplayer"));
 
 										operator.sendMessage(chat.msg(messages.getString("HealPlayer"), player,
 												operator, exe, "heal"));
 
 									} else {
-										operator.sendMessage(chat.msg(cantUseExe, player, operator, exe, "heal"));
+										operator.sendMessage(
+												chat.msg(cantUseExe, player, operator, exe, "slashplayer"));
+									}
+
+									if (verbose) {
+										plugin.console.sendMessage(chat.msg(
+												"%prefix% &a%operator% &chas just used &a%executable% &con &a%player%.",
+												player, operator, exe, "slashplayer"));
 									}
 
 									if (closeInv != false) {
@@ -187,13 +244,20 @@ public class Executables implements Listener {
 
 										player.setFoodLevel(20);
 
-										player.sendMessage(
-												chat.msg(messages.getString("Fed"), player, operator, exe, "feed"));
+										player.sendMessage(chat.msg(messages.getString("Fed"), player, operator, exe,
+												"slashplayer"));
 										operator.sendMessage(chat.msg(messages.getString("FeedPlayer"), player,
 												operator, exe, "feed"));
 
 									} else {
-										operator.sendMessage(chat.msg(cantUseExe, player, operator, exe, "feed"));
+										operator.sendMessage(
+												chat.msg(cantUseExe, player, operator, exe, "slashplayer"));
+									}
+
+									if (verbose) {
+										plugin.console.sendMessage(chat.msg(
+												"%prefix% &a%operator% &chas just used &a%executable% &con &a%player%.",
+												player, operator, exe, "slashplayer"));
 									}
 
 									if (closeInv != false) {
@@ -205,24 +269,38 @@ public class Executables implements Listener {
 
 									if (operator.hasPermission("slashplayer.freeze")) {
 
-										pData.set(pUuid + ".IsFrozen", true);
+										if (operatorRank >= playerRank) {
 
-										if (config.getBoolean("Freeze.AdventureMode")) {
+											pData.set(pUuid + ".IsFrozen", true);
 
-											pData.set(pUuid + ".Gamemode", player.getGameMode().toString());
+											if (config.getBoolean("Freeze.AdventureMode")) {
 
-											player.setGameMode(GameMode.ADVENTURE);
+												pData.set(pUuid + ".Gamemode", player.getGameMode().toString());
 
+												player.setGameMode(GameMode.ADVENTURE);
+
+											}
+
+											player.sendMessage(chat.msg(messages.getString("Frozen"), player, operator,
+													exe, "slashplayer"));
+
+											operator.sendMessage(chat.msg(messages.getString("FreezePlayer"), player,
+													operator, exe, "slashplayer"));
+
+										} else {
+											operator.sendMessage(
+													chat.msg(lowRank, player, operator, exe, "slashplayer"));
 										}
 
-										player.sendMessage(chat.msg(messages.getString("Frozen"), player, operator, exe,
-												"freeze"));
-
-										operator.sendMessage(chat.msg(messages.getString("FreezePlayer"), player,
-												operator, exe, "freeze"));
-
 									} else {
-										operator.sendMessage(chat.msg(cantUseExe, player, operator, exe, "freeze"));
+										operator.sendMessage(
+												chat.msg(cantUseExe, player, operator, exe, "slashplayer"));
+									}
+
+									if (verbose) {
+										plugin.console.sendMessage(chat.msg(
+												"%prefix% &a%operator% &chas just used &a%executable% &con &a%player%.",
+												player, operator, exe, "slashplayer"));
 									}
 
 									if (closeInv != false) {
@@ -234,26 +312,40 @@ public class Executables implements Listener {
 
 									if (operator.hasPermission("slashplayer.freeze")) {
 
-										pData.set(pUuid + ".IsFrozen", false);
+										if (operatorRank >= playerRank) {
 
-										if (config.getBoolean("Freeze.AdventureMode")) {
+											pData.set(pUuid + ".IsFrozen", false);
 
-											String pGm = pData.getString(pUuid + ".Gamemode");
+											if (config.getBoolean("Freeze.AdventureMode")) {
 
-											GameMode gm = GameMode.valueOf(pGm.toUpperCase());
+												String pGm = pData.getString(pUuid + ".Gamemode");
 
-											player.setGameMode(gm);
+												GameMode gm = GameMode.valueOf(pGm.toUpperCase());
 
+												player.setGameMode(gm);
+
+											}
+
+											player.sendMessage(chat.msg(messages.getString("Unfrozen"), player,
+													operator, exe, "slashplayer"));
+
+											operator.sendMessage(chat.msg(messages.getString("UnfreezePlayer"), player,
+													operator, exe, "slashplayer"));
+
+										} else {
+											operator.sendMessage(
+													chat.msg(lowRank, player, operator, exe, "slashplayer"));
 										}
 
-										player.sendMessage(chat.msg(messages.getString("Unfrozen"), player, operator,
-												exe, "unfreeze"));
-
-										operator.sendMessage(chat.msg(messages.getString("UnfreezePlayer"), player,
-												operator, exe, "unfreeze"));
-
 									} else {
-										operator.sendMessage(chat.msg(cantUseExe, player, operator, exe, "unfreeze"));
+										operator.sendMessage(
+												chat.msg(cantUseExe, player, operator, exe, "slashplayer"));
+									}
+
+									if (verbose) {
+										plugin.console.sendMessage(chat.msg(
+												"%prefix% &a%operator% &chas just used &a%executable% &con &a%player%.",
+												player, operator, exe, "slashplayer"));
 									}
 
 									if (closeInv != false) {
@@ -265,16 +357,38 @@ public class Executables implements Listener {
 
 									if (operator.hasPermission("slashplayer.kick")) {
 
-										player.kickPlayer(chat.msg(messages.getString("KickMessage"), player, operator,
-												exe, "kick"));
+										if (operatorRank >= playerRank) {
 
-										operator.sendMessage(chat.msg(messages.getString("PlayerKicked"), player,
-												operator, exe, "kick"));
+											boolean broadcast = config.getBoolean("Broadcast.Kick");
 
-										pData.set(pUuid + ".IsOnline", false);
+											if (broadcast) {
+												String broadcastKick = chat.msg(messages.getString("KickBroadcast"),
+														player, operator, exe, "slahsplayer");
+												plugin.server.broadcast(broadcastKick, "slashplayer.notify");
+
+											}
+
+											player.kickPlayer(chat.msg(messages.getString("KickMessage"), player,
+													operator, exe, "kick"));
+
+											operator.sendMessage(chat.msg(messages.getString("PlayerKicked"), player,
+													operator, exe, "kick"));
+
+											pData.set(pUuid + ".IsOnline", false);
+
+										} else {
+											operator.sendMessage(
+													chat.msg(lowRank, player, operator, exe, "slashplayer"));
+										}
 
 									} else {
 										operator.sendMessage(chat.msg(cantUseExe, player, operator, exe, "kick"));
+									}
+
+									if (verbose) {
+										plugin.console.sendMessage(chat.msg(
+												"%prefix% &a%operator% &chas just used &a%executable% &con &a%player%.",
+												player, operator, exe, "slashplayer"));
 									}
 
 									if (closeInv != false) {
@@ -286,12 +400,7 @@ public class Executables implements Listener {
 
 									if (operator.hasPermission("slashplayer.ban")) {
 
-										if (player.hasPermission("slashplayer.exempt")) {
-
-											operator.sendMessage(chat.msg(messages.getString("CantBanPlayer"), player,
-													operator, exe, "ban"));
-
-										} else {
+										if (operatorRank >= playerRank) {
 
 											int banDuration = config.getInt("BanTime");
 
@@ -302,6 +411,15 @@ public class Executables implements Listener {
 
 											pData.set(pUuid + ".BanDuration", banDuration);
 
+											boolean broadcast = config.getBoolean("Broadcast.Ban");
+
+											if (broadcast) {
+												String broadcastBan = chat.msg(messages.getString("BanBroadcast"),
+														player, operator, exe, "slahsplayer");
+												plugin.server.broadcast(broadcastBan, "slashplayer.notify");
+
+											}
+
 											operator.sendMessage(chat.msg(messages.getString("BanPlayer"), player,
 													operator, exe, "ban"));
 											operator.sendMessage(chat.msg(messages.getString("UnbanPrompt"), player,
@@ -309,12 +427,24 @@ public class Executables implements Listener {
 
 											pData.set(pUuid + ".IsOnline", false);
 
+										} else {
+											operator.sendMessage(
+													chat.msg(lowRank, player, operator, exe, "slashplayer"));
 										}
 
 									} else {
 
-										operator.sendMessage(chat.msg(cantUseExe, player, operator, exe, "ban"));
+										operator.sendMessage(
+												chat.msg(cantUseExe, player, operator, exe, "slashplayer"));
+
 									}
+
+									if (verbose) {
+										plugin.console.sendMessage(chat.msg(
+												"%prefix% &a%operator% &chas just used &a%executable% &con &a%player%.",
+												player, operator, exe, "slashplayer"));
+									}
+
 									if (closeInv != false) {
 										operator.closeInventory();
 									}
@@ -325,14 +455,28 @@ public class Executables implements Listener {
 
 									if (operator.hasPermission("slashplayer.ban")) {
 
-										pData.set(pUuid + ".IsBanned", false);
+										if (operatorRank >= playerRank) {
 
-										operator.sendMessage(chat.msg(messages.getString("UnbanPlayer"), player,
-												operator, exe, "unban"));
+											pData.set(pUuid + ".IsBanned", false);
+
+											operator.sendMessage(chat.msg(messages.getString("UnbanPlayer"), player,
+													operator, exe, "unban"));
+
+										} else {
+											operator.sendMessage(
+													chat.msg(lowRank, player, operator, exe, "slashplayer"));
+										}
 
 									} else {
 										operator.closeInventory();
-										operator.sendMessage(chat.msg(cantUseExe, player, operator, exe, "unban"));
+										operator.sendMessage(
+												chat.msg(cantUseExe, player, operator, exe, "slashplayer"));
+									}
+
+									if (verbose) {
+										plugin.console.sendMessage(chat.msg(
+												"%prefix% &a%operator% &chas just used &a%executable% &con &a%player%.",
+												player, operator, exe, "slashplayer"));
 									}
 
 									if (closeInv != false) {
@@ -344,35 +488,50 @@ public class Executables implements Listener {
 
 									if (operator.hasPermission("slashplayer.fly")) {
 
-										boolean isFlying = pData.getBoolean(pUuid + ".IsFlying");
+										if (operatorRank >= playerRank) {
 
-										if (isFlying) {
+											boolean isFlying = pData.getBoolean(pUuid + ".IsFlying");
 
-											pData.set(pUuid + ".IsFlying", false);
+											if (isFlying) {
 
-											player.setAllowFlight(false);
+												pData.set(pUuid + ".IsFlying", false);
 
-											player.sendMessage(chat.msg(messages.getString("FlyOff"), player, operator,
-													"TogglFly", "fly"));
+												player.setFlying(false);
+												player.setAllowFlight(false);
 
-											operator.sendMessage(chat.msg(messages.getString("PlayerFlyOff"), player,
-													operator, "ToggleFly", "fly"));
+												player.sendMessage(chat.msg(messages.getString("FlyOff"), player,
+														operator, "TogglFly", "fly"));
+
+												operator.sendMessage(chat.msg(messages.getString("PlayerFlyOff"),
+														player, operator, "ToggleFly", "fly"));
+
+											} else {
+
+												pData.set(pUuid + ".IsFlying", true);
+
+												player.setAllowFlight(true);
+												player.setFlying(true);
+
+												player.sendMessage(chat.msg(messages.getString("FlyOn"), player,
+														operator, "ToggleFly", "fly"));
+
+												operator.sendMessage(chat.msg(messages.getString("PlayerFlyOn"), player,
+														operator, "ToggleFly", "fly"));
+											}
 
 										} else {
-
-											pData.set(pUuid + ".IsFlying", true);
-
-											player.setAllowFlight(true);
-
-											player.sendMessage(chat.msg(messages.getString("FlyOn"), player, operator,
-													"ToggleFly", "fly"));
-
-											operator.sendMessage(chat.msg(messages.getString("PlayerFlyOn"), player,
-													operator, "ToggleFly", "fly"));
+											operator.sendMessage(
+													chat.msg(lowRank, player, operator, exe, "slashplayer"));
 										}
 
 									} else {
 										operator.sendMessage(chat.msg(cantUseExe, player, operator, exe, "fly"));
+									}
+
+									if (verbose) {
+										plugin.console.sendMessage(chat.msg(
+												"%prefix% &a%operator% &chas just used &a%executable% &con &a%player%.",
+												player, operator, exe, "slashplayer"));
 									}
 
 									if (closeInv != false) {
@@ -384,12 +543,7 @@ public class Executables implements Listener {
 
 									if (operator.hasPermission("slashplayer.mute")) {
 
-										if (player.hasPermission("slashplayer.exempt")) {
-
-											operator.sendMessage(chat.msg(messages.getString("MuteExempt"), player,
-													operator, "MutePlayer", "mute"));
-
-										} else {
+										if (operatorRank >= playerRank) {
 
 											pData.set(pUuid + ".IsMuted", true);
 
@@ -397,16 +551,34 @@ public class Executables implements Listener {
 
 											pData.set(pUuid + ".MuteDuration", muteTime);
 
+											boolean broadcast = config.getBoolean("Broadcast.Ban");
+
 											player.sendMessage(chat.msg(messages.getString("Muted"), player, operator,
 													"MutePlayer", "mute"));
+
+											if (broadcast) {
+												String broadcastMute = chat.msg(messages.getString("MuteBroadcast"),
+														player, operator, exe, "slahsplayer");
+												plugin.server.broadcast(broadcastMute, "slashplayer.notify");
+
+											}
 
 											operator.sendMessage(chat.msg(messages.getString("MutePlayer"), player,
 													operator, "MutePlayer", "mute"));
 
+										} else {
+											operator.sendMessage(
+													chat.msg(lowRank, player, operator, exe, "slashplayer"));
 										}
 
 									} else {
 										operator.sendMessage(chat.msg(cantUseExe, player, operator, exe, "mute"));
+									}
+
+									if (verbose) {
+										plugin.console.sendMessage(chat.msg(
+												"%prefix% &a%operator% &chas just used &a%executable% &con &a%player%.",
+												player, operator, exe, "slashplayer"));
 									}
 
 									if (closeInv != false) {
@@ -418,31 +590,44 @@ public class Executables implements Listener {
 
 									if (operator.hasPermission("slashplayer.mute")) {
 
-										boolean isMuted = pData.getBoolean(pUuid + ".IsMuted");
+										if (operatorRank >= playerRank) {
 
-										if (isMuted) {
+											boolean isMuted = pData.getBoolean(pUuid + ".IsMuted");
 
-											pData.set(pUuid + ".IsMuted", false);
+											if (isMuted) {
 
-											pData.set(pUuid + ".MuteDuration", null);
+												pData.set(pUuid + ".IsMuted", false);
 
-											player.sendMessage(chat.msg(messages.getString("Unmuted"), player, operator,
-													"UnmutePlayer", "mute"));
+												pData.set(pUuid + ".MuteDuration", null);
 
-											operator.sendMessage(chat.msg(messages.getString("UnmutePlayer"), player,
-													operator, "UnmutePlayer", "mute"));
+												player.sendMessage(chat.msg(messages.getString("Unmuted"), player,
+														operator, "UnmutePlayer", "mute"));
+
+												operator.sendMessage(chat.msg(messages.getString("UnmutePlayer"),
+														player, operator, "UnmutePlayer", "mute"));
+
+											} else {
+
+												String notMuted = messages.getString("NotMuted");
+
+												operator.sendMessage(
+														chat.msg(notMuted, player, operator, "UnmutePlayer", "mute"));
+
+											}
 
 										} else {
-
-											String notMuted = messages.getString("NotMuted");
-
 											operator.sendMessage(
-													chat.msg(notMuted, player, operator, "UnmutePlayer", "mute"));
-
+													chat.msg(lowRank, player, operator, exe, "slashplayer"));
 										}
 
 									} else {
 										operator.sendMessage(chat.msg(cantUseExe, player, operator, exe, "mute"));
+									}
+
+									if (verbose) {
+										plugin.console.sendMessage(chat.msg(
+												"%prefix% &a%operator% &chas just used &a%executable% &con &a%player%.",
+												player, operator, exe, "slashplayer"));
 									}
 
 									if (closeInv != false) {
@@ -454,7 +639,8 @@ public class Executables implements Listener {
 
 									if (operator.hasPermission("slahsplayer.kill")) {
 
-										if (!player.hasPermission("slashplayer.exempt")) {
+										if (operatorRank >= playerRank) {
+
 											player.damage(696969, operator);
 											player.sendMessage(chat.msg(messages.getString("Killed"), player, operator,
 													"KillPlayer", "kill"));
@@ -462,13 +648,20 @@ public class Executables implements Listener {
 													operator, "KillPlayer", "kill"));
 
 										} else {
-											operator.sendMessage(chat.msg(messages.getString("PlayerExempt"), player,
-													operator, "KillPlayer", "kill"));
+											operator.sendMessage(
+													chat.msg(lowRank, player, operator, exe, "slashplayer"));
 										}
 
 									} else {
 										operator.sendMessage(cantUseExe);
 									}
+
+									if (verbose) {
+										plugin.console.sendMessage(chat.msg(
+												"%prefix% &a%operator% &chas just used &a%executable% &con &a%player%.",
+												player, operator, exe, "slashplayer"));
+									}
+
 									if (closeInv != false) {
 										operator.closeInventory();
 									}

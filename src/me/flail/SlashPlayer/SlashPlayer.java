@@ -7,9 +7,9 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
+import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Server;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -29,6 +29,7 @@ import me.flail.SlashPlayer.Listeners.InteractEvent;
 import me.flail.SlashPlayer.Listeners.MuteListener;
 import me.flail.SlashPlayer.Listeners.MuteTimer;
 import me.flail.SlashPlayer.Listeners.PlayerListGui;
+import me.flail.SlashPlayer.Listeners.ReportGui;
 import me.flail.SlashPlayer.Listeners.SetGamemode;
 
 public class SlashPlayer extends JavaPlugin implements Listener {
@@ -80,12 +81,12 @@ public class SlashPlayer extends JavaPlugin implements Listener {
 
 		// Friendly console spam :>
 		console.sendMessage("SlashPlayer running under " + serverType + serverVersion);
-		console.sendMessage(ChatColor.BLUE + "=============================");
-		console.sendMessage(ChatColor.YELLOW + " SlashPlayer " + ChatColor.GOLD + "v" + version);
-		console.sendMessage(ChatColor.DARK_GREEN + "   by FlailoftheLord");
-		console.sendMessage(ChatColor.YELLOW + " An easy, modern way,");
-		console.sendMessage(ChatColor.YELLOW + " to manage your players!");
-		console.sendMessage(ChatColor.BLUE + "=============================");
+		console.sendMessage(chat.m("&9============================="));
+		console.sendMessage(chat.m(" &eSlashPlayer &6v" + version));
+		console.sendMessage(chat.m("   &2by FlailoftheLord"));
+		console.sendMessage(chat.m(" &eAn easy, modern way,"));
+		console.sendMessage(chat.m(" &eto manage your players!"));
+		console.sendMessage(chat.m("&9============================="));
 
 		// Load up the players and store them in a map for later access ;>
 		for (Player p : Bukkit.getOnlinePlayers()) {
@@ -93,16 +94,21 @@ public class SlashPlayer extends JavaPlugin implements Listener {
 			players.put(pUuid, p);
 		}
 
-		// And finally initiate the Ban and Mute Timers
-		new BanTimer().runTaskTimer(this, 100, 1200);
-		console.sendMessage(chat.m("%prefix% Updating bans..."));
-		new MuteTimer().runTaskTimer(this, 100, 1200);
+		// And finally initiate the Ban and Mute Timers 5 seconds after startup.
+		server.getScheduler().scheduleSyncDelayedTask(this, () -> {
+
+			new BanTimer().runTaskTimerAsynchronously(this, 100, 1200);
+			console.sendMessage(chat.m("%prefix% &8Updating bans..."));
+			new MuteTimer().runTaskTimerAsynchronously(this, 100, 1200);
+
+		}, 120);
 
 	}
 
 	@Override
 	public void onDisable() {
 		server.getScheduler().cancelTasks(this);
+		saveReportedPlayers();
 		savePlayerData();
 
 	}
@@ -112,9 +118,19 @@ public class SlashPlayer extends JavaPlugin implements Listener {
 
 		String commandLabel = event.getMessage().toLowerCase(Locale.ENGLISH);
 
-		if (commandLabel.startsWith("/sp")) {
+		if (commandLabel.equalsIgnoreCase("/sp") || commandLabel.startsWith("/sp ")) {
 
 			event.setMessage(commandLabel.replaceAll("/sp", "/slashplayer"));
+
+		}
+
+		for (Player p : players.values()) {
+			String pName = p.getName().toLowerCase();
+
+			if (commandLabel.startsWith("/" + pName)) {
+				event.setMessage(commandLabel.replaceAll("(?i)" + Pattern.quote("/" + pName), "/slashplayer " + pName));
+				break;
+			}
 
 		}
 
@@ -134,6 +150,7 @@ public class SlashPlayer extends JavaPlugin implements Listener {
 		pm.registerEvents(new PlayerDataSetter(), this);
 		pm.registerEvents(new MuteListener(), this);
 		pm.registerEvents(new InteractEvent(), this);
+		pm.registerEvents(new ReportGui(), this);
 	}
 
 	public FileConfiguration getMessages() {

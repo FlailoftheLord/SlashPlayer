@@ -18,11 +18,11 @@ public class MuteTimer extends BukkitRunnable {
 	@Override
 	public void run() {
 
-		FileConfiguration config = plugin.getConfig();
+		FileConfiguration messages = plugin.getMessages();
 
 		FileConfiguration pData = plugin.getPlayerData();
 
-		for (Player p : Bukkit.getOnlinePlayers()) {
+		for (Player p : plugin.players.values()) {
 
 			String pUuid = p.getUniqueId().toString();
 
@@ -45,23 +45,13 @@ public class MuteTimer extends BukkitRunnable {
 
 					p.sendMessage(chat.m("%prefix% &ayou have been unmuted, you may now talk again!"));
 
-					boolean bcUnMute = config.getBoolean("BroadcastUnmute");
+					String unMuteMsg = messages.getString("AutoUnmute");
 
-					String unMuteMsg = config.getString("UnMuteMessage");
+					for (Player op : Bukkit.getOnlinePlayers()) {
 
-					if (bcUnMute) {
+						if (op.isOp() || op.hasPermission("slashplayer.notify")) {
 
-						plugin.getServer().broadcastMessage(chat.m(unMuteMsg).replace("%player%", p.getName()));
-
-					} else {
-
-						for (Player op : Bukkit.getOnlinePlayers()) {
-
-							if (op.isOp() || op.hasPermission("slashplayer.notify")) {
-
-								op.sendMessage(chat.m(unMuteMsg).replace("%player%", p.getName()));
-
-							}
+							op.sendMessage(chat.m(unMuteMsg).replace("%player%", p.getName()));
 
 						}
 
@@ -94,23 +84,13 @@ public class MuteTimer extends BukkitRunnable {
 					pData.set(pUuid + ".IsMuted", false);
 					pData.set(pUuid + ".MuteDuration", null);
 
-					boolean bcUnMute = config.getBoolean("BroadcastUnmute");
+					String unMuteMsg = messages.getString("AutoUnmute");
 
-					String unMuteMsg = config.getString("UnMuteMessage");
+					for (Player op : Bukkit.getOnlinePlayers()) {
 
-					if (bcUnMute) {
+						if (op.isOp() || op.hasPermission("slashplayer.notify")) {
 
-						plugin.getServer().broadcastMessage(chat.m(unMuteMsg).replace("%player%", p.getName()));
-
-					} else {
-
-						for (Player op : Bukkit.getOnlinePlayers()) {
-
-							if (op.isOp() || op.hasPermission("slashplayer.notify")) {
-
-								op.sendMessage(chat.m(unMuteMsg).replace("%player%", p.getName()));
-
-							}
+							op.sendMessage(chat.m(unMuteMsg).replace("%player%", p.getName()));
 
 						}
 
