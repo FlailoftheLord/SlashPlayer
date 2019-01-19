@@ -70,6 +70,8 @@ public class InteractEvent extends Tools implements Listener {
 					if (operatorOffhandItem.equalsIgnoreCase("golden_axe")
 							|| operatorOffhandItem.equalsIgnoreCase("air") || (operatorOffhandItem == null)) {
 
+						plugin.logAction(operator.getName() + " Opened the SlashPlayer gui for " + player.getName());
+
 						Inventory pInv = new PlayerInfoInventory().playerInfo(player);
 						operator.openInventory(pInv);
 						event.setCancelled(true);

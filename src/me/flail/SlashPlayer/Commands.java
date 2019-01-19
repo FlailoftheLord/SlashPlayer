@@ -40,10 +40,12 @@ public class Commands implements CommandExecutor {
 
 					if (operator.hasPermission("slashplayer.command")) {
 
+						plugin.logAction(operator.getName() + "opened the SlashPlayer gui for " + pName);
+
 						Inventory pInv = new PlayerInfoInventory().playerInfo(p);
 
 						operator.openInventory(pInv);
-						break;
+						return true;
 
 					}
 
@@ -105,6 +107,9 @@ public class Commands implements CommandExecutor {
 
 								if (args[0].equalsIgnoreCase(player.getName())) {
 
+									plugin.logAction(
+											operator.getName() + " opened the SlashPlayer gui for " + player.getName());
+
 									Inventory pInv = new PlayerInfoInventory().playerInfo(player);
 
 									operator.openInventory(pInv);
@@ -123,6 +128,9 @@ public class Commands implements CommandExecutor {
 								for (OfflinePlayer p : Bukkit.getOfflinePlayers()) {
 
 									if (args[0].equalsIgnoreCase(p.getName())) {
+
+										plugin.logAction(
+												operator.getName() + " opened the SlashPlayer gui for " + p.getName());
 
 										Inventory pInv = new PlayerInfoInventory().playerInfo(p.getPlayer());
 
@@ -192,6 +200,19 @@ public class Commands implements CommandExecutor {
 
 							} else {
 								operator.sendMessage(chat.m("%prefix% &cYou dont have permission to use this!"));
+							}
+
+						} else if (args[0].equalsIgnoreCase("rank")) {
+
+							for (Player p : plugin.players.values()) {
+
+								if (p.getName().equalsIgnoreCase(args[1].trim())) {
+
+									operator.sendMessage(chat
+											.m("%prefix% &3" + p.getName() + "s&a Rank is &7" + Tools.playerRank(p)));
+
+								}
+
 							}
 
 						} else {

@@ -86,9 +86,9 @@ public class Executables implements Listener {
 
 					String pUuid = player.getUniqueId().toString();
 
-					String cantUseExe = messages.get("AccessDenied").toString();
+					String cantUseExe = messages.getString("AccessDenied").toString();
 
-					String lowRank = messages.get("RankTooLow").toString();
+					String lowRank = messages.getString("RankTooLow").toString();
 
 					ItemStack item = event.getCurrentItem();
 
@@ -110,13 +110,20 @@ public class Executables implements Listener {
 
 								boolean verbose = config.getBoolean("ConsoleVerbose");
 
+								boolean equalsCanExecute = config.getBoolean("EqualsCanExecute");
+
+								// Write the logs boi :>
+								plugin.logAction(
+										operator.getName() + " used " + exe.toUpperCase() + " on " + player.getName());
+
 								switch (exe.toLowerCase()) {
 
 								case "teleporttoplayer":
 
 									if (operator.hasPermission("slashplayer.teleport")) {
 
-										if (operatorRank >= playerRank) {
+										if (((operatorRank >= playerRank) && equalsCanExecute)
+												|| (operatorRank > playerRank)) {
 
 											operator.teleport(player);
 
@@ -144,11 +151,12 @@ public class Executables implements Listener {
 									}
 									break;
 
-								case "teleportplayer":
+								case "summonplayer":
 
 									if (operator.hasPermission("slashplayer.summon")) {
 
-										if (operatorRank >= playerRank) {
+										if (((operatorRank >= playerRank) && equalsCanExecute)
+												|| (operatorRank > playerRank)) {
 
 											player.teleport(operator);
 
@@ -183,7 +191,8 @@ public class Executables implements Listener {
 
 									if (operator.hasPermission("slashplayer.gamemode")) {
 
-										if (operatorRank >= playerRank) {
+										if (((operatorRank >= playerRank) && equalsCanExecute)
+												|| (operatorRank > playerRank)) {
 
 											Inventory gmInv = new GamemodeInventory().gamemodeInv(player);
 											operator.openInventory(gmInv);
@@ -269,7 +278,8 @@ public class Executables implements Listener {
 
 									if (operator.hasPermission("slashplayer.freeze")) {
 
-										if (operatorRank >= playerRank) {
+										if (((operatorRank >= playerRank) && equalsCanExecute)
+												|| (operatorRank > playerRank)) {
 
 											pData.set(pUuid + ".IsFrozen", true);
 
@@ -312,7 +322,8 @@ public class Executables implements Listener {
 
 									if (operator.hasPermission("slashplayer.freeze")) {
 
-										if (operatorRank >= playerRank) {
+										if (((operatorRank >= playerRank) && equalsCanExecute)
+												|| (operatorRank > playerRank)) {
 
 											pData.set(pUuid + ".IsFrozen", false);
 
@@ -357,7 +368,8 @@ public class Executables implements Listener {
 
 									if (operator.hasPermission("slashplayer.kick")) {
 
-										if (operatorRank >= playerRank) {
+										if (((operatorRank >= playerRank) && equalsCanExecute)
+												|| (operatorRank > playerRank)) {
 
 											boolean broadcast = config.getBoolean("Broadcast.Kick");
 
@@ -400,7 +412,8 @@ public class Executables implements Listener {
 
 									if (operator.hasPermission("slashplayer.ban")) {
 
-										if (operatorRank >= playerRank) {
+										if (((operatorRank >= playerRank) && equalsCanExecute)
+												|| (operatorRank > playerRank)) {
 
 											int banDuration = config.getInt("BanTime");
 
@@ -455,7 +468,8 @@ public class Executables implements Listener {
 
 									if (operator.hasPermission("slashplayer.ban")) {
 
-										if (operatorRank >= playerRank) {
+										if ((((operatorRank >= playerRank) && equalsCanExecute)
+												|| (operatorRank > playerRank))) {
 
 											pData.set(pUuid + ".IsBanned", false);
 
@@ -488,7 +502,8 @@ public class Executables implements Listener {
 
 									if (operator.hasPermission("slashplayer.fly")) {
 
-										if (operatorRank >= playerRank) {
+										if (((operatorRank >= playerRank) && equalsCanExecute)
+												|| (operatorRank > playerRank)) {
 
 											boolean isFlying = pData.getBoolean(pUuid + ".IsFlying");
 
@@ -543,7 +558,8 @@ public class Executables implements Listener {
 
 									if (operator.hasPermission("slashplayer.mute")) {
 
-										if (operatorRank >= playerRank) {
+										if (((operatorRank >= playerRank) && equalsCanExecute)
+												|| (operatorRank > playerRank)) {
 
 											pData.set(pUuid + ".IsMuted", true);
 
@@ -590,7 +606,8 @@ public class Executables implements Listener {
 
 									if (operator.hasPermission("slashplayer.mute")) {
 
-										if (operatorRank >= playerRank) {
+										if (((operatorRank >= playerRank) && equalsCanExecute)
+												|| (operatorRank > playerRank)) {
 
 											boolean isMuted = pData.getBoolean(pUuid + ".IsMuted");
 
@@ -639,7 +656,8 @@ public class Executables implements Listener {
 
 									if (operator.hasPermission("slahsplayer.kill")) {
 
-										if (operatorRank >= playerRank) {
+										if (((operatorRank >= playerRank) && equalsCanExecute)
+												|| (operatorRank > playerRank)) {
 
 											player.damage(696969, operator);
 											player.sendMessage(chat.msg(messages.getString("Killed"), player, operator,

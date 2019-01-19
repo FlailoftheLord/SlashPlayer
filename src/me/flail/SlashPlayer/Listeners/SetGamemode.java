@@ -76,6 +76,8 @@ public class SetGamemode implements Listener {
 
 					Player player = subject;
 
+					boolean equalsCanExecute = plugin.getConfig().getBoolean("EqualsCanExecute");
+
 					int playerRank = Tools.playerRank(player);
 					int operatorRank = Tools.playerRank(operator);
 
@@ -124,7 +126,11 @@ public class SetGamemode implements Listener {
 											if (operator.hasPermission("slashplayer.gamemode.survival")
 													|| operator.hasPermission("slashplayer.gamemode.all")) {
 
-												if (operatorRank >= playerRank) {
+												if (((operatorRank >= playerRank) && equalsCanExecute)
+														|| (operatorRank > playerRank)) {
+
+													plugin.logAction(operator.getName() + " Changed gamemode for "
+															+ player.getName() + " to " + mode.toUpperCase());
 
 													player.setGameMode(GameMode.SURVIVAL);
 
@@ -162,7 +168,11 @@ public class SetGamemode implements Listener {
 											if (operator.hasPermission("slashplayer.gamemode.adventure")
 													|| operator.hasPermission("slashplayer.gamemode.all")) {
 
-												if (operatorRank >= playerRank) {
+												if (((operatorRank >= playerRank) && equalsCanExecute)
+														|| (operatorRank > playerRank)) {
+
+													plugin.logAction(operator.getName() + " Changed gamemode for "
+															+ player.getName() + " to " + mode.toUpperCase());
 
 													player.setGameMode(GameMode.ADVENTURE);
 
@@ -198,7 +208,11 @@ public class SetGamemode implements Listener {
 											if (operator.hasPermission("slashplayer.gamemode.creative")
 													|| operator.hasPermission("slashplayer.gamemode.all")) {
 
-												if (operatorRank >= playerRank) {
+												if (((operatorRank >= playerRank) && equalsCanExecute)
+														|| (operatorRank > playerRank)) {
+
+													plugin.logAction(operator.getName() + " Changed gamemode for "
+															+ player.getName() + " to " + mode.toUpperCase());
 
 													player.setGameMode(GameMode.CREATIVE);
 
@@ -233,7 +247,11 @@ public class SetGamemode implements Listener {
 											if (operator.hasPermission("slashplayer.gamemode.spectator")
 													|| operator.hasPermission("slashplayer.gamemode.all")) {
 
-												if (operatorRank >= playerRank) {
+												if (((operatorRank >= playerRank) && equalsCanExecute)
+														|| (operatorRank > playerRank)) {
+
+													plugin.logAction(operator.getName() + " Changed gamemode for "
+															+ player.getName() + " to " + mode.toUpperCase());
 
 													player.setGameMode(GameMode.SPECTATOR);
 
@@ -272,6 +290,9 @@ public class SetGamemode implements Listener {
 													chat.m("&cInvalid Gamemode Specified in &o&nGuiConfig.yml"));
 											console.sendMessage(chat.m("&cError @ section &7" + slot));
 											console.sendMessage(chat.m("&c" + mode + " is not a valid Mode!"));
+
+											plugin.logAction(operator.getName() + " tried to change " + player.getName()
+													+ "'s gamemode but " + mode + " is not a valid gamemode!");
 										}
 
 									} else {

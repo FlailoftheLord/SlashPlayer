@@ -16,7 +16,7 @@
 
 # Full List of Executables:
 #  TeleportToPlayer  - teleports you to the player selected
-#  TeleportPlayer  - teleports the player to your location
+#  SummonPlayer  - teleports the player to your location
 #  HealPlayer  - restores the player to full health 
 #  FeedPlayer  - restores the players hunger bars
 #  ToggleFly  - toggles wether the player can fly or not
@@ -81,7 +81,7 @@ PlayerInfo:
     Name: "&aSummon %player% to you"
     Lore:
     - "&7click to teleport"
-    Execute: "TeleportPlayer"
+    Execute: "SummonPlayer"
     CloseInventory: true
     
   13:

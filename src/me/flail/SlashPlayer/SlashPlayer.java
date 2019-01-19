@@ -1,7 +1,11 @@
 package me.flail.SlashPlayer;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -58,6 +62,8 @@ public class SlashPlayer extends JavaPlugin implements Listener {
 	private String serverType = getServer().getVersion();
 
 	public Map<UUID, Player> players = new HashMap<>();
+
+	private BufferedWriter logs = null;
 
 	public SlashPlayer() {
 	}
@@ -294,6 +300,49 @@ public class SlashPlayer extends JavaPlugin implements Listener {
 		} catch (IOException e) {
 			e.printStackTrace();
 			getLogger().log(Level.SEVERE, "Could not save " + pDataConfig, e);
+		}
+
+	}
+
+	public void logAction(String msg) {
+
+		Time time = new Time();
+		Tools tools = new Tools();
+
+		try {
+			// create a temporary file
+			String timeLog = time.monthName(Calendar.MONTH) + " "
+					+ new SimpleDateFormat("dd_yyyy").format(Calendar.getInstance().getTime()).toString();
+
+			boolean createFile = new File(this.getDataFolder() + "/logs").mkdirs();
+
+			if (createFile || (createFile == false)) {
+
+				File logFile = new File(this.getDataFolder() + "/logs/" + timeLog + ".txt");
+
+				logs = new BufferedWriter(new FileWriter(logFile, true));
+				logs.newLine();
+				logs.write(time.currentDayTime() + " " + tools.m(msg));
+
+				// console.sendMessage("Logging worked!");
+
+			}
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		} finally {
+
+			try {
+
+				logs.close();
+
+				// console.sendMessage("logs closed");
+
+			} catch (Exception e) {
+			}
+
 		}
 
 	}

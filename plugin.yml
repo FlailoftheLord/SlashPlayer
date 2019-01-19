@@ -2,9 +2,9 @@ main: me.flail.SlashPlayer.SlashPlayer
 name: SlashPlayer
 author: [FlailoftheLord, WulfGamesYT]
 description: player managment GUI system
-version: 2.1.0
+version: 2.1.1
 api-version: 1.13
-softdepend: [Vault, WorldEdit]
+softdepend: [Vault, WorldEdit, MicroCommands]
 
 commands:
   slashplayer:
