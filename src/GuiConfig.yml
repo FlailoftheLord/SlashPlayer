@@ -30,6 +30,9 @@
 #  UnMutePlayer  - un-mutes the player
 #  ClearInventory  - clears the players' inventory
 #  KillPlayer  - kills the player ;p
+#  InventoryView  - views the players' inventory
+#  EnderchestView  - views the players' enderchest
+#  Whitelist  - toggles the players' whitelist status, if the server has whitelist enabled.
 
 
 # For the GamemodeInventory set the Mode: "" to whatever gamemode you want each one to change,
@@ -184,6 +187,66 @@ PlayerInfo:
     - "&7click to kill player"
     Execute: "KillPlayer"
     CloseInventory: true
+    
+  29:
+    Item: "BuckEt"
+    Name: "&cClear Inventory"
+    Lore:
+    - "&7click to clear their inventory"
+    - "&7undo it with /sp restoreinv %player%"
+    Execute: "ClearInventory"
+    CloseInventory: true
+    
+OfflinePlayerInfo:
+  
+  Header:
+    Slot: 5
+    
+  11:
+    Item: "Iron_axe"
+    Name: "&cBan"
+    Lore:
+    - "&7click to ban."
+    Execute: "BanPlayer"
+    CloseInventory: true
+  
+  12:
+    Item: "Sugar"
+    Name: "&eUnban"
+    Lore:
+    - "&7click to unban."
+    Execute: "UnbanPlayer"
+    CloseInventory: true
+    
+  13:
+    Item: "Anvil"
+    Name: "&cMute"
+    Lore:
+    - "&7click to mute."
+    Execute: "MutePlayer"
+    CloseInventory: true
+    
+  14:
+    Item: "Glowstone_dust"
+    Name: "&eUnmute"
+    Lore:
+    - "&7click to unmute."
+    Execute: "UnmutePlayer"
+    CloseInventory: true
+    
+  15:
+    Item: "Chest"
+    Name: "&6View Inventory"
+    Lore:
+    - "&7click to view the players' inventory"
+    Execute: "InventoryView"
+    
+  16:
+    Item: "Ender_Chest"
+    Name: "&dView Enderchest"
+    Lore:
+    - "&7click to view players' enderchest."
+    Execute: "EnderchestView"
     
     
     

@@ -125,14 +125,14 @@ public class Commands implements CommandExecutor {
 
 							if (!playerIsOnline) {
 
-								for (OfflinePlayer p : Bukkit.getOfflinePlayers()) {
+								for (OfflinePlayer p : plugin.server.getOfflinePlayers()) {
 
 									if (args[0].equalsIgnoreCase(p.getName())) {
 
-										plugin.logAction(
-												operator.getName() + " opened the SlashPlayer gui for " + p.getName());
+										plugin.logAction(operator.getName()
+												+ " opened the SlashPlayer gui for OfflinePlayer: " + p.getName());
 
-										Inventory pInv = new PlayerInfoInventory().playerInfo(p.getPlayer());
+										Inventory pInv = new PlayerInfoInventory().offlinePlayerInfo(p);
 
 										operator.openInventory(pInv);
 										break;

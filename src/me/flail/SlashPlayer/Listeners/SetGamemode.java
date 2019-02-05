@@ -61,7 +61,7 @@ public class SetGamemode implements Listener {
 
 				loreUid = ChatColor.stripColor(lore.get(0));
 
-				pInfoPlayer = plugin.players.get(UUID.fromString(loreUid));
+				pInfoPlayer = plugin.players.get(UUID.fromString(loreUid.trim()));
 
 			}
 
@@ -70,7 +70,7 @@ public class SetGamemode implements Listener {
 				String invTitle = chat
 						.m(guiConfig.getString("GamemodeInventory.Title").replace("%player%", subject.getName()));
 
-				if (inv.getTitle().equals(invTitle)) {
+				if (inv.getName().equals(invTitle)) {
 
 					Player operator = (Player) event.getWhoClicked();
 

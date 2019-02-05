@@ -97,9 +97,9 @@ PlayerFlyOn: "%prefix% &aset fly mode &con &afor %player%"
 PlayerFlyOff: "%prefix% &aset fly mode &coff &afor %player%"
 
 # = = = # Clear Inventory Messages # = = = #
-InvCleared: "%prefix% &cyour inventory was wiped clean by staff."
+InventoryCleared: "%prefix% &cyour inventory was wiped clean by staff."
 PlayerInvCleared: "%prefix% &ayou cleared %player%s' inventory."
-CantClearInv: "%player% you cannot clear that players' inventory!"
+CantClearInv: "%prefix% &cyou cannot clear that players' inventory!"
 
 # = = = # Kill Messages # = = = #
 Killed: "%prefix% &cyou were slain by staff."
@@ -111,7 +111,6 @@ PlayerReported: "%prefix% &e%player% &ahas been reported by &e%reporter% &afor &
 ReportSuccess: "%prefix% &athanks for reporting %player%, your report will be processed by staff."
 ReportDeny: "%prefix% &cYou're not allowed to report that player!"
 ReportPrompt: "%prefix% &cPlease enter a report reason!"
-
 
 
 
