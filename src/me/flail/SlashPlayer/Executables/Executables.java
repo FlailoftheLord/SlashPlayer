@@ -18,8 +18,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import me.flail.SlashPlayer.SlashPlayer;
-import me.flail.SlashPlayer.Tools;
+import me.flail.SlashPlayer.Utilities.Tools;
 
+@SuppressWarnings("deprecation")
 public class Executables implements Listener {
 
 	private SlashPlayer plugin = SlashPlayer.getPlugin(SlashPlayer.class);
@@ -32,10 +33,6 @@ public class Executables implements Listener {
 		FileConfiguration config = plugin.getConfig();
 
 		FileConfiguration guiConfig = plugin.getGuiConfig();
-
-		FileConfiguration pData = plugin.getPlayerData();
-
-		FileConfiguration messages = plugin.getMessages();
 
 		Inventory inv = event.getInventory();
 
@@ -73,24 +70,15 @@ public class Executables implements Listener {
 
 				String invTitle = chat.m(config.getString("PlayerMenuTitle").replace("%player%", subject.getName()));
 
-				if (inv.getName().toLowerCase().startsWith(invTitle)) {
+				if (inv.getTitle().toLowerCase().startsWith(invTitle)) {
 
 					Player operator = (Player) event.getWhoClicked();
 
 					Player player = subject;
 
-					int operatorRank = Tools.playerRank(operator);
-					int playerRank = Tools.playerRank(player);
-
 					if (event.getSlotType().equals(SlotType.OUTSIDE)) {
 						operator.closeInventory();
 					}
-
-					String pUuid = player.getUniqueId().toString();
-
-					String cantUseExe = messages.getString("AccessDenied").toString();
-
-					String lowRank = messages.getString("RankTooLow").toString();
 
 					ItemStack item = event.getCurrentItem();
 

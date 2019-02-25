@@ -1,4 +1,4 @@
-package me.flail.SlashPlayer;
+package me.flail.SlashPlayer.Utilities;
 
 import java.util.UUID;
 
@@ -9,6 +9,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+import me.flail.SlashPlayer.Commands;
+import me.flail.SlashPlayer.SlashPlayer;
 import me.flail.SlashPlayer.Executables.FlyControl;
 
 public class PlayerDataSetter extends Tools implements Listener {

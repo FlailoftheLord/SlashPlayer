@@ -16,8 +16,9 @@ import org.bukkit.inventory.Inventory;
 import me.flail.SlashPlayer.GUI.PlayerInfoInventory;
 import me.flail.SlashPlayer.GUI.PlayerListInventory;
 import me.flail.SlashPlayer.GUI.ReportInventory;
-import me.flail.SlashPlayer.Listeners.BanTimer;
-import me.flail.SlashPlayer.Listeners.MuteTimer;
+import me.flail.SlashPlayer.Utilities.BanTimer;
+import me.flail.SlashPlayer.Utilities.MuteTimer;
+import me.flail.SlashPlayer.Utilities.Tools;
 
 public class Commands implements CommandExecutor {
 
@@ -132,7 +133,7 @@ public class Commands implements CommandExecutor {
 										plugin.logAction(operator.getName()
 												+ " opened the SlashPlayer gui for OfflinePlayer: " + p.getName());
 
-										Inventory pInv = new PlayerInfoInventory().offlinePlayerInfo(p);
+										Inventory pInv = new PlayerInfoInventory().playerInfo(p);
 
 										operator.openInventory(pInv);
 										break;

@@ -2,7 +2,7 @@ main: me.flail.SlashPlayer.SlashPlayer
 name: SlashPlayer
 author: [FlailoftheLord, WulfGamesYT]
 description: player managment GUI system
-version: 2.1.1
+version: 2.1.2
 api-version: 1.13
 softdepend: [Vault, WorldEdit, MicroCommands]
 
@@ -13,6 +13,31 @@ commands:
     aliases: [player, sp, report, reportplayer, spr, reports, spunban]
     
 permissions:
+
+  slashplayer.op:
+    description: Gives access to everything! same as slashplayer.*
+    default: false
+    children:
+      slashplayer.command: true
+      slashplayer.rank: true
+      slashplayer.exempt: true
+      slashpalyer.notify: true
+      slashplayer.staff: true
+      slashplayer.ban: true
+      slashplayer.kick: true
+      slashplayer.mute: true
+      slashplayer.kill: true
+      slashplayer.clearinventory: true
+      slashplayer.whitelist: true
+      slashplayer.fly: true
+      slashplayer.gamemode: true
+      slashplayer.gamemode.all: true
+      slashplayer.freeze: true
+      slashplayer.summon: true
+      slashplayer.teleport: true
+      slashplayer.heal: true
+      slashplayer.feed: true
+
   slashplayer.command:
     description: use the /player command
     default: op
@@ -91,6 +116,12 @@ permissions:
     default: op
   slashplayer.kill:
     description: ability to kill the player through the gui
+    default: op
+  slashplayer.clearinventory:
+    description: ability to clear and restore a players' inventory
+    default: op
+  slashplayer.whitelist:
+    description: ability to add and remove players from the whitelist
     default: op
   
   

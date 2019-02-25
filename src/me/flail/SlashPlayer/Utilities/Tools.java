@@ -1,4 +1,4 @@
-package me.flail.SlashPlayer;
+package me.flail.SlashPlayer.Utilities;
 
 import java.lang.reflect.Constructor;
 import java.util.Iterator;
@@ -9,6 +9,8 @@ import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+
+import me.flail.SlashPlayer.SlashPlayer;
 
 public class Tools {
 

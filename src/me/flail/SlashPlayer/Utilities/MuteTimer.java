@@ -1,4 +1,4 @@
-package me.flail.SlashPlayer.Listeners;
+package me.flail.SlashPlayer.Utilities;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -7,7 +7,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import me.flail.SlashPlayer.SlashPlayer;
-import me.flail.SlashPlayer.Tools;
 
 public class MuteTimer extends BukkitRunnable {
 

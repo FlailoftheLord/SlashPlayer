@@ -11,8 +11,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import me.flail.SlashPlayer.SlashPlayer;
-import me.flail.SlashPlayer.Tools;
 import me.flail.SlashPlayer.GUI.PlayerInfoInventory;
+import me.flail.SlashPlayer.Utilities.Tools;
 
 public class InteractEvent extends Tools implements Listener {
 

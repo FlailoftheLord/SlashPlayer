@@ -1,9 +1,11 @@
-package me.flail.SlashPlayer;
+package me.flail.SlashPlayer.Utilities;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import org.bukkit.configuration.file.FileConfiguration;
+
+import me.flail.SlashPlayer.SlashPlayer;
 
 public class Time {
 
