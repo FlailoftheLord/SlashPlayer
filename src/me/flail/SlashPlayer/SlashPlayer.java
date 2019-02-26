@@ -55,11 +55,11 @@ public class SlashPlayer extends JavaPlugin implements Listener {
 
 	public ConsoleCommandSender console = Bukkit.getConsoleSender();
 
-	private PluginManager pm = getServer().getPluginManager();
+	public PluginManager pm = getServer().getPluginManager();
 
 	public Server server = this.getServer();
 
-	private String version = getDescription().getVersion();
+	public String version = getDescription().getVersion();
 
 	private String serverVersion = getServer().getBukkitVersion();
 	private String serverType = getServer().getVersion();

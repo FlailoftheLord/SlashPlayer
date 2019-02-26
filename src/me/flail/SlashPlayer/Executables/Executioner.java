@@ -1,10 +1,13 @@
 package me.flail.SlashPlayer.Executables;
 
+import org.bukkit.GameMode;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 
 import me.flail.SlashPlayer.SlashPlayer;
+import me.flail.SlashPlayer.GUI.GamemodeInventory;
 import me.flail.SlashPlayer.Utilities.ExeHandler;
 import me.flail.SlashPlayer.Utilities.Tools;
 
@@ -16,15 +19,15 @@ public class Executioner {
 		plugin = instance;
 	}
 
-	public boolean execute(Player target, Player operator, String executable, String configSection, boolean closeInv,
-			boolean offline) {
+	public boolean execute(OfflinePlayer targetPlayer, Player operator, String executable, String configSection,
+			boolean closeInv, boolean offline) {
 
 		Tools chat = new Tools();
 		ExeHandler handler = new ExeHandler();
 
 		String command = "slashplayer";
 
-		String pUuid = target.getUniqueId().toString();
+		String pUuid = targetPlayer.getUniqueId().toString();
 
 		FileConfiguration pData = plugin.getPlayerData();
 		FileConfiguration guiConfig = plugin.getGuiConfig();
@@ -39,86 +42,188 @@ public class Executioner {
 
 			if (operator.hasPermission("slashplayer." + handler.exeType(executable))) {
 
-				int operatorRank = Tools.playerRank(operator);
-				int playerRank = Tools.playerRank(target);
+				if (targetPlayer.isOnline()) {
+					Player target = targetPlayer.getPlayer();
 
-				boolean equalsCanExecute = config.getBoolean("EqualsCanExecute");
+					int operatorRank = Tools.playerRank(operator);
+					int playerRank = Tools.playerRank(target);
 
-				if ((operatorRank > playerRank) || ((operatorRank >= playerRank) && equalsCanExecute)) {
+					boolean equalsCanExecute = config.getBoolean("EqualsCanExecute");
 
-					String exe = handler.exeType(executable);
+					if ((operatorRank > playerRank) || ((operatorRank >= playerRank) && equalsCanExecute)) {
 
-					switch (exe) {
+						String exe = handler.exeType(executable);
 
-					case "teleport":
-						operator.sendMessage(chat
-								.m(messages.get("TeleportPlayer").toString().replace("%player%", target.getName())));
-						operator.teleport(target);
+						if (!exe.equals("nothing")) {
 
-						break;
-					case "summon":
-						operator.sendMessage(
-								chat.m(messages.get("SummonPlayer").toString().replace("%player%", target.getName())));
-						target.sendMessage(chat.m(messages.get("Summoned").toString()
-								.replace("%operator%", operator.getName()).replace("%player%", target.getName())));
+							switch (exe) {
 
-						target.teleport(operator);
+							case "teleport":
+								operator.sendMessage(chat.msg(messages.get("TeleportPlayer").toString(), target,
+										operator, exe, command));
 
-						break;
-					case "heal":
-						operator.sendMessage(
-								chat.m(messages.get("HealPlayer").toString().replace("%player%", target.getName())));
-						target.sendMessage(chat.m(messages.get("Healed").toString()
-								.replace("%player%", target.getName()).replace("%operator%", operator.getName())));
+								operator.teleport(target);
 
-						for (PotionEffect eff : target.getActivePotionEffects()) {
-							target.removePotionEffect(eff.getType());
+								break;
+							case "summon":
+								operator.sendMessage(chat.msg(messages.get("SummonPlayer").toString(), target, operator,
+										exe, command));
+
+								target.sendMessage(
+										chat.msg(messages.get("Summoned").toString(), target, operator, exe, command));
+
+								target.teleport(operator);
+
+								break;
+							case "heal":
+								operator.sendMessage(chat.msg(messages.get("HealPlayer").toString(), target, operator,
+										exe, command));
+
+								target.sendMessage(
+										chat.msg(messages.get("Healed").toString(), target, operator, exe, command));
+
+								for (PotionEffect eff : target.getActivePotionEffects()) {
+									target.removePotionEffect(eff.getType());
+								}
+								target.setHealth(20);
+
+								break;
+							case "feed":
+								operator.sendMessage(chat.msg(messages.get("FeedPlayer").toString(), target, operator,
+										exe, command));
+								target.sendMessage(
+										chat.msg(messages.get("Fed").toString(), target, operator, exe, command));
+
+								target.setFoodLevel(26);
+								break;
+							case "fly":
+
+								FlyControl flyControl = new FlyControl();
+
+								if (flyControl.fly(target)) {
+									operator.sendMessage(chat.msg(messages.get("PlayerFlyOn").toString(), target,
+											operator, exe, command));
+									target.sendMessage(
+											chat.msg(messages.get("FlyOn").toString(), target, operator, exe, command));
+
+								} else {
+									operator.sendMessage(chat.msg(messages.get("PlayerFlyOff").toString(), target,
+											operator, exe, command));
+									target.sendMessage(chat.msg(messages.get("FlyOff").toString(), target, operator,
+											exe, command));
+
+								}
+
+								break;
+							case "gamemode":
+								GamemodeInventory gmInv = new GamemodeInventory();
+								operator.closeInventory();
+								operator.openInventory(gmInv.gamemodeInv(target));
+								closeInv = false;
+
+								break;
+							case "kick":
+
+								if (!target.hasPermission("slashplayer.exempt.kick")) {
+									String reason = messages.get("KickMessage").toString();
+
+									if (config.getBoolean("Broadcast.Kick")) {
+										for (Player p : plugin.players.values()) {
+											if (p.hasPermission("slashplayer.notify")) {
+												p.sendMessage(chat.msg(messages.get("KickBroadcast").toString()
+														.replace("%reason%", reason), target, operator, exe, command));
+											}
+										}
+									} else {
+										operator.sendMessage(chat.msg(
+												messages.get("PlayerKicked").toString().replace("%reason%", reason),
+												target, operator, exe, command));
+									}
+
+									target.kickPlayer(chat.msg(reason, target, operator, exe, command));
+
+								} else {
+									operator.sendMessage(chat.msg(messages.get("PlayerExempt").toString(), target,
+											operator, exe, command));
+
+								}
+
+								break;
+							case "kill":
+
+								if (!target.hasPermission("slashplayer.exempt.kill")) {
+									GameMode gm = target.getGameMode();
+									target.setGameMode(GameMode.SURVIVAL);
+
+									target.closeInventory();
+									for (PotionEffect eff : target.getActivePotionEffects()) {
+										target.removePotionEffect(eff.getType());
+									}
+									target.setFlying(false);
+									target.setHealth(1);
+									target.damage(42, operator);
+
+									target.sendMessage(chat.msg(messages.get("Killed").toString(), target, operator,
+											exe, command));
+
+									plugin.server.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+
+										target.setGameMode(gm);
+
+									}, 20);
+
+								} else {
+									operator.sendMessage(chat.msg(messages.get("CantKillPlayer").toString(), target,
+											operator, exe, command));
+
+								}
+
+								break;
+							case "clearinventory":
+
+							case "openinventory":
+
+							case "enderchest":
+
+							case "whitelist":
+
+							case "freeze":
+
+							case "unfreeze":
+
+							}
+
+							plugin.logAction(operator.getName() + " ran executable: " + exe.toUpperCase() + " on "
+									+ target.getName());
+
+							if (verbose) {
+								plugin.console.sendMessage(chat.m("%prefix% " + operator.getName() + " ran executable: "
+										+ exe.toUpperCase() + " on " + target.getName()));
+							}
+
+						} else {
+							operator.sendMessage(chat.m("%prefix% &cInvalid Executable! Check console for details."));
+
+							plugin.console.sendMessage(chat.m("%prefix% &cInvalid Executable&8: &7" + executable
+									+ " &cCheck your &7GuiConfig.yml &cfile, and make sure they are all setup correctly."));
+							return false;
 						}
-						target.setHealth(20);
 
-						break;
-					case "feed":
-						operator.sendMessage(
-								chat.m(messages.get("FeedPlayer").toString().replace("%player%", target.getName())));
-						target.sendMessage(chat.m(messages.get("Fed").toString().replace("%player%", target.getName())
-								.replace("%operator%", operator.getName())));
-
-						target.setFoodLevel(26);
-						break;
-					case "fly":
-
-						break;
-					case "gamemode":
-
-					case "kick":
-
-					case "kill":
-
-					case "clearinventory":
-
-					case "whitelist":
-
-					case "freeze":
-
-					case "unfreeze":
-
-					}
-
-					plugin.logAction(
-							operator.getName() + " ran executable: " + exe.toUpperCase() + " on " + target.getName());
-
-					if (verbose) {
-						plugin.console.sendMessage("%prefix% " + operator.getName() + " ran executable: "
-								+ exe.toUpperCase() + " on " + target.getName());
+					} else {
+						String lowRank = messages.getString("RankTooLow").toString();
+						operator.sendMessage(chat.m(lowRank));
 					}
 
 				} else {
-					String lowRank = messages.getString("RankTooLow").toString();
-					operator.sendMessage(chat.m(lowRank));
+
 				}
 
 			} else {
 				operator.sendMessage(chat.m(cantUseExe.replace("%executable%", handler.exeType(executable))));
+			}
+
+			if (closeInv) {
+				operator.closeInventory();
 			}
 
 		}

@@ -28,14 +28,20 @@ public class ExeHandler {
 			return "unfreeze";
 		} else if (name.contains("freeze")) {
 			return "freeze";
-		} else if (name.contains("inv") || name.contains("clear")) {
+		} else if (name.contains("clearinv")) {
 			return "clearinventory";
+		} else if (name.contains("openinv")) {
+			return "openinventory";
+		} else if (name.contains("ender")) {
+			return "enderchest";
 		} else if (name.contains("heal")) {
 			return "heal";
 		} else if (name.contains("feed") || name.contains("food")) {
 			return "feed";
 		} else if (name.contains("whitelist")) {
 			return "whitelist";
+		} else if (name.contains("friend")) {
+			return "friend";
 		} else {
 			return "nothing";
 		}

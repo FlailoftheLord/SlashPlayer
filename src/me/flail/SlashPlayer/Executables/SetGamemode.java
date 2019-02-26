@@ -60,9 +60,14 @@ public class SetGamemode implements Listener {
 
 				List<String> lore = pInfo.getItemMeta().getLore();
 
-				loreUid = ChatColor.stripColor(lore.get(0));
+				String uid = lore.get(0);
 
-				pInfoPlayer = plugin.players.get(UUID.fromString(loreUid.trim()));
+				if (!Tools.hasCode(uid)) {
+					loreUid = ChatColor.stripColor(lore.get(0));
+
+					pInfoPlayer = plugin.players.get(UUID.fromString(loreUid.trim()));
+
+				}
 
 			}
 

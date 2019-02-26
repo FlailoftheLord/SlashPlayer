@@ -15,26 +15,29 @@
 # For the %player% placeholder is the name of the player you selected in the player list.
 
 # Full List of Executables:
-#  TeleportToPlayer  - teleports you to the player selected
-#  SummonPlayer  - teleports the player to your location
-#  HealPlayer  - restores the player to full health 
-#  FeedPlayer  - restores the players hunger bars
-#  ToggleFly  - toggles wether the player can fly or not
-#  FreezePlayer  - freezes the player
-#  UnfreezePlayer  - unfreezes the player
-#  SetGamemode  - opens a menu to set the players gamemode
-#  KickPlayer  - kicks the player with the specified message
-#  BanPlayer  - bans the player for the time specified in the config
-#  UnBanPlayer  - unbans the player, only possible if using the command /sp unban [player] bcuz of logic... u know...
-#  MutePlayer  - mutes the player for the time specified in the config
-#  UnMutePlayer  - un-mutes the player
-#  ClearInventory  - clears the players' inventory
-#  KillPlayer  - kills the player ;p
-#  InventoryView  - views the players' inventory
-#  EnderchestView  - views the players' enderchest
-#  Whitelist  - toggles the players' whitelist status, if the server has whitelist enabled.
-
-
+#  Teleport  - teleports you to the player.
+#  Summon  - summons (teleports) the player to you.
+#  Heal  - fills up the player's health bar, and removes all potion effects.
+#  Feed  - fills up their hunger bar, giving regeneration for 2 seconds.
+#  Kick  - boots them off the server if they're online.
+#  Kill  - kills them. Pure and simple.
+#  Fly  - toggles their fly mode, if they're flying, their fly will be turned off, vice-versa.
+#  Gamemode  - opens a gui to change the player's gamemode.
+#  Whitelist  - toggles their whitelist status, can't add a player to the whitelist if they're already online!
+#  Freeze  - forces them to chill out.
+#  unFreeze  - melt the ice, get outta jail free!
+#  Mute  - no talking in chat!
+#  unMute  - unmutes them if they're muted...
+#  Ban  - Get YEETED!
+#  unBan  - Yup, removes them from being banned.
+#  ClearInventory  - throws all the player's items into the void! permanently.
+#  OpenInventory  - opens the player's inventory.
+#  Enderchest  - opens their enderchest.
+#  Burn  - GET HAWT!  (toggle)
+#  Friend  - spawns a friend of your choosing at their location.
+#
+# = = = = = = = = = = = = = = = = = #
+#
 # For the GamemodeInventory set the Mode: "" to whatever gamemode you want each one to change,
 # The GamemodeInventory is only 36 slots... so any slot from 1 - 36 is allowed
 # Modes:
@@ -43,17 +46,17 @@
 #  Creative  -  creative mode - you know what this is... :> if you don't... rip your server.
 #  Spectator  - spectator mode - this puts the player in a state of perpetual torture, he cannot do anything except fly around... dying... xD
 #  BackButton  - goes back to the players menu
-
+# = = = = = = = = #
 # For CloseInventory:  if not specified or not included it will default to false.
 # if set to true, it will close the player inventory when you click that button.
-
+# = = = = = = = = #
 # The Header is permanent, it shows the information of the player selected.
 # If no slot is specified or the slot is invalid, it will put it in slot number 5 by default.
-
+# = = = #
 # The FillerItem: "" is the item which fills the empty space in the inventory if the option is 
 # enabled in the config, you can get a full list of 1.13 item names from here:
 #   https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
-
+# = = = = = = = = = = #
 Header:
   NameColor: "&a"
   Info:

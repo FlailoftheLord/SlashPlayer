@@ -5,6 +5,7 @@ import java.util.UUID;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -19,7 +20,7 @@ public class PlayerDataSetter extends Tools implements Listener {
 
 	private Tools chat = new Tools();
 
-	@EventHandler
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void playerJoin(PlayerJoinEvent event) {
 
 		FileConfiguration pData = plugin.getPlayerData();
@@ -75,23 +76,14 @@ public class PlayerDataSetter extends Tools implements Listener {
 
 	}
 
-	@EventHandler
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void playerLeave(PlayerQuitEvent event) {
 
 		FileConfiguration pData = plugin.getPlayerData();
 
 		Player player = event.getPlayer();
 
-		plugin.server.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
-
-			plugin.players.clear();
-
-			for (Player p : plugin.server.getOnlinePlayers()) {
-				UUID pUuid = p.getUniqueId();
-				plugin.players.put(pUuid, p);
-			}
-
-		}, 10);
+		plugin.players.remove(player.getUniqueId());
 
 		String pUuid = player.getUniqueId().toString();
 

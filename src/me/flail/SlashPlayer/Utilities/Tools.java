@@ -61,9 +61,11 @@ public class Tools {
 			}
 
 		} else if (s == null) {
-			reply = ChatColor.translateAlternateColorCodes('&',
-					"%prefix% &cAn error occured with SlashPlayer, please contact me on my support server for help!"
-							.replace("%prefix%", prefix));
+			reply = s;
+			plugin.console.sendMessage(this.m(
+					"%prefix% &cAn error occured while translating placeholders, please contact me on my support server with this message: "));
+			plugin.console.sendMessage("Exe: " + exe + " Operator: " + operator.isOnline() + " Target: "
+					+ player.isOnline() + " Command: " + command);
 		}
 
 		return reply;
@@ -148,6 +150,32 @@ public class Tools {
 			return ChatColor.translateAlternateColorCodes('&', "&4SlashPlayer Formatting ERROR!&r");
 		}
 
+	}
+
+	public String encodeLore(String lore) {
+		if (!hasCode(lore)) {
+			return this.m("&a&f&4&r" + lore);
+		} else {
+			return lore;
+		}
+	}
+
+	public String extractCode(String line) {
+		String newLine = line.replace("§", "");
+		if (newLine.startsWith("af4")) {
+			return this.m("&8" + ChatColor.stripColor(line));
+		}
+
+		return line;
+	}
+
+	public static boolean hasCode(String line) {
+		String newLine = line.replace("§", "");
+		if (newLine.startsWith("af4")) {
+			return true;
+		}
+
+		return false;
 	}
 
 }

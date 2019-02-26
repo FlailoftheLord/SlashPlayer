@@ -24,16 +24,13 @@ public class PlayerInfoInventory {
 
 	private Tools chat = new Tools();
 
-	public ItemStack pHead(OfflinePlayer player) {
+	public ItemStack pHead(OfflinePlayer player, boolean encode) {
 
 		FileConfiguration guiConfig = plugin.getGuiConfig();
-
 		FileConfiguration pData = plugin.getPlayerData();
 
 		String hColor = guiConfig.getString("Header.NameColor");
-
 		ItemStack header = new ItemStack(Material.PLAYER_HEAD);
-
 		SkullMeta headerM = (SkullMeta) header.getItemMeta();
 
 		String pUuid = player.getUniqueId().toString();
@@ -59,7 +56,6 @@ public class PlayerInfoInventory {
 		}
 
 		List<String> hLore = new ArrayList<>();
-
 		List<String> hL = guiConfig.getStringList("Header.Info");
 
 		String pHealth = 20 + "";
@@ -82,7 +78,12 @@ public class PlayerInfoInventory {
 			headerM.setDisplayName(chat.m("&a" + player.getName()));
 		}
 
-		hLore.add(chat.m("&7" + pUuid));
+		if (encode) {
+			hLore.add(chat.encodeLore(chat.m("&8" + pUuid)));
+
+		} else {
+			hLore.add(chat.m("&8" + pUuid));
+		}
 
 		if (hL != null) {
 
@@ -225,12 +226,12 @@ public class PlayerInfoInventory {
 				slot += 1;
 			}
 
-			int hSlot = guiConfig.getInt("PlayerInfo.Header.Slot");
+			int hSlot = guiConfig.getInt("PlayerInfo.Header.Slot", 4);
 
 			if ((hSlot <= pInfo.getSize()) && (hSlot >= 1)) {
-				pInfo.setItem(hSlot - 1, pHead(player));
+				pInfo.setItem(hSlot - 1, pHead(player, true));
 			} else {
-				pInfo.setItem(4, pHead(player));
+				pInfo.setItem(4, pHead(player, true));
 			}
 
 		}

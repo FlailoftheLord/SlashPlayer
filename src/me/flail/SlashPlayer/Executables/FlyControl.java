@@ -12,24 +12,29 @@ public class FlyControl {
 
 	private SlashPlayer plugin = SlashPlayer.getPlugin(SlashPlayer.class);
 
-	public void fly(Player player) {
+	public boolean fly(Player player) {
 
 		FileConfiguration pData = plugin.getPlayerData();
 
 		String pUuid = player.getUniqueId().toString();
 
-		boolean isFlying = pData.getBoolean(pUuid + ".IsFlying");
+		boolean isFlying = pData.getBoolean(pUuid + ".IsFlying", false);
 
-		if (isFlying) {
+		if (!isFlying) {
 			player.setAllowFlight(true);
 			player.setFlying(true);
+
+			plugin.savePlayerData();
+			return true;
 		} else {
 			pData.set(pUuid + ".IsFlying", false);
 			player.setFlying(false);
 			player.setAllowFlight(false);
+
 		}
 
 		plugin.savePlayerData();
+		return false;
 
 	}
 

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
@@ -11,40 +12,30 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import me.flail.SlashPlayer.SlashPlayer;
 import me.flail.SlashPlayer.Utilities.Tools;
 
-@SuppressWarnings("deprecation")
 public class Executables implements Listener {
 
 	private SlashPlayer plugin = SlashPlayer.getPlugin(SlashPlayer.class);
-
-	private Tools chat = new Tools();
+	private Tools tools = new Tools();
 
 	@EventHandler
 	public void executables(InventoryClickEvent event) {
 
-		FileConfiguration config = plugin.getConfig();
-
 		FileConfiguration guiConfig = plugin.getGuiConfig();
 
-		Inventory inv = event.getInventory();
+		Inventory eventInv = event.getInventory();
 
-		InventoryHolder holder = event.getInventory().getHolder();
+		if (eventInv.getType().equals(InventoryType.CHEST)) {
 
-		if (((holder != null) && (holder instanceof Player)) || (holder == null)) {
-
-			Player subject = null;
-
-			if (holder != null) {
-				subject = (Player) holder;
-			}
+			Inventory inv = eventInv;
 
 			int headerSlot = guiConfig.getInt("PlayerInfo.Header.Slot");
 
@@ -52,66 +43,75 @@ public class Executables implements Listener {
 
 			String loreUid = "";
 
-			Player pInfoPlayer = null;
+			OfflinePlayer pInfoPlayer = null;
 
 			if ((pInfo != null) && pInfo.hasItemMeta() && pInfo.getItemMeta().hasLore()) {
 
 				List<String> lore = pInfo.getItemMeta().getLore();
 
-				loreUid = ChatColor.stripColor(lore.get(0));
+				String uid = lore.get(0);
 
-				pInfoPlayer = plugin.server.getPlayer(UUID.fromString(loreUid));
-
-			} else {
-
-			}
-
-			if ((pInfoPlayer != null) && pInfoPlayer.equals(subject)) {
-
-				String invTitle = chat.m(config.getString("PlayerMenuTitle").replace("%player%", subject.getName()));
-
-				if (inv.getTitle().toLowerCase().startsWith(invTitle)) {
-
-					Player operator = (Player) event.getWhoClicked();
-
-					Player player = subject;
-
-					if (event.getSlotType().equals(SlotType.OUTSIDE)) {
-						operator.closeInventory();
-					}
-
-					ItemStack item = event.getCurrentItem();
-
-					ItemMeta iM;
-
-					int slot;
-
-					if ((item != null) && item.hasItemMeta()) {
-						iM = item.getItemMeta();
-						slot = iM.getEnchantLevel(Enchantment.MENDING);
-						ConfigurationSection cs = guiConfig.getConfigurationSection("PlayerInfo." + slot);
-
-						if (cs != null) {
-							String exe = cs.getString("Execute");
-
-							if ((exe != null) && (exe != "")) {
-
-								boolean closeInv = cs.getBoolean("CloseInventory");
-
-								// Write the logs boi :>
-								plugin.logAction(
-										operator.getName() + " used " + exe.toUpperCase() + " on " + player.getName());
-
-								new Executioner(plugin).execute(player, operator, exe, "slashplayer", closeInv, false);
-
-							}
-
-							plugin.savePlayerData();
-						}
-
+				if (Tools.hasCode(uid)) {
+					loreUid = ChatColor.stripColor(tools.extractCode(uid));
+					pInfoPlayer = plugin.server.getOfflinePlayer(UUID.fromString(loreUid));
+				} else {
+					loreUid = ChatColor.stripColor(uid);
+					pInfoPlayer = plugin.server.getOfflinePlayer(UUID.fromString(loreUid));
+					if (pInfoPlayer != null) {
+						pInfoPlayer = null;
 					}
 
 				}
+
+			}
+
+			if ((pInfoPlayer != null)) {
+
+				Player operator = (Player) event.getWhoClicked();
+
+				Player player = null;
+
+				if (pInfoPlayer.isOnline()) {
+					player = pInfoPlayer.getPlayer();
+				}
+
+				if (event.getSlotType().equals(SlotType.OUTSIDE)) {
+					operator.closeInventory();
+				}
+
+				ItemStack item = event.getCurrentItem();
+
+				ItemMeta iM;
+
+				int slot;
+
+				if ((item != null) && item.hasItemMeta()) {
+					iM = item.getItemMeta();
+					slot = iM.getEnchantLevel(Enchantment.MENDING);
+					ConfigurationSection cs = guiConfig.getConfigurationSection("PlayerInfo." + slot);
+
+					if (cs != null) {
+						String exe = cs.getString("Execute");
+
+						if ((exe != null) && (exe != "")) {
+
+							boolean closeInv = cs.getBoolean("CloseInventory");
+
+							// Write the logs boi :>
+							plugin.logAction(
+									operator.getName() + " used " + exe.toUpperCase() + " on " + pInfoPlayer.getName());
+
+							Executioner enviroment = new Executioner(plugin);
+
+							enviroment.execute(player, operator, exe, "slashplayer", closeInv, false);
+
+						}
+
+						plugin.savePlayerData();
+					}
+
+				}
+
 				event.setCancelled(true);
 			}
 

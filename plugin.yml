@@ -54,6 +54,29 @@ permissions:
   slashplayer.exempt:
     description: exempt from bans, mutes and freezes
     default: op
+    children:
+      slashplayer.exempt.kill: true
+      slashplayer.exempt.kick: true
+      slashpalyer.exempt.mute: true
+      slashplayer.exempt.freeze: true
+      slashplayer.exempt.ban: true
+    
+  slashplayer.exempt.kick:
+    description: exempt ONLY from kicks.
+    default: op
+  slashplayer.exempt.mute:
+    description: exempt ONLY from mutes.
+    default: op
+  slashplayer.exempt.ban:
+    description: exempt ONLY from bans.
+    dfault: op
+  slashplayer.exempt.kill:
+    description: immune to kills.
+    default: op
+  slashplayer.exempt.freeze:
+    description: immune to being frozen.
+    default: op
+    
   slashplayer.notify:
     description: notifies these players of unbans and unmutes
     default: true
