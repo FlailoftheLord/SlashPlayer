@@ -103,11 +103,10 @@ public class Executables implements Listener {
 
 							Executioner enviroment = new Executioner(plugin);
 
-							enviroment.execute(player, operator, exe, "slashplayer", closeInv, false);
+							enviroment.execute(pInfoPlayer, operator, exe, "slashplayer", closeInv, false);
 
 						}
 
-						plugin.savePlayerData();
 					}
 
 				}

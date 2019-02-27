@@ -63,7 +63,7 @@ public class MuteListener implements Listener {
 
 		}
 
-		plugin.savePlayerData();
+		plugin.savePlayerData(pData);
 	}
 
 }

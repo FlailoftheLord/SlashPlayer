@@ -70,7 +70,7 @@ public class PlayerDataSetter extends Tools implements Listener {
 		pData.set(pUuid + ".IsOnline", true);
 		pData.set(pUuid + ".Gamemode", player.getGameMode().toString());
 
-		plugin.savePlayerData();
+		plugin.savePlayerData(pData);
 
 		getCommand(pName, plugin).setExecutor(new Commands());
 
@@ -92,7 +92,7 @@ public class PlayerDataSetter extends Tools implements Listener {
 		pData.set(pUuid + ".Name", pName);
 		pData.set(pUuid + ".IsOnline", false);
 
-		plugin.savePlayerData();
+		plugin.savePlayerData(pData);
 
 	}
 

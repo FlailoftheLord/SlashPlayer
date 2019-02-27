@@ -101,7 +101,7 @@ public class MuteTimer extends BukkitRunnable {
 
 		}
 
-		plugin.savePlayerData();
+		plugin.savePlayerData(pData);
 
 	}
 

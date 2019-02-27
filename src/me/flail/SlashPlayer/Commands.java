@@ -83,8 +83,6 @@ public class Commands implements CommandExecutor {
 							plugin.loadPlayerData();
 							plugin.loadMessages();
 							plugin.reloadConfig();
-							plugin.savePlayerData();
-							plugin.saveReportedPlayers();
 
 							plugin.server.getScheduler().cancelTasks(plugin);
 							new BanTimer().runTaskTimer(plugin, 100, 1200);
@@ -178,7 +176,7 @@ public class Commands implements CommandExecutor {
 													operator.sendMessage(chat.m("%prefix% &eunbanned %player%")
 															.replace("%player%", args[1]));
 
-													plugin.savePlayerData();
+													plugin.savePlayerData(pData);
 													playerBanned = true;
 
 													break;
@@ -339,7 +337,7 @@ public class Commands implements CommandExecutor {
 
 					}
 
-					plugin.saveReportedPlayers();
+					plugin.saveReportedPlayers(reportedPlayers);
 
 				} else {
 
@@ -395,7 +393,7 @@ public class Commands implements CommandExecutor {
 							plugin.console.sendMessage(
 									tools.m("%prefix% &aUnbanned player &c%player%!").replaceAll("%player%", pName));
 							validPlayer = true;
-							plugin.savePlayerData();
+							plugin.savePlayerData(pData);
 							break;
 
 						}
@@ -416,6 +414,14 @@ public class Commands implements CommandExecutor {
 				sender.sendMessage(tools.m("%prefix% &cthis command is for console only!"));
 			}
 
+		}
+
+		if (command.getName().equalsIgnoreCase("ouch")) {
+			if (sender instanceof Player) {
+				((Player) sender).damage(1);
+			}
+
+			sender.sendMessage(new Tools().m("&c&l:'("));
 		}
 
 		return true;

@@ -23,8 +23,9 @@ public class FlyControl {
 		if (!isFlying) {
 			player.setAllowFlight(true);
 			player.setFlying(true);
+			pData.set(pUuid + ".IsFlying", true);
 
-			plugin.savePlayerData();
+			plugin.savePlayerData(pData);
 			return true;
 		} else {
 			pData.set(pUuid + ".IsFlying", false);
@@ -33,7 +34,7 @@ public class FlyControl {
 
 		}
 
-		plugin.savePlayerData();
+		plugin.savePlayerData(pData);
 		return false;
 
 	}
@@ -78,7 +79,7 @@ public class FlyControl {
 				player.setFlying(true);
 			}
 
-			plugin.savePlayerData();
+			plugin.savePlayerData(pData);
 		}
 
 	}

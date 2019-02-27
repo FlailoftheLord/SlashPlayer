@@ -111,7 +111,7 @@ public class PlayerInfoInventory {
 		if (player != null) {
 
 			String pInfoTitle = chat
-					.m(config.getString("PlayerMenuTitle").replace("%player%", player.getName()) + "  &c&l(Offline)");
+					.m(config.getString("PlayerMenuTitle").replace("%player%", player.getName()) + "  &4&l(Offline)");
 
 			if (player.isOnline()) {
 				pInfoTitle = chat.m(

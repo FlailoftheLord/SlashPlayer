@@ -12,7 +12,7 @@ public class Time {
 	private SlashPlayer plugin = SlashPlayer.getPlugin(SlashPlayer.class);
 
 	public String monthName(int month) {
-		switch (month - 1) {
+		switch (month) {
 
 		case 1:
 			return "January";

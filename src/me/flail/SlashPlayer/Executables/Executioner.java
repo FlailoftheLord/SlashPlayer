@@ -9,6 +9,7 @@ import org.bukkit.potion.PotionEffect;
 import me.flail.SlashPlayer.SlashPlayer;
 import me.flail.SlashPlayer.GUI.GamemodeInventory;
 import me.flail.SlashPlayer.Utilities.ExeHandler;
+import me.flail.SlashPlayer.Utilities.InventoryManager;
 import me.flail.SlashPlayer.Utilities.Tools;
 
 public class Executioner {
@@ -29,8 +30,9 @@ public class Executioner {
 
 		String pUuid = targetPlayer.getUniqueId().toString();
 
+		InventoryManager invManager = new InventoryManager();
+
 		FileConfiguration pData = plugin.getPlayerData();
-		FileConfiguration guiConfig = plugin.getGuiConfig();
 		FileConfiguration config = plugin.getConfig();
 		FileConfiguration messages = plugin.getMessages();
 
@@ -180,16 +182,104 @@ public class Executioner {
 
 								break;
 							case "clearinventory":
+								if (!target.hasPermission("slashplayer.exempt.clearinventory")) {
 
+									invManager.clearInventory(target);
+
+									target.sendMessage(chat.msg(messages.get("InventoryCleared").toString(), target,
+											operator, exe, command));
+
+									operator.sendMessage(chat.msg(messages.get("PlayerInventoryCleared").toString(),
+											target, operator, exe, command));
+
+								} else {
+									operator.sendMessage(chat.msg(messages.get("CantClearInv").toString(), target,
+											operator, exe, command));
+								}
+
+								break;
+							case "restoreinventory":
+
+								invManager.restoreInventory(target);
+								target.sendMessage(chat.msg(messages.get("InventoryRestored").toString(), target,
+										operator, exe, command));
+
+								operator.sendMessage(chat.msg(messages.get("PlayerInventoryRestored").toString(),
+										target, operator, exe, command));
+
+								break;
 							case "openinventory":
+								invManager.openPlayerInventory(operator, target);
 
+								closeInv = false;
+								break;
 							case "enderchest":
+								invManager.openPlayerEnderchest(operator, target);
 
+								closeInv = false;
+								break;
 							case "whitelist":
+								if (plugin.server.hasWhitelist()) {
+									if (target.isWhitelisted()) {
+										target.setWhitelisted(false);
 
+										operator.sendMessage(chat.msg(plugin.manager.getMessage("PlayerUnWhitelisted"),
+												target, operator, exe, command));
+
+									} else {
+										target.setWhitelisted(true);
+
+										operator.sendMessage(chat.msg(plugin.manager.getMessage("PlayerWhitelisted"),
+												target, operator, exe, command));
+									}
+
+								} else {
+									operator.sendMessage(chat.msg(plugin.manager.getMessage("WhitelistNotOn"), target,
+											operator, exe, command));
+								}
+
+								break;
 							case "freeze":
+								if (!target.hasPermission("slashplayer.exempt.freeze")) {
+									pData.set(pUuid + ".IsFrozen", true);
 
+									target.sendMessage(chat.msg(plugin.manager.getMessage("Frozen"), target, operator,
+											exe, command));
+
+									operator.sendMessage(chat.msg(plugin.manager.getMessage("FreezePlayer"), target,
+											operator, exe, command));
+
+									if (plugin.getConfig().getBoolean("Freeze.AdventureMode")) {
+										target.setGameMode(GameMode.ADVENTURE);
+									}
+
+								} else {
+									operator.sendMessage(chat.msg(plugin.manager.getMessage("PlayerExempt"), target,
+											operator, exe, command));
+								}
+
+								break;
 							case "unfreeze":
+								pData.set(pUuid + ".IsFrozen", false);
+
+								if (plugin.getConfig().getBoolean("Freeze.AdventureMode")) {
+									target.setGameMode(plugin.server.getDefaultGameMode());
+								}
+
+								target.sendMessage(chat.msg(plugin.manager.getMessage("Unfrozen"), target, operator,
+										exe, command));
+
+								operator.sendMessage(chat.msg(plugin.manager.getMessage("UnfreezePlayer"), target,
+										operator, exe, command));
+
+								break;
+							case "mute":
+
+							case "unmute":
+
+							case "ban":
+
+							case "unban":
 
 							}
 
@@ -221,6 +311,8 @@ public class Executioner {
 			} else {
 				operator.sendMessage(chat.m(cantUseExe.replace("%executable%", handler.exeType(executable))));
 			}
+
+			plugin.savePlayerData(pData);
 
 			if (closeInv) {
 				operator.closeInventory();

@@ -26,6 +26,9 @@ Prefix: "&3(&7&lSP&3)"
 # Wether players of the same ranking can execute on each other.
 EqualsCanExecute: true
 
+# Kick the player if you remove them from the whitelist?
+KickOnUnWhitelist: true
+
 # Fill the empty space with a filler item?
 # You can set the filler item info in the 'GuiConfig.yml' file.
 FillEmptySpace: true
@@ -35,7 +38,7 @@ PlayerListTitle: "&2&lOnline Players"
 
 # Title for the individual player's menu
 # %player% = the players name of the skull you clicked on
-PlayerMenuTitle: "&2&lManage %player%"
+PlayerMenuTitle: "&2&l%player%"
 
 # used for the %website% placeholder in messages
 Website: "www.myserver.com/ban-appeals"

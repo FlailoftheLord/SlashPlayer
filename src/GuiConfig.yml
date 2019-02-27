@@ -31,6 +31,7 @@
 #  Ban  - Get YEETED!
 #  unBan  - Yup, removes them from being banned.
 #  ClearInventory  - throws all the player's items into the void! permanently.
+#  RestoreInventory  - restores the player's inventory from the last time you cleared it.
 #  OpenInventory  - opens the player's inventory.
 #  Enderchest  - opens their enderchest.
 #  Burn  - GET HAWT!  (toggle)
@@ -196,61 +197,35 @@ PlayerInfo:
     Name: "&cClear Inventory"
     Lore:
     - "&7click to clear their inventory"
-    - "&7undo it with /sp restoreinv %player%"
     Execute: "ClearInventory"
     CloseInventory: true
     
-OfflinePlayerInfo:
-  
-  Header:
-    Slot: 5
-    
-  11:
-    Item: "Iron_axe"
-    Name: "&cBan"
+  30:
+    Item: "Lime_Shulker_box"
+    Name: "&aRestore Inventory"
     Lore:
-    - "&7click to ban."
-    Execute: "BanPlayer"
-    CloseInventory: true
-  
-  12:
-    Item: "Sugar"
-    Name: "&eUnban"
-    Lore:
-    - "&7click to unban."
-    Execute: "UnbanPlayer"
+    - "&7Undoes the last time"
+    - "&7this player's inventory"
+    - "&7was cleared through SlashPlayer"
+    Execute: "restoreInventory"
     CloseInventory: true
     
-  13:
-    Item: "Anvil"
-    Name: "&cMute"
-    Lore:
-    - "&7click to mute."
-    Execute: "MutePlayer"
+  31:
+    Item: "CHEST"
+    Name: "&eView Inventory"
+    Lore: 
+    - "&7click to view this player's inventory"
+    Execute: "openinventory"
     CloseInventory: true
     
-  14:
-    Item: "Glowstone_dust"
-    Name: "&eUnmute"
-    Lore:
-    - "&7click to unmute."
-    Execute: "UnmutePlayer"
-    CloseInventory: true
-    
-  15:
-    Item: "Chest"
-    Name: "&6View Inventory"
-    Lore:
-    - "&7click to view the players' inventory"
-    Execute: "InventoryView"
-    
-  16:
-    Item: "Ender_Chest"
+  32:
+    Item: "Ender_chEST"
     Name: "&dView Enderchest"
-    Lore:
-    - "&7click to view players' enderchest."
-    Execute: "EnderchestView"
-    
+    Lore: 
+    - "&7click to view "
+    - "&7this player's enderchest."
+    Execute: "enderchest"
+    CloseInventory: true
     
     
 GamemodeInventory:

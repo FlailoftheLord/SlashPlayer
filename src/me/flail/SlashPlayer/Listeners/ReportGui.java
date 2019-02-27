@@ -85,7 +85,7 @@ public class ReportGui implements Listener {
 
 										reportedPlayers.set(pUuid, null);
 
-										plugin.saveReportedPlayers();
+										plugin.saveReportedPlayers(reportedPlayers);
 
 										player.closeInventory();
 										player.openInventory(new ReportInventory().reportInv(player));

@@ -32,6 +32,8 @@ public class ExeHandler {
 			return "clearinventory";
 		} else if (name.contains("openinv")) {
 			return "openinventory";
+		} else if (name.contains("restoreinv")) {
+			return "restoreinventory";
 		} else if (name.contains("ender")) {
 			return "enderchest";
 		} else if (name.contains("heal")) {
@@ -42,6 +44,8 @@ public class ExeHandler {
 			return "whitelist";
 		} else if (name.contains("friend")) {
 			return "friend";
+		} else if (name.contains("fly")) {
+			return "fly";
 		} else {
 			return "nothing";
 		}
