@@ -178,4 +178,16 @@ public class Tools {
 		return false;
 	}
 
+	public static String removeChatPrefix(String message) {
+
+		char c = message.charAt(0);
+
+		if (Character.toString(c).equals("!")) {
+			return message.substring(1);
+		} else {
+			return message;
+		}
+
+	}
+
 }
