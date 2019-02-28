@@ -8,7 +8,9 @@ import org.bukkit.potion.PotionEffect;
 
 import me.flail.SlashPlayer.SlashPlayer;
 import me.flail.SlashPlayer.GUI.GamemodeInventory;
+import me.flail.SlashPlayer.Runnables.BanControl;
 import me.flail.SlashPlayer.Utilities.ExeHandler;
+import me.flail.SlashPlayer.Utilities.FileManager;
 import me.flail.SlashPlayer.Utilities.InventoryManager;
 import me.flail.SlashPlayer.Utilities.Tools;
 
@@ -29,6 +31,8 @@ public class Executioner {
 		String command = "slashplayer";
 
 		String pUuid = targetPlayer.getUniqueId().toString();
+
+		FileManager manager = plugin.manager;
 
 		InventoryManager invManager = new InventoryManager();
 
@@ -61,28 +65,28 @@ public class Executioner {
 							switch (exe) {
 
 							case "teleport":
-								operator.sendMessage(chat.msg(messages.get("TeleportPlayer").toString(), target,
-										operator, exe, command));
+								operator.sendMessage(
+										chat.msg(manager.getMessage("TeleportPlayer"), target, operator, exe, command));
 
 								operator.teleport(target);
 
 								break;
 							case "summon":
-								operator.sendMessage(chat.msg(messages.get("SummonPlayer").toString(), target, operator,
-										exe, command));
+								operator.sendMessage(
+										chat.msg(manager.getMessage("SummonPlayer"), target, operator, exe, command));
 
 								target.sendMessage(
-										chat.msg(messages.get("Summoned").toString(), target, operator, exe, command));
+										chat.msg(manager.getMessage("Summoned"), target, operator, exe, command));
 
 								target.teleport(operator);
 
 								break;
 							case "heal":
-								operator.sendMessage(chat.msg(messages.get("HealPlayer").toString(), target, operator,
-										exe, command));
+								operator.sendMessage(
+										chat.msg(manager.getMessage("HealPlayer"), target, operator, exe, command));
 
 								target.sendMessage(
-										chat.msg(messages.get("Healed").toString(), target, operator, exe, command));
+										chat.msg(manager.getMessage("Healed"), target, operator, exe, command));
 
 								for (PotionEffect eff : target.getActivePotionEffects()) {
 									target.removePotionEffect(eff.getType());
@@ -91,10 +95,9 @@ public class Executioner {
 
 								break;
 							case "feed":
-								operator.sendMessage(chat.msg(messages.get("FeedPlayer").toString(), target, operator,
-										exe, command));
-								target.sendMessage(
-										chat.msg(messages.get("Fed").toString(), target, operator, exe, command));
+								operator.sendMessage(
+										chat.msg(manager.getMessage("FeedPlayer"), target, operator, exe, command));
+								target.sendMessage(chat.msg(manager.getMessage("Fed"), target, operator, exe, command));
 
 								target.setFoodLevel(26);
 								break;
@@ -103,16 +106,16 @@ public class Executioner {
 								FlyControl flyControl = new FlyControl();
 
 								if (flyControl.fly(target)) {
-									operator.sendMessage(chat.msg(messages.get("PlayerFlyOn").toString(), target,
-											operator, exe, command));
+									operator.sendMessage(chat.msg(manager.getMessage("PlayerFlyOn"), target, operator,
+											exe, command));
 									target.sendMessage(
-											chat.msg(messages.get("FlyOn").toString(), target, operator, exe, command));
+											chat.msg(manager.getMessage("FlyOn"), target, operator, exe, command));
 
 								} else {
-									operator.sendMessage(chat.msg(messages.get("PlayerFlyOff").toString(), target,
-											operator, exe, command));
-									target.sendMessage(chat.msg(messages.get("FlyOff").toString(), target, operator,
+									operator.sendMessage(chat.msg(manager.getMessage("PlayerFlyOff"), target, operator,
 											exe, command));
+									target.sendMessage(
+											chat.msg(manager.getMessage("FlyOff"), target, operator, exe, command));
 
 								}
 
@@ -132,8 +135,11 @@ public class Executioner {
 									if (config.getBoolean("Broadcast.Kick")) {
 										for (Player p : plugin.players.values()) {
 											if (p.hasPermission("slashplayer.notify")) {
-												p.sendMessage(chat.msg(messages.get("KickBroadcast").toString()
-														.replace("%reason%", reason), target, operator, exe, command));
+												p.sendMessage(
+														chat.msg(
+																plugin.manager.getMessage("KickBroadcast").toString()
+																		.replace("%reason%", reason),
+																target, operator, exe, command));
 											}
 										}
 									} else {
@@ -145,8 +151,8 @@ public class Executioner {
 									target.kickPlayer(chat.msg(reason, target, operator, exe, command));
 
 								} else {
-									operator.sendMessage(chat.msg(messages.get("PlayerExempt").toString(), target,
-											operator, exe, command));
+									operator.sendMessage(chat.msg(manager.getMessage("PlayerExempt"), target, operator,
+											exe, command));
 
 								}
 
@@ -165,8 +171,8 @@ public class Executioner {
 									target.setHealth(1);
 									target.damage(42, operator);
 
-									target.sendMessage(chat.msg(messages.get("Killed").toString(), target, operator,
-											exe, command));
+									target.sendMessage(
+											chat.msg(manager.getMessage("Killed"), target, operator, exe, command));
 
 									plugin.server.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
 
@@ -175,7 +181,7 @@ public class Executioner {
 									}, 20);
 
 								} else {
-									operator.sendMessage(chat.msg(messages.get("CantKillPlayer").toString(), target,
+									operator.sendMessage(chat.msg(manager.getMessage("CantKillPlayer"), target,
 											operator, exe, command));
 
 								}
@@ -186,26 +192,26 @@ public class Executioner {
 
 									invManager.clearInventory(target);
 
-									target.sendMessage(chat.msg(messages.get("InventoryCleared").toString(), target,
+									target.sendMessage(chat.msg(manager.getMessage("InventoryCleared"), target,
 											operator, exe, command));
 
-									operator.sendMessage(chat.msg(messages.get("PlayerInventoryCleared").toString(),
-											target, operator, exe, command));
+									operator.sendMessage(chat.msg(manager.getMessage("PlayerInventoryCleared"), target,
+											operator, exe, command));
 
 								} else {
-									operator.sendMessage(chat.msg(messages.get("CantClearInv").toString(), target,
-											operator, exe, command));
+									operator.sendMessage(chat.msg(manager.getMessage("CantClearInv"), target, operator,
+											exe, command));
 								}
 
 								break;
 							case "restoreinventory":
 
 								invManager.restoreInventory(target);
-								target.sendMessage(chat.msg(messages.get("InventoryRestored").toString(), target,
-										operator, exe, command));
+								target.sendMessage(chat.msg(manager.getMessage("InventoryRestored"), target, operator,
+										exe, command));
 
-								operator.sendMessage(chat.msg(messages.get("PlayerInventoryRestored").toString(),
-										target, operator, exe, command));
+								operator.sendMessage(chat.msg(manager.getMessage("PlayerInventoryRestored"), target,
+										operator, exe, command));
 
 								break;
 							case "openinventory":
@@ -223,18 +229,18 @@ public class Executioner {
 									if (target.isWhitelisted()) {
 										target.setWhitelisted(false);
 
-										operator.sendMessage(chat.msg(plugin.manager.getMessage("PlayerUnWhitelisted"),
-												target, operator, exe, command));
+										operator.sendMessage(chat.msg(manager.getMessage("PlayerUnWhitelisted"), target,
+												operator, exe, command));
 
 									} else {
 										target.setWhitelisted(true);
 
-										operator.sendMessage(chat.msg(plugin.manager.getMessage("PlayerWhitelisted"),
-												target, operator, exe, command));
+										operator.sendMessage(chat.msg(manager.getMessage("PlayerWhitelisted"), target,
+												operator, exe, command));
 									}
 
 								} else {
-									operator.sendMessage(chat.msg(plugin.manager.getMessage("WhitelistNotOn"), target,
+									operator.sendMessage(chat.msg(manager.getMessage("WhitelistNotOn"), target,
 											operator, exe, command));
 								}
 
@@ -243,19 +249,19 @@ public class Executioner {
 								if (!target.hasPermission("slashplayer.exempt.freeze")) {
 									pData.set(pUuid + ".IsFrozen", true);
 
-									target.sendMessage(chat.msg(plugin.manager.getMessage("Frozen"), target, operator,
-											exe, command));
+									target.sendMessage(
+											chat.msg(manager.getMessage("Frozen"), target, operator, exe, command));
 
-									operator.sendMessage(chat.msg(plugin.manager.getMessage("FreezePlayer"), target,
-											operator, exe, command));
+									operator.sendMessage(chat.msg(manager.getMessage("FreezePlayer"), target, operator,
+											exe, command));
 
 									if (plugin.getConfig().getBoolean("Freeze.AdventureMode")) {
 										target.setGameMode(GameMode.ADVENTURE);
 									}
 
 								} else {
-									operator.sendMessage(chat.msg(plugin.manager.getMessage("PlayerExempt"), target,
-											operator, exe, command));
+									operator.sendMessage(chat.msg(manager.getMessage("PlayerExempt"), target, operator,
+											exe, command));
 								}
 
 								break;
@@ -266,11 +272,11 @@ public class Executioner {
 									target.setGameMode(plugin.server.getDefaultGameMode());
 								}
 
-								target.sendMessage(chat.msg(plugin.manager.getMessage("Unfrozen"), target, operator,
-										exe, command));
+								target.sendMessage(
+										chat.msg(manager.getMessage("Unfrozen"), target, operator, exe, command));
 
-								operator.sendMessage(chat.msg(plugin.manager.getMessage("UnfreezePlayer"), target,
-										operator, exe, command));
+								operator.sendMessage(
+										chat.msg(manager.getMessage("UnfreezePlayer"), target, operator, exe, command));
 
 								break;
 							case "mute":
@@ -278,7 +284,33 @@ public class Executioner {
 							case "unmute":
 
 							case "ban":
+								if (!target.hasPermission("slashplayer.exempt.ban")) {
+									BanControl banControl = new BanControl();
+									int defaultTime = plugin.config.getInt("BanTime");
 
+									banControl.banPlayer(targetPlayer, null, defaultTime);
+
+									String banBroadcast = plugin.manager.getMessage("BanBroadcast");
+									boolean broadcast = plugin.config.getBoolean("Broadcast.Ban");
+									if (broadcast) {
+										for (Player p : plugin.players.values()) {
+											if (p.hasPermission("slashplayer.notify")) {
+												p.sendMessage(chat.msg(banBroadcast, target, operator, exe, command));
+
+											}
+										}
+									}
+
+									operator.sendMessage(
+											chat.msg(manager.getMessage("BanPlayer"), target, operator, exe, command));
+
+								} else {
+									operator.sendMessage(chat.msg(manager.getMessage("PlayerExempt"), target, operator,
+											exe, command));
+
+								}
+
+								break;
 							case "unban":
 
 							}

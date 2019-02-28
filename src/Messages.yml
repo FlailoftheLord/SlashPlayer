@@ -16,7 +16,6 @@
 # %reporter% the player typing the /report command 
 # %ban-duration% the ban time in minutes.
 # %mute-duration% the mute time in minutes.
-# %time% the time left before an unban or unmute
 # %reason% the reason for the player report.
 # %prefix% the plugin prefix, you can set this in the config.yml file.
 # %command% the name of the command sent.
@@ -46,25 +45,23 @@ BanPlayer: "%prefix% &abanned player for %ban-duration% minutes."
 UnbanPrompt: "&atype &c/%command% unban %player% &ato unban them :,>"
 UnbanPlayer: "%prefix% &aunbanned %player%. You may need to wait at least a minute for the bans to update."
 PlayerNotBanned: "%prefix% &cthat player is not banned!"
-Banned: "%prefix% &cYou've been banned for %time% minutes, if you believe this is wrong, or want to make an appeal please contact staff at %website%"
+Banned: "%prefix% &cYou've been banned for %ban-duration% minutes, if you believe this is wrong, or want to make an appeal please contact staff at %website%"
 BanBroadcast: "%prefix% &c%player% has been banned by &e%operator% &cfor %ban-duration% minutes"
-AutoUnban: "%prefix% &e%player% &ahas been unbanned as their time has run out!"
 
 # = = = # Mute Messages # = = = #
 MutePlayer: "%prefix% &amuted %player% for %mute-duration% minutes."
 UnmutePlayer: "%prefix% &aunmuted %player%."
 PlayerNotMuted: "%prefix% &cplayer is not muted!"
-Muted: "%prefix% &cyou may not speak for another %time% minutes, you've been muted."
+Muted: "%prefix% &cyou may not speak for another %mute-duration% minutes, you've been muted."
 Unmuted: "%prefix% &ayou may now speak again, you've been unmuted!"
 MuteBroadcast: "%prefix% &c%player% has been muted for %mute-duration% minutes."
-AutoUnmute: "%prefix% &e%player% &ahas been unmuted as their time has run out!"
 
 # = = = # Freeze Messages # = = = #
 FreezePlayer: "%prefix% &bSuccessfully frozen %player%!"
 Frozen: "%prefix% &cYou have been frozen by staff, please do not move!"
 FreezeMove: "&cYou have been frozen, please stay still!"
 FreezeInteract: "&cYou have been frozen, and cannot interact with stuff."
-FreezeOther: "&4&oYou've been frozen, OMG, you can't do annyythiinnngggg!!"
+FreezeOther: "&c&l&oYou've been frozen, OMG, you can't do annyythiinnngggg!!"
 UnfreezePlayer: "%prefix% &6unfroze %player%."
 Unfrozen: "%prefix% &ayou've been unfrozen, depart in peace."
 

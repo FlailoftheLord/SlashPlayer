@@ -29,7 +29,7 @@ public class Executables implements Listener {
 	@EventHandler
 	public void executables(InventoryClickEvent event) {
 
-		FileConfiguration guiConfig = plugin.getGuiConfig();
+		FileConfiguration guiConfig = plugin.manager.getFile(plugin, "GuiConfig.yml");
 
 		Inventory eventInv = event.getInventory();
 
@@ -57,9 +57,6 @@ public class Executables implements Listener {
 				} else {
 					loreUid = ChatColor.stripColor(uid);
 					pInfoPlayer = plugin.server.getOfflinePlayer(UUID.fromString(loreUid));
-					if (pInfoPlayer != null) {
-						pInfoPlayer = null;
-					}
 
 				}
 
@@ -68,12 +65,6 @@ public class Executables implements Listener {
 			if ((pInfoPlayer != null)) {
 
 				Player operator = (Player) event.getWhoClicked();
-
-				Player player = null;
-
-				if (pInfoPlayer.isOnline()) {
-					player = pInfoPlayer.getPlayer();
-				}
 
 				if (event.getSlotType().equals(SlotType.OUTSIDE)) {
 					operator.closeInventory();

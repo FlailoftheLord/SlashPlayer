@@ -7,6 +7,7 @@ import java.util.UUID;
 import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.Server;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -24,10 +25,9 @@ import me.flail.SlashPlayer.Listeners.InteractEvent;
 import me.flail.SlashPlayer.Listeners.MuteListener;
 import me.flail.SlashPlayer.Listeners.PlayerListGui;
 import me.flail.SlashPlayer.Listeners.ReportGui;
-import me.flail.SlashPlayer.Utilities.BanTimer;
+import me.flail.SlashPlayer.Runnables.BanControl;
 import me.flail.SlashPlayer.Utilities.FileManager;
 import me.flail.SlashPlayer.Utilities.IFileManager;
-import me.flail.SlashPlayer.Utilities.MuteTimer;
 import me.flail.SlashPlayer.Utilities.PlayerDataSetter;
 import me.flail.SlashPlayer.Utilities.Tools;
 
@@ -37,12 +37,14 @@ public class SlashPlayer extends JavaPlugin implements Listener {
 
 	public FileManager manager = new FileManager(this);
 
+	public FileConfiguration config = this.getConfig();
+
 	public PluginManager pm = getServer().getPluginManager();
 
 	public Server server = this.getServer();
-
 	public String version = getDescription().getVersion();
 
+	public Map<OfflinePlayer, Integer> banTimer = new HashMap<>();
 	public Map<Player, Integer> messageCooldowns = new HashMap<>();
 
 	private String serverVersion = getServer().getBukkitVersion();
@@ -85,11 +87,9 @@ public class SlashPlayer extends JavaPlugin implements Listener {
 
 		// And finally initiate the Ban and Mute Timers 5 seconds after startup.
 		server.getScheduler().scheduleSyncDelayedTask(this, () -> {
-
-			new BanTimer().runTaskTimerAsynchronously(this, 100, 1200);
+			new BanControl().loadBanList();
+			startTasks();
 			console.sendMessage(chat.m("%prefix% &8Updating bans..."));
-			new MuteTimer().runTaskTimerAsynchronously(this, 100, 1200);
-
 		}, 120);
 
 	}
@@ -100,6 +100,21 @@ public class SlashPlayer extends JavaPlugin implements Listener {
 		saveReportedPlayers(this.getReportedPlayers());
 		savePlayerData(this.getPlayerData());
 
+		new BanControl().saveBanList();
+
+	}
+
+	public void startTasks() {
+		this.stopTasks();
+		server.getScheduler().runTaskLater(this, () -> {
+			new BanControl().runTaskTimerAsynchronously(this, 64, 1280);
+
+		}, 10);
+
+	}
+
+	public void stopTasks() {
+		server.getScheduler().cancelTasks(this);
 	}
 
 	@EventHandler
@@ -143,6 +158,7 @@ public class SlashPlayer extends JavaPlugin implements Listener {
 		pm.registerEvents(new MuteListener(), this);
 		pm.registerEvents(new InteractEvent(), this);
 		pm.registerEvents(new ReportGui(), this);
+
 	}
 
 	public FileConfiguration getMessages() {

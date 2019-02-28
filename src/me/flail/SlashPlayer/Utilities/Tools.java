@@ -37,35 +37,35 @@ public class Tools {
 
 		String prefix = config.getString("Prefix");
 
+		String pName = "Unknown";
+		String sender = "Unknown";
+		String pUuid = "";
+		String gamemode = "";
+
+		if (player != null) {
+			pName = player.getName();
+			pUuid = player.getUniqueId().toString();
+			gamemode = player.getGameMode().toString();
+		}
+		if (operator != null) {
+			sender = operator.getName();
+		}
+
 		if ((s != null)) {
 
-			if ((player != null) && (operator != null)) {
-
-				String pName = player.getName();
-
-				String sender = operator.getName();
-
-				String pUuid = player.getUniqueId().toString();
-
-				String gamemode = player.getGameMode().toString();
-
-				reply = ChatColor.translateAlternateColorCodes('&',
-						s.replaceAll("%prefix%", prefix).replaceAll("%player%", pName).replaceAll("%operator%", sender)
-								.replaceAll("%reporter%", sender).replaceAll("%command%", command)
-								.replaceAll("%executable%", exe).replaceAll("%website%", website)
-								.replaceAll("%ban-duration%", banTime).replaceAll("%mute-duration%", muteTime)
-								.replaceAll("%gamemode%", gamemode).replaceAll("%uuid%", pUuid));
-
-			} else {
-				reply = ChatColor.translateAlternateColorCodes('&', s.replaceAll("%prefix%", prefix));
-			}
+			reply = ChatColor.translateAlternateColorCodes('&',
+					s.replaceAll("%prefix%", prefix).replaceAll("%player%", pName).replaceAll("%operator%", sender)
+							.replaceAll("%reporter%", sender).replaceAll("%command%", command)
+							.replaceAll("%executable%", exe).replaceAll("%website%", website)
+							.replaceAll("%ban-duration%", banTime).replaceAll("%mute-duration%", muteTime)
+							.replaceAll("%gamemode%", gamemode).replaceAll("%uuid%", pUuid));
 
 		} else if (s == null) {
 			reply = s;
 			plugin.console.sendMessage(this.m(
 					"%prefix% &cAn error occured while translating placeholders, please contact me on my support server with this message: "));
-			plugin.console.sendMessage("Exe: " + exe + " Operator: " + operator.isOnline() + " Target: "
-					+ player.isOnline() + " Command: " + command);
+			plugin.console
+					.sendMessage("Exe: " + exe + " Operator: " + sender + " Target: " + pName + " Command: " + command);
 		}
 
 		return reply;

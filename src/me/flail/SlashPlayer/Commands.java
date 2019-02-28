@@ -16,8 +16,6 @@ import org.bukkit.inventory.Inventory;
 import me.flail.SlashPlayer.GUI.PlayerInfoInventory;
 import me.flail.SlashPlayer.GUI.PlayerListInventory;
 import me.flail.SlashPlayer.GUI.ReportInventory;
-import me.flail.SlashPlayer.Utilities.BanTimer;
-import me.flail.SlashPlayer.Utilities.MuteTimer;
 import me.flail.SlashPlayer.Utilities.Tools;
 
 public class Commands implements CommandExecutor {
@@ -85,8 +83,7 @@ public class Commands implements CommandExecutor {
 							plugin.reloadConfig();
 
 							plugin.server.getScheduler().cancelTasks(plugin);
-							new BanTimer().runTaskTimer(plugin, 100, 1200);
-							new MuteTimer().runTaskTimer(plugin, 100, 1200);
+							plugin.startTasks();
 
 							operator.sendMessage(chat.m("%prefix% &areloaded all plugin files!"));
 

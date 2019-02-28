@@ -56,7 +56,9 @@ public class FileManager {
 
 		if (!settingsFile.exists()) {
 			try {
-				plugin.saveResource(fileName, true);
+				settingsFile.createNewFile();
+				plugin.saveResource(fileName, false);
+
 			} catch (Throwable e) {
 			}
 		} else {
@@ -84,15 +86,9 @@ public class FileManager {
 		if (!settingsFile.exists()) {
 			this.loadFile(plugin, fileName);
 		}
-
-		settingsFile.mkdirs();
-
 		if (file != null) {
-
-			FileConfiguration settingsConfig = file;
-
 			try {
-				settingsConfig.save(settingsFile);
+				file.save(settingsFile);
 			} catch (Throwable e) {
 			}
 
