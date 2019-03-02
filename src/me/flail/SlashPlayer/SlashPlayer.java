@@ -31,7 +31,7 @@ import me.flail.SlashPlayer.Listeners.PlayerListGui;
 import me.flail.SlashPlayer.Listeners.ReportGui;
 import me.flail.SlashPlayer.Utilities.FileManager;
 import me.flail.SlashPlayer.Utilities.IFileManager;
-import me.flail.SlashPlayer.Utilities.PlayerDataSetter;
+import me.flail.SlashPlayer.Utilities.PlayerEventHandler;
 import me.flail.SlashPlayer.Utilities.Tools;
 
 public class SlashPlayer extends JavaPlugin implements Listener {
@@ -167,11 +167,16 @@ public class SlashPlayer extends JavaPlugin implements Listener {
 		pm.registerEvents(new Executables(), this);
 		pm.registerEvents(new SetGamemode(), this);
 		pm.registerEvents(new FreezeListener(), this);
-		pm.registerEvents(new PlayerDataSetter(), this);
+		pm.registerEvents(new PlayerEventHandler(), this);
 		pm.registerEvents(new MuteListener(), this);
 		pm.registerEvents(new InteractEvent(), this);
 		pm.registerEvents(new ReportGui(), this);
 
+	}
+
+	@Override
+	public FileConfiguration getConfig() {
+		return new ConfigControl().get(false);
 	}
 
 	public FileConfiguration getMessages() {

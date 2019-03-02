@@ -47,7 +47,7 @@ public class PlayerListInventory {
 
 	public Inventory playerList() {
 
-		FileConfiguration config = plugin.getConfig();
+		FileConfiguration config = plugin.config;
 
 		FileConfiguration guiConfig = plugin.getGuiConfig();
 

@@ -102,7 +102,7 @@ public class PlayerInfoInventory {
 
 	public Inventory playerInfo(OfflinePlayer player) {
 
-		FileConfiguration config = plugin.getConfig();
+		FileConfiguration config = plugin.config;
 
 		FileConfiguration guiConfig = plugin.getGuiConfig();
 

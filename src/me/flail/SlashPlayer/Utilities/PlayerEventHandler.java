@@ -16,7 +16,7 @@ import me.flail.SlashPlayer.SlashPlayer;
 import me.flail.SlashPlayer.ControlCenter.BanControl;
 import me.flail.SlashPlayer.Executables.FlyControl;
 
-public class PlayerDataSetter extends Tools implements Listener {
+public class PlayerEventHandler extends Tools implements Listener {
 
 	private SlashPlayer plugin = SlashPlayer.getPlugin(SlashPlayer.class);
 
