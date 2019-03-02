@@ -6,92 +6,12 @@ import java.io.FileWriter;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
-
 import me.flail.SlashPlayer.SlashPlayer;
 
-public class IFileManager {
+public class IFileManager extends FileManager {
 
-	SlashPlayer plugin;
-
-	public IFileManager(SlashPlayer plugin) {
-		this.plugin = plugin;
-	}
-
-	public FileConfiguration getConfig(String fileName) {
-		if (!fileName.endsWith(".yml")) {
-			fileName = fileName.concat(".yml");
-		}
-
-		File file = new File(plugin.getDataFolder() + "/" + fileName);
-		FileConfiguration config = new YamlConfiguration();
-
-		this.loadConfig(fileName);
-
-		try {
-			config.load(file);
-
-		} catch (Throwable t) {
-		}
-
-		return config;
-	}
-
-	public boolean loadConfig(String fileName) {
-		if (!fileName.endsWith(".yml")) {
-			fileName = fileName.concat(".yml");
-		}
-
-		try {
-
-			File file = new File(plugin.getDataFolder() + "/" + fileName);
-			FileConfiguration config = new YamlConfiguration();
-			if (!file.exists()) {
-				plugin.saveResource(fileName, false);
-			}
-
-			file = new File(plugin.getDataFolder() + "/" + fileName);
-
-			config.load(file);
-			config.save(file);
-
-			return true;
-		} catch (Throwable t) {
-			return false;
-		}
-	}
-
-	public boolean saveConfig(String fileName, FileConfiguration config) {
-		try {
-
-			if (!fileName.endsWith(".yml")) {
-				fileName = fileName.concat(".yml");
-			}
-
-			File settingsFile = new File(plugin.getDataFolder(), fileName);
-
-			if (!settingsFile.exists()) {
-				this.loadConfig(fileName);
-			}
-
-			if (config != null) {
-
-				FileConfiguration settingsConfig = config;
-
-				try {
-					settingsConfig.save(settingsFile);
-				} catch (Throwable e) {
-				}
-
-			} else {
-			}
-
-			return true;
-		} catch (Throwable t) {
-			return false;
-		}
-
+	public IFileManager(SlashPlayer instance) {
+		super(instance);
 	}
 
 	public void log(String msg) {

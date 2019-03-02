@@ -1,4 +1,4 @@
-package me.flail.SlashPlayer.Runnables;
+package me.flail.SlashPlayer.ControlCenter;
 
 import java.util.Set;
 import java.util.UUID;

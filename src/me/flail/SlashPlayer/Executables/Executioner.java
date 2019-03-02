@@ -7,8 +7,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 
 import me.flail.SlashPlayer.SlashPlayer;
+import me.flail.SlashPlayer.ControlCenter.BanControl;
+import me.flail.SlashPlayer.ControlCenter.MuteControl;
 import me.flail.SlashPlayer.GUI.GamemodeInventory;
-import me.flail.SlashPlayer.Runnables.BanControl;
 import me.flail.SlashPlayer.Utilities.ExeHandler;
 import me.flail.SlashPlayer.Utilities.FileManager;
 import me.flail.SlashPlayer.Utilities.InventoryManager;
@@ -280,15 +281,46 @@ public class Executioner {
 
 								break;
 							case "mute":
+								if (!target.hasPermission("slashplayer.exempt.mute")) {
+									MuteControl mutes = new MuteControl();
+									int defaultTime = plugin.config.getInt("MuteTime");
+									mutes.mute(target, defaultTime);
 
+									String muteBroadcast = plugin.manager.getMessage("MuteBroadcast");
+									boolean broadcast = plugin.config.getBoolean("Broadcast.Mute");
+									if (broadcast) {
+										for (Player p : plugin.players.values()) {
+											if (p.hasPermission("slashplayer.notify")) {
+												p.sendMessage(chat.msg(muteBroadcast, target, operator, exe, command));
+
+											}
+										}
+									}
+
+									operator.sendMessage(
+											chat.msg(manager.getMessage("MutePlayer"), target, operator, exe, command));
+
+								}
+
+								break;
 							case "unmute":
+								MuteControl mutes = new MuteControl();
 
+								mutes.unMute(target);
+
+								operator.sendMessage(
+										chat.msg(manager.getMessage("UnmutePlayer"), target, operator, exe, command));
+
+								target.sendMessage(
+										chat.msg(manager.getMessage("Unmuted"), target, operator, exe, command));
+
+								break;
 							case "ban":
 								if (!target.hasPermission("slashplayer.exempt.ban")) {
 									BanControl banControl = new BanControl();
 									int defaultTime = plugin.config.getInt("BanTime");
 
-									banControl.banPlayer(targetPlayer, null, defaultTime);
+									banControl.banPlayer(target, null, defaultTime);
 
 									String banBroadcast = plugin.manager.getMessage("BanBroadcast");
 									boolean broadcast = plugin.config.getBoolean("Broadcast.Ban");
@@ -312,6 +344,13 @@ public class Executioner {
 
 								break;
 							case "unban":
+								BanControl banControl = new BanControl();
+
+								banControl.unbanPlayer(target);
+
+								operator.sendMessage(
+										chat.msg(manager.getMessage("Unbanned"), target, operator, exe, command));
+								break;
 
 							}
 

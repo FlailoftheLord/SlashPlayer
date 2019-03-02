@@ -11,6 +11,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.Server;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -18,14 +19,16 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import me.flail.SlashPlayer.ControlCenter.BanControl;
+import me.flail.SlashPlayer.ControlCenter.MuteControl;
 import me.flail.SlashPlayer.Executables.Executables;
 import me.flail.SlashPlayer.Executables.SetGamemode;
+import me.flail.SlashPlayer.FileManager.ConfigControl;
 import me.flail.SlashPlayer.Listeners.FreezeListener;
 import me.flail.SlashPlayer.Listeners.InteractEvent;
 import me.flail.SlashPlayer.Listeners.MuteListener;
 import me.flail.SlashPlayer.Listeners.PlayerListGui;
 import me.flail.SlashPlayer.Listeners.ReportGui;
-import me.flail.SlashPlayer.Runnables.BanControl;
 import me.flail.SlashPlayer.Utilities.FileManager;
 import me.flail.SlashPlayer.Utilities.IFileManager;
 import me.flail.SlashPlayer.Utilities.PlayerDataSetter;
@@ -37,7 +40,7 @@ public class SlashPlayer extends JavaPlugin implements Listener {
 
 	public FileManager manager = new FileManager(this);
 
-	public FileConfiguration config = this.getConfig();
+	public FileConfiguration config = new YamlConfiguration();
 
 	public PluginManager pm = getServer().getPluginManager();
 
@@ -45,6 +48,7 @@ public class SlashPlayer extends JavaPlugin implements Listener {
 	public String version = getDescription().getVersion();
 
 	public Map<OfflinePlayer, Integer> banTimer = new HashMap<>();
+	public Map<OfflinePlayer, Integer> muteTimer = new HashMap<>();
 	public Map<Player, Integer> messageCooldowns = new HashMap<>();
 
 	private String serverVersion = getServer().getBukkitVersion();
@@ -52,16 +56,22 @@ public class SlashPlayer extends JavaPlugin implements Listener {
 
 	public Map<UUID, Player> players = new HashMap<>();
 
-	public SlashPlayer() {
-	}
+	public static SlashPlayer instance;
 
 	@Override
 	public void onEnable() {
+		instance = this;
+
+		serverType = serverType.replace(serverType.substring(serverType.indexOf("(")), "");
 
 		Tools chat = new Tools();
 
+		ConfigControl config = new ConfigControl();
+
 		// Load up the Files
-		saveDefaultConfig();
+		config.load(false);
+		this.config = config.get(false);
+
 		loadGuiConfig();
 		loadPlayerData();
 		loadMessages();
@@ -87,6 +97,7 @@ public class SlashPlayer extends JavaPlugin implements Listener {
 
 		// And finally initiate the Ban and Mute Timers 5 seconds after startup.
 		server.getScheduler().scheduleSyncDelayedTask(this, () -> {
+			new MuteControl().loadList();
 			new BanControl().loadBanList();
 			startTasks();
 			console.sendMessage(chat.m("%prefix% &8Updating bans..."));
@@ -100,6 +111,7 @@ public class SlashPlayer extends JavaPlugin implements Listener {
 		saveReportedPlayers(this.getReportedPlayers());
 		savePlayerData(this.getPlayerData());
 
+		new MuteControl().saveList();
 		new BanControl().saveBanList();
 
 	}
@@ -108,6 +120,7 @@ public class SlashPlayer extends JavaPlugin implements Listener {
 		this.stopTasks();
 		server.getScheduler().runTaskLater(this, () -> {
 			new BanControl().runTaskTimerAsynchronously(this, 64, 1280);
+			new MuteControl().runTaskTimerAsynchronously(this, 64, 1280);
 
 		}, 10);
 

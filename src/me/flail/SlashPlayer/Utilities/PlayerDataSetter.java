@@ -13,8 +13,8 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 import me.flail.SlashPlayer.Commands;
 import me.flail.SlashPlayer.SlashPlayer;
+import me.flail.SlashPlayer.ControlCenter.BanControl;
 import me.flail.SlashPlayer.Executables.FlyControl;
-import me.flail.SlashPlayer.Runnables.BanControl;
 
 public class PlayerDataSetter extends Tools implements Listener {
 
@@ -50,7 +50,7 @@ public class PlayerDataSetter extends Tools implements Listener {
 
 		for (String s : pData.getKeys(false)) {
 
-			String oldName = pData.get(s + ".Name").toString();
+			String oldName = pData.get(s + ".Name", "").toString();
 			if (oldName.equalsIgnoreCase(pName) && (s != pUuid.toString())) {
 				pData.set(s, null);
 			}

@@ -53,11 +53,11 @@ public class FreezeListener implements Listener {
 
 				String cantMove = chat.msg(messages.getString("FreezeMove"), player, player, "Freeze", "slashplayer");
 
-				if (plugin.messageCooldowns.get(player) != null) {
+				if (plugin.messageCooldowns.containsKey(player)) {
 					int cooldown = plugin.messageCooldowns.get(player).intValue();
-					if (cooldown > 1) {
+					if (cooldown >= 1) {
 						plugin.messageCooldowns.put(player, Integer.valueOf(cooldown - 1));
-					} else if (cooldown < 1) {
+					} else {
 						plugin.messageCooldowns.remove(player);
 						player.sendMessage(cantMove);
 						plugin.messageCooldowns.put(player, Integer.valueOf(6));

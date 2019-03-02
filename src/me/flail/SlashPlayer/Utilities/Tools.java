@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -18,24 +19,24 @@ public class Tools {
 
 	public String m(String s) {
 
-		FileConfiguration config = plugin.getConfig();
+		FileConfiguration config = plugin.config;
 
-		String prefix = config.getString("Prefix");
+		String prefix = config.get("Prefix").toString();
 
 		return ChatColor.translateAlternateColorCodes('&', s.replaceAll("%prefix%", prefix).replaceAll(" ~!~", " \n"));
 
 	}
 
-	public String msg(String s, Player player, Player operator, String exe, String command) {
+	public String msg(String s, OfflinePlayer player, OfflinePlayer operator, String exe, String command) {
 		String reply = s;
 
 		FileConfiguration config = plugin.getConfig();
 
 		String banTime = config.get("BanTime").toString();
 		String muteTime = config.get("MuteTime").toString();
-		String website = config.getString("Website");
+		String website = config.get("Website").toString();
 
-		String prefix = config.getString("Prefix");
+		String prefix = config.get("Prefix").toString();
 
 		String pName = "Unknown";
 		String sender = "Unknown";
@@ -45,7 +46,12 @@ public class Tools {
 		if (player != null) {
 			pName = player.getName();
 			pUuid = player.getUniqueId().toString();
-			gamemode = player.getGameMode().toString();
+
+			if (player.isOnline()) {
+				Player online = player.getPlayer();
+				gamemode = online.getGameMode().toString();
+
+			}
 		}
 		if (operator != null) {
 			sender = operator.getName();

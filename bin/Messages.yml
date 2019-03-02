@@ -45,7 +45,7 @@ BanPlayer: "%prefix% &abanned player for %ban-duration% minutes."
 UnbanPrompt: "&atype &c/%command% unban %player% &ato unban them :,>"
 UnbanPlayer: "%prefix% &aunbanned %player%. You may need to wait at least a minute for the bans to update."
 PlayerNotBanned: "%prefix% &cthat player is not banned!"
-Banned: "%prefix% &cYou've been banned for %ban-duration% minutes, if you believe this is wrong, or want to make an appeal please contact staff at %website%"
+Banned: "%prefix% &cYou've been banned for %ban-duration% minutes. If you believe this is wrong, or want to make an appeal, please contact staff at %website%"
 BanBroadcast: "%prefix% &c%player% has been banned by &e%operator% &cfor %ban-duration% minutes"
 
 # = = = # Mute Messages # = = = #

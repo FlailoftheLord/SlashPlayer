@@ -7,6 +7,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import me.flail.SlashPlayer.SlashPlayer;
+import me.flail.SlashPlayer.ControlCenter.MuteControl;
 import me.flail.SlashPlayer.Utilities.Tools;
 
 public class MuteListener implements Listener {
@@ -26,25 +27,24 @@ public class MuteListener implements Listener {
 
 		String pUuid = player.getUniqueId().toString();
 
-		boolean isMuted = pData.getBoolean(pUuid + ".IsMuted");
+		MuteControl mutes = new MuteControl();
+
+		boolean isMuted = mutes.check(player);
 
 		if (isMuted) {
-
-			if (!(player.hasPermission("slashplayer.exempt")) || !player.isOp()) {
+			if (!(player.hasPermission("slashplayer.exempt.mute")) || !player.isOp()) {
 
 				event.setCancelled(true);
 
 				String timeLeft = pData.get(pUuid + ".MuteDuration").toString();
 
-				String cantTalk = chat.msg(messages.getString("Muted").replace("%time%", timeLeft), player, player,
-						"Mute", "mute");
+				String cantTalk = chat.msg(messages.getString("Muted").replace("%mute-duration%", timeLeft), player,
+						player, "Mute", "slashplayer");
 
 				player.sendMessage(cantTalk);
 
 			}
 
-		} else {
-			pData.set(pUuid + ".IsMuted", false);
 		}
 
 		boolean isFrozen = pData.getBoolean(pUuid + ".IsFrozen");
@@ -56,7 +56,7 @@ public class MuteListener implements Listener {
 
 				event.setCancelled(true);
 				String cantChatWhileFrozen = chat.msg(messages.getString("FreezeOther"), player, player, "Freeze",
-						"freeze");
+						"slashplayer");
 				player.sendMessage(cantChatWhileFrozen);
 
 			}

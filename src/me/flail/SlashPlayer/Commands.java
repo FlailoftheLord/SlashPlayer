@@ -8,11 +8,11 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
+import me.flail.SlashPlayer.ControlCenter.BanControl;
 import me.flail.SlashPlayer.GUI.PlayerInfoInventory;
 import me.flail.SlashPlayer.GUI.PlayerListInventory;
 import me.flail.SlashPlayer.GUI.ReportInventory;
@@ -148,46 +148,16 @@ public class Commands implements CommandExecutor {
 							if (operator.hasPermission("slashplayer.ban") || operator.hasPermission("slashplayer.unban")
 									|| operator.hasPermission("slashplayer.command.all")) {
 
-								String pUuid;
-
 								boolean playerBanned = false;
 
-								for (org.bukkit.OfflinePlayer p : Bukkit.getOfflinePlayers()) {
-
+								for (OfflinePlayer p : Bukkit.getOfflinePlayers()) {
 									if (p.getName().equalsIgnoreCase(args[1])) {
+										BanControl bans = new BanControl();
 
-										pUuid = p.getUniqueId().toString();
+										bans.unbanPlayer(p);
+										operator.sendMessage(chat.msg(plugin.manager.getMessage("UnbanPlayer"), p,
+												operator, "Unban", label));
 
-										if (pUuid != null) {
-
-											ConfigurationSection cs = pData.getConfigurationSection(pUuid);
-
-											if (cs != null) {
-
-												boolean isBanned = cs.getBoolean("IsBanned");
-
-												if (isBanned) {
-
-													pData.set(pUuid + ".IsBanned", false);
-
-													operator.sendMessage(chat.m("%prefix% &eunbanned %player%")
-															.replace("%player%", args[1]));
-
-													plugin.savePlayerData(pData);
-													playerBanned = true;
-
-													break;
-												} else {
-													playerBanned = false;
-												}
-											} else {
-												playerBanned = false;
-											}
-										} else {
-											playerBanned = false;
-										}
-									} else {
-										playerBanned = false;
 									}
 								}
 								if (!playerBanned) {
@@ -195,7 +165,7 @@ public class Commands implements CommandExecutor {
 								}
 
 							} else {
-								operator.sendMessage(chat.m("%prefix% &cYou dont have permission to use this!"));
+								operator.sendMessage(chat.m("%prefix% &cYou don't have permission to use this!"));
 							}
 
 						} else if (args[0].equalsIgnoreCase("rank")) {
@@ -212,7 +182,6 @@ public class Commands implements CommandExecutor {
 							}
 
 						} else {
-
 							operator.sendMessage(chat.m("%prefix% &cProper Usage&8: &7/player [unban] [player]"));
 
 						}
@@ -398,7 +367,6 @@ public class Commands implements CommandExecutor {
 					}
 
 					if (!validPlayer) {
-
 						plugin.console.sendMessage(
 								tools.m("%prefix% &cInvalid player &7%player%!").replaceAll("%player%", args[0]));
 
