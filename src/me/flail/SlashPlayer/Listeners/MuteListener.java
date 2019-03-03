@@ -48,7 +48,7 @@ public class MuteListener implements Listener {
 		}
 
 		boolean isFrozen = pData.getBoolean(pUuid + ".IsFrozen");
-		String blockChat = config.get("Freeze.Chat").toString();
+		String blockChat = config.get("Frozen.Chat").toString();
 
 		if (isFrozen) {
 

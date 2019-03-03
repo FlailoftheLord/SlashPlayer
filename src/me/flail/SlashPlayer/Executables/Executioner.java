@@ -9,9 +9,9 @@ import org.bukkit.potion.PotionEffect;
 import me.flail.SlashPlayer.SlashPlayer;
 import me.flail.SlashPlayer.ControlCenter.BanControl;
 import me.flail.SlashPlayer.ControlCenter.MuteControl;
+import me.flail.SlashPlayer.FileManager.FileManager;
 import me.flail.SlashPlayer.GUI.GamemodeInventory;
 import me.flail.SlashPlayer.Utilities.ExeHandler;
-import me.flail.SlashPlayer.Utilities.FileManager;
 import me.flail.SlashPlayer.Utilities.InventoryManager;
 import me.flail.SlashPlayer.Utilities.Tools;
 
@@ -350,6 +350,7 @@ public class Executioner {
 
 								operator.sendMessage(
 										chat.msg(manager.getMessage("Unbanned"), target, operator, exe, command));
+
 								break;
 
 							}

@@ -1,4 +1,4 @@
-package me.flail.SlashPlayer.Utilities;
+package me.flail.SlashPlayer.FileManager;
 
 import java.io.File;
 
@@ -105,13 +105,10 @@ public class FileManager {
 		if (!settingsFile.exists()) {
 			this.loadFile(plugin, fileName);
 		}
-		if (file != null) {
-			try {
-				file.save(settingsFile);
-			} catch (Throwable e) {
-			}
 
-		} else {
+		try {
+			file.save(settingsFile);
+		} catch (Throwable e) {
 		}
 
 	}

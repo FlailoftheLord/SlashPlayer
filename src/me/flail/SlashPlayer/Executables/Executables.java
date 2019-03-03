@@ -24,7 +24,6 @@ import me.flail.SlashPlayer.Utilities.Tools;
 public class Executables implements Listener {
 
 	private SlashPlayer plugin = SlashPlayer.getPlugin(SlashPlayer.class);
-	private Tools tools = new Tools();
 
 	@EventHandler
 	public void executables(InventoryClickEvent event) {
@@ -45,56 +44,63 @@ public class Executables implements Listener {
 
 			OfflinePlayer pInfoPlayer = null;
 
+			boolean isCorrectInventory = false;
+
 			if ((pInfo != null) && pInfo.hasItemMeta() && pInfo.getItemMeta().hasLore()) {
 
 				List<String> lore = pInfo.getItemMeta().getLore();
 
 				String uid = lore.get(0);
 
-				if (Tools.hasCode(uid)) {
-					loreUid = ChatColor.stripColor(tools.extractCode(uid));
+				if (Tools.hasCode(uid, "1")) {
+					loreUid = ChatColor.stripColor(uid);
 					pInfoPlayer = plugin.server.getOfflinePlayer(UUID.fromString(loreUid));
+					isCorrectInventory = true;
 				} else {
 					loreUid = ChatColor.stripColor(uid);
 					pInfoPlayer = plugin.server.getOfflinePlayer(UUID.fromString(loreUid));
-
+					isCorrectInventory = false;
 				}
 
 			}
 
 			if ((pInfoPlayer != null)) {
 
-				Player operator = (Player) event.getWhoClicked();
+				if (isCorrectInventory) {
 
-				if (event.getSlotType().equals(SlotType.OUTSIDE)) {
-					operator.closeInventory();
-				}
+					Player operator = (Player) event.getWhoClicked();
 
-				ItemStack item = event.getCurrentItem();
+					if (event.getSlotType().equals(SlotType.OUTSIDE)) {
+						operator.closeInventory();
+					}
 
-				ItemMeta iM;
+					ItemStack item = event.getCurrentItem();
 
-				int slot;
+					ItemMeta iM;
 
-				if ((item != null) && item.hasItemMeta()) {
-					iM = item.getItemMeta();
-					slot = iM.getEnchantLevel(Enchantment.MENDING);
-					ConfigurationSection cs = guiConfig.getConfigurationSection("PlayerInfo." + slot);
+					int slot;
 
-					if (cs != null) {
-						String exe = cs.getString("Execute");
+					if ((item != null) && item.hasItemMeta()) {
+						iM = item.getItemMeta();
+						slot = iM.getEnchantLevel(Enchantment.MENDING);
+						ConfigurationSection cs = guiConfig.getConfigurationSection("PlayerInfo." + slot);
 
-						if ((exe != null) && (exe != "")) {
+						if (cs != null) {
+							String exe = cs.getString("Execute");
 
-							boolean closeInv = cs.getBoolean("CloseInventory");
+							if ((exe != null) && (exe != "")) {
 
-							// Write the logs boi :>
-							plugin.logAction(
-									operator.getName() + " used " + exe.toUpperCase() + " on " + pInfoPlayer.getName());
+								boolean closeInv = cs.getBoolean("CloseInventory");
 
-							Executioner enviroment = new Executioner(plugin);
+								// Write the logs boi :>
+								plugin.logAction(operator.getName() + " used " + exe.toUpperCase() + " on "
+										+ pInfoPlayer.getName());
 
-							enviroment.execute(pInfoPlayer, operator, exe, "slashplayer", closeInv, false);
+								Executioner enviroment = new Executioner(plugin);
+
+								enviroment.execute(pInfoPlayer, operator, exe, "slashplayer", closeInv, false);
+
+							}
 
 						}
 

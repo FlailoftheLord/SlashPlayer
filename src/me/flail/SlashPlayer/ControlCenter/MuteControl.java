@@ -1,6 +1,5 @@
 package me.flail.SlashPlayer.ControlCenter;
 
-import java.util.Set;
 import java.util.UUID;
 
 import org.bukkit.OfflinePlayer;
@@ -9,7 +8,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import me.flail.SlashPlayer.SlashPlayer;
-import me.flail.SlashPlayer.Utilities.FileManager;
+import me.flail.SlashPlayer.FileManager.FileManager;
 
 public class MuteControl extends BukkitRunnable {
 
@@ -18,9 +17,7 @@ public class MuteControl extends BukkitRunnable {
 	@Override
 	public void run() {
 
-		Set<OfflinePlayer> muteList = plugin.muteTimer.keySet();
-
-		for (OfflinePlayer p : muteList) {
+		for (OfflinePlayer p : plugin.muteTimer.keySet()) {
 			int time = plugin.muteTimer.get(p).intValue();
 
 			if (time <= 0) {
@@ -91,7 +88,8 @@ public class MuteControl extends BukkitRunnable {
 
 		String pUuid = player.getUniqueId().toString();
 
-		pData.set(pUuid + ".IsMuted", false);
+		pData.set(pUuid + ".IsMuted", null);
+		pData.set(pUuid + ".MuteDuration", null);
 		plugin.savePlayerData(pData);
 
 		plugin.muteTimer.remove(player);

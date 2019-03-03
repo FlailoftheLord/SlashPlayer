@@ -22,6 +22,7 @@ permissions:
     default: false
     children:
       slashplayer.command: true
+      slashpalyer.interactopen: true
       slashplayer.rank: true
       slashplayer.exempt: true
       slashpalyer.notify: true
@@ -43,6 +44,9 @@ permissions:
 
   slashplayer.command:
     description: use the /player command
+    default: op
+  slashplayer.interactopen:
+    description: click a player to open their GUI menu
     default: op
     
   slashplayer.rank:

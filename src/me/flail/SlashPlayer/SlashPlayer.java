@@ -24,13 +24,13 @@ import me.flail.SlashPlayer.ControlCenter.MuteControl;
 import me.flail.SlashPlayer.Executables.Executables;
 import me.flail.SlashPlayer.Executables.SetGamemode;
 import me.flail.SlashPlayer.FileManager.ConfigControl;
+import me.flail.SlashPlayer.FileManager.FileManager;
+import me.flail.SlashPlayer.FileManager.IFileManager;
 import me.flail.SlashPlayer.Listeners.FreezeListener;
 import me.flail.SlashPlayer.Listeners.InteractEvent;
 import me.flail.SlashPlayer.Listeners.MuteListener;
 import me.flail.SlashPlayer.Listeners.PlayerListGui;
 import me.flail.SlashPlayer.Listeners.ReportGui;
-import me.flail.SlashPlayer.Utilities.FileManager;
-import me.flail.SlashPlayer.Utilities.IFileManager;
 import me.flail.SlashPlayer.Utilities.PlayerEventHandler;
 import me.flail.SlashPlayer.Utilities.Tools;
 
@@ -93,6 +93,8 @@ public class SlashPlayer extends JavaPlugin implements Listener {
 		for (Player p : Bukkit.getOnlinePlayers()) {
 			UUID pUuid = p.getUniqueId();
 			players.put(pUuid, p);
+			PlayerEventHandler pHandler = new PlayerEventHandler();
+			pHandler.setData(p);
 		}
 
 		// And finally initiate the Ban and Mute Timers 5 seconds after startup.
@@ -118,11 +120,11 @@ public class SlashPlayer extends JavaPlugin implements Listener {
 
 	public void startTasks() {
 		this.stopTasks();
-		server.getScheduler().runTaskLater(this, () -> {
-			new BanControl().runTaskTimerAsynchronously(this, 64, 1280);
-			new MuteControl().runTaskTimerAsynchronously(this, 64, 1280);
+		server.getScheduler().scheduleSyncRepeatingTask(this, () -> {
 
-		}, 10);
+			new BanControl().runTimer();
+
+		}, 64, 1200);
 
 	}
 

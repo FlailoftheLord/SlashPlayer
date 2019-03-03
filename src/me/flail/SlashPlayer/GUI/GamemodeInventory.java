@@ -27,7 +27,7 @@ public class GamemodeInventory {
 
 		FileConfiguration guiConfig = plugin.getGuiConfig();
 
-		ItemStack pHead = new PlayerInfoInventory().pHead(player, false);
+		ItemStack pHead = new PlayerInfoInventory().pHead(player, "2");
 
 		String gmInvTitle = guiConfig.getString("GamemodeInventory.Title");
 

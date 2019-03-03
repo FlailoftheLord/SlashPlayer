@@ -3,7 +3,6 @@ package me.flail.SlashPlayer;
 import java.util.List;
 import java.util.Locale;
 
-import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -13,9 +12,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
 import me.flail.SlashPlayer.ControlCenter.BanControl;
+import me.flail.SlashPlayer.ControlCenter.MuteControl;
 import me.flail.SlashPlayer.GUI.PlayerInfoInventory;
 import me.flail.SlashPlayer.GUI.PlayerListInventory;
 import me.flail.SlashPlayer.GUI.ReportInventory;
+import me.flail.SlashPlayer.Utilities.PlayerEventHandler;
 import me.flail.SlashPlayer.Utilities.Tools;
 
 public class Commands implements CommandExecutor {
@@ -76,6 +77,23 @@ public class Commands implements CommandExecutor {
 					} else if (args.length == 1) {
 
 						if (args[0].equalsIgnoreCase("reload")) {
+
+							for (Player p : plugin.server.getOnlinePlayers()) {
+								plugin.players.put(p.getUniqueId(), p);
+							}
+
+							BanControl bans = new BanControl();
+							bans.saveBanList();
+							bans.loadBanList();
+
+							MuteControl mutes = new MuteControl();
+							mutes.saveList();
+							mutes.loadList();
+
+							for (Player player : plugin.players.values()) {
+								PlayerEventHandler pHandler = new PlayerEventHandler();
+								pHandler.setData(player);
+							}
 
 							plugin.loadGuiConfig();
 							plugin.loadPlayerData();
@@ -150,7 +168,7 @@ public class Commands implements CommandExecutor {
 
 								boolean playerBanned = false;
 
-								for (OfflinePlayer p : Bukkit.getOfflinePlayers()) {
+								for (OfflinePlayer p : plugin.banTimer.keySet()) {
 									if (p.getName().equalsIgnoreCase(args[1])) {
 										BanControl bans = new BanControl();
 
@@ -158,6 +176,10 @@ public class Commands implements CommandExecutor {
 										operator.sendMessage(chat.msg(plugin.manager.getMessage("UnbanPlayer"), p,
 												operator, "Unban", label));
 
+										playerBanned = true;
+										break;
+									} else {
+										playerBanned = false;
 									}
 								}
 								if (!playerBanned) {

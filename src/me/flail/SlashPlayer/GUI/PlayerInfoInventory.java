@@ -24,7 +24,7 @@ public class PlayerInfoInventory {
 
 	private Tools chat = new Tools();
 
-	public ItemStack pHead(OfflinePlayer player, boolean encode) {
+	public ItemStack pHead(OfflinePlayer player, String code) {
 
 		FileConfiguration guiConfig = plugin.getGuiConfig();
 		FileConfiguration pData = plugin.getPlayerData();
@@ -78,12 +78,7 @@ public class PlayerInfoInventory {
 			headerM.setDisplayName(chat.m("&a" + player.getName()));
 		}
 
-		if (encode) {
-			hLore.add(chat.encodeLore(chat.m("&8" + pUuid)));
-
-		} else {
-			hLore.add(chat.m("&8" + pUuid));
-		}
+		hLore.add(chat.encodeLore(chat.m("&8" + pUuid), code));
 
 		if (hL != null) {
 
@@ -229,9 +224,9 @@ public class PlayerInfoInventory {
 			int hSlot = guiConfig.getInt("PlayerInfo.Header.Slot", 4);
 
 			if ((hSlot <= pInfo.getSize()) && (hSlot >= 1)) {
-				pInfo.setItem(hSlot - 1, pHead(player, true));
+				pInfo.setItem(hSlot - 1, pHead(player, "1"));
 			} else {
-				pInfo.setItem(4, pHead(player, true));
+				pInfo.setItem(4, pHead(player, "1"));
 			}
 
 		}

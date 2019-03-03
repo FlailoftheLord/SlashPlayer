@@ -60,12 +60,12 @@ public class FreezeListener implements Listener {
 					} else {
 						plugin.messageCooldowns.remove(player);
 						player.sendMessage(cantMove);
-						plugin.messageCooldowns.put(player, Integer.valueOf(6));
+						plugin.messageCooldowns.put(player, Integer.valueOf(16));
 					}
 
 				} else {
 					player.sendMessage(cantMove);
-					plugin.messageCooldowns.put(player, Integer.valueOf(6));
+					plugin.messageCooldowns.put(player, Integer.valueOf(16));
 				}
 			}
 

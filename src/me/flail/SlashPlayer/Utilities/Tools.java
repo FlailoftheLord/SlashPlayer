@@ -158,42 +158,46 @@ public class Tools {
 
 	}
 
-	public String encodeLore(String lore) {
-		if (!hasCode(lore)) {
-			return this.m("&a&f&4&r" + lore);
+	public String encodeLore(String lore, String code) {
+		if (!hasCode(lore, code)) {
+			String result = lore;
+			for (char c : code.toCharArray()) {
+				result = "&" + c + result;
+			}
+
+			return this.m(result);
 		} else {
 			return lore;
 		}
 	}
 
-	public String extractCode(String line) {
+	public String extractCode(String line, String code) {
 		String newLine = line.replace("§", "");
-		if (newLine.startsWith("af4")) {
+		if (newLine.startsWith(code)) {
 			return this.m("&8" + ChatColor.stripColor(line));
 		}
 
 		return line;
 	}
 
-	public static boolean hasCode(String line) {
+	public static boolean hasCode(String line, String code) {
 		String newLine = line.replace("§", "");
-		if (newLine.startsWith("af4")) {
+		if (newLine.startsWith(code)) {
 			return true;
 		}
 
 		return false;
 	}
 
-	public static String removeChatPrefix(String message) {
+	public static String removeChatPrefix(char prefix, String message) {
 
 		char c = message.charAt(0);
 
-		if (Character.toString(c).equals("!")) {
+		if (c == prefix) {
 			return message.substring(1);
-		} else {
-			return message;
 		}
 
+		return message;
 	}
 
 }

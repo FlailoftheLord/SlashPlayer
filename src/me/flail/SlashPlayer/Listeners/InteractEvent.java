@@ -33,7 +33,7 @@ public class InteractEvent extends Tools implements Listener {
 
 			FileConfiguration config = plugin.getConfig();
 
-			String blockInteract = config.get("Freeze.Interact").toString();
+			String blockInteract = config.get("Frozen.Interact").toString();
 
 			if (blockInteract.equalsIgnoreCase("deny")) {
 
@@ -60,7 +60,7 @@ public class InteractEvent extends Tools implements Listener {
 			Player player = (Player) subject;
 			Player operator = event.getPlayer();
 
-			if (operator.hasPermission("slashplayer.command")) {
+			if (operator.hasPermission("slashplayer.command") && operator.hasPermission("slashplayer.interactopen")) {
 
 				String operatorHandItem = operator.getInventory().getItemInMainHand().getType().toString();
 				String operatorOffhandItem = operator.getInventory().getItemInOffHand().getType().toString();
