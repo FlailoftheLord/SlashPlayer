@@ -2,6 +2,7 @@ package me.flail.SlashPlayer;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.UUID;
 
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -83,7 +84,6 @@ public class Commands implements CommandExecutor {
 							}
 
 							BanControl bans = new BanControl();
-							bans.saveBanList();
 							bans.loadBanList();
 
 							MuteControl mutes = new MuteControl();
@@ -168,8 +168,11 @@ public class Commands implements CommandExecutor {
 
 								boolean playerBanned = false;
 
-								for (OfflinePlayer p : plugin.banTimer.keySet()) {
+								for (String uuid : plugin.banList) {
+									OfflinePlayer p = plugin.server.getOfflinePlayer(UUID.fromString(uuid));
+
 									if (p.getName().equalsIgnoreCase(args[1])) {
+
 										BanControl bans = new BanControl();
 
 										bans.unbanPlayer(p);

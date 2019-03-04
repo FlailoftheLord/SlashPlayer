@@ -1,7 +1,5 @@
 package me.flail.SlashPlayer.ControlCenter;
 
-import java.util.UUID;
-
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -16,14 +14,15 @@ public class BanControl {
 	private Tools tools = new Tools();
 
 	public void runTimer() {
+		FileConfiguration pData = plugin.getPlayerData();
 
-		for (OfflinePlayer p : plugin.banTimer.keySet()) {
-			int time = plugin.banTimer.get(p).intValue();
+		this.loadBanList();
 
-			if (time < 1) {
-				this.unbanPlayer(p);
-			} else {
-				plugin.banTimer.put(p, Integer.valueOf(time - 1));
+		for (String uuid : plugin.banList) {
+			if (pData.getBoolean(uuid + ".IsBanned", false)) {
+				int time = pData.getInt(uuid + ".BanDuration", 60);
+				pData.set(uuid + ".BanDuration", time - 1);
+
 			}
 
 		}
@@ -36,29 +35,7 @@ public class BanControl {
 		for (String pUuid : pData.getKeys(false)) {
 			boolean isBanned = pData.getBoolean(pUuid + ".IsBanned", false);
 			if (isBanned) {
-				UUID uuid = UUID.fromString(pUuid);
-				int time = pData.getInt(pUuid + ".BanDuration", 60);
-
-				plugin.banTimer.put(plugin.server.getOfflinePlayer(uuid), Integer.valueOf(time));
-			}
-
-		}
-
-	}
-
-	public void saveBanList() {
-
-		for (OfflinePlayer player : plugin.banTimer.keySet()) {
-
-			int time = plugin.banTimer.get(player).intValue();
-			String pUuid = player.getUniqueId().toString();
-
-			if (time > 0) {
-				FileConfiguration pData = plugin.manager.getFile(plugin, "PlayerData.yml");
-				pData.set(pUuid + ".IsOnline", false);
-				pData.set(pUuid + ".IsBanned", true);
-				pData.set(pUuid + ".BanDuration", time);
-				plugin.manager.saveFile(plugin, "PlayerData.yml", pData);
+				plugin.banList.add(pUuid);
 			}
 
 		}
@@ -67,9 +44,7 @@ public class BanControl {
 
 	public boolean banPlayer(OfflinePlayer player, String reason, int time) {
 
-		plugin.banTimer.put(player, Integer.valueOf(time));
-
-		FileConfiguration pData = plugin.manager.getFile(plugin, "PlayerData.yml");
+		FileConfiguration pData = plugin.getPlayerData();
 		String pUuid = player.getUniqueId().toString();
 
 		pData.set(pUuid + ".IsBanned", true);
@@ -77,29 +52,29 @@ public class BanControl {
 		pData.set(pUuid + ".IsOnline", false);
 		plugin.manager.saveFile(plugin, "PlayerData.yml", pData);
 
+		plugin.banList.add(pUuid);
+
 		// Finally, we kick teh player off if he's still online!
 		if (player.isOnline()) {
 			Player onlinePlayer = player.getPlayer();
 			this.kickBanned(onlinePlayer, reason);
 		}
 
-		this.saveBanList();
 		return true;
 
 	}
 
 	public boolean unbanPlayer(OfflinePlayer player) {
 
-		plugin.banTimer.remove(player);
-
-		FileConfiguration pData = plugin.manager.getFile(plugin, "PlayerData.yml");
+		FileConfiguration pData = plugin.getPlayerData();
 		String pUuid = player.getUniqueId().toString();
+
+		plugin.banList.remove(pUuid);
 
 		pData.set(pUuid + ".IsBanned", null);
 		pData.set(pUuid + ".BanDuration", null);
-		plugin.manager.saveFile(plugin, "PlayerData.yml", pData);
+		plugin.savePlayerData(pData);
 
-		this.saveBanList();
 		return true;
 	}
 
@@ -107,25 +82,26 @@ public class BanControl {
 
 		String pUuid = player.getUniqueId().toString();
 
-		FileConfiguration pData = plugin.manager.getFile(plugin, "PlayerData.yml");
+		FileConfiguration pData = plugin.getPlayerData();
 		if (pData.getBoolean(pUuid + ".IsBanned", false)) {
 			return true;
 		}
 
-		this.saveBanList();
 		return false;
+	}
+
+	public int getBanDuration(OfflinePlayer player) {
+		FileConfiguration pData = plugin.getPlayerData();
+		return pData.getInt(player.getUniqueId().toString() + ".BanDuration");
 	}
 
 	public void kickBanned(Player player, String reason) {
 		if ((reason == null) || reason.isEmpty()) {
-			reason = plugin.manager.getMessage("Banned").replace("%ban-duration%",
-					plugin.banTimer.get(player).toString());
+			reason = plugin.manager.getMessage("Banned").replace("%ban-duration%", this.getBanDuration(player) + "");
 
 		}
 
 		player.kickPlayer(tools.msg(reason, player, null, "Ban", "slashplayer"));
-
-		this.saveBanList();
 	}
 
 }

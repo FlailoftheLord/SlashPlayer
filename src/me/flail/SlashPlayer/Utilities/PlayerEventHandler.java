@@ -45,7 +45,6 @@ public class PlayerEventHandler extends Tools implements Listener {
 	public void playerLeave(PlayerQuitEvent event) {
 
 		BanControl bans = new BanControl();
-		bans.saveBanList();
 		bans.loadBanList();
 
 		FileConfiguration pData = plugin.getPlayerData();
@@ -73,7 +72,6 @@ public class PlayerEventHandler extends Tools implements Listener {
 	public void playerKicked(PlayerKickEvent event) {
 
 		BanControl bans = new BanControl();
-		bans.saveBanList();
 		bans.loadBanList();
 
 		FileConfiguration pData = plugin.getPlayerData();
@@ -118,9 +116,10 @@ public class PlayerEventHandler extends Tools implements Listener {
 
 		}
 
-		if (plugin.banTimer.containsKey(player)) {
+		if (plugin.banList.contains(pUuid.toString())) {
+			BanControl bans = new BanControl();
 
-			int banTime = plugin.banTimer.get(player).intValue();
+			int banTime = bans.getBanDuration(player);
 
 			if ((banTime < 1)) {
 				pData.set(pUuid + ".IsBanned", null);

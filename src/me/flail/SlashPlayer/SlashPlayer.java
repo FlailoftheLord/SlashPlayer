@@ -1,6 +1,8 @@
 package me.flail.SlashPlayer;
 
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
@@ -47,7 +49,7 @@ public class SlashPlayer extends JavaPlugin implements Listener {
 	public Server server = this.getServer();
 	public String version = getDescription().getVersion();
 
-	public Map<OfflinePlayer, Integer> banTimer = new HashMap<>();
+	public List<String> banList = new LinkedList<>();
 	public Map<OfflinePlayer, Integer> muteTimer = new HashMap<>();
 	public Map<Player, Integer> messageCooldowns = new HashMap<>();
 
@@ -114,7 +116,6 @@ public class SlashPlayer extends JavaPlugin implements Listener {
 		savePlayerData(this.getPlayerData());
 
 		new MuteControl().saveList();
-		new BanControl().saveBanList();
 
 	}
 
