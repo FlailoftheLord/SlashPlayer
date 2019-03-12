@@ -16,18 +16,20 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import me.flail.SlashPlayer.SlashPlayer;
+import me.flail.SlashPlayer.FileManager.FileManager;
 import me.flail.SlashPlayer.Utilities.Tools;
 
 public class PlayerInfoInventory {
 
 	private SlashPlayer plugin = SlashPlayer.getPlugin(SlashPlayer.class);
+	private FileManager manager = new FileManager();
 
 	private Tools chat = new Tools();
 
 	public ItemStack pHead(OfflinePlayer player, String code) {
 
-		FileConfiguration guiConfig = plugin.getGuiConfig();
-		FileConfiguration pData = plugin.getPlayerData();
+		FileConfiguration guiConfig = manager.getFile("GuiConfig");
+		FileConfiguration pData = manager.getFile("PlayerData");
 
 		String hColor = guiConfig.getString("Header.NameColor");
 		ItemStack header = new ItemStack(Material.PLAYER_HEAD);
@@ -99,7 +101,7 @@ public class PlayerInfoInventory {
 
 		FileConfiguration config = plugin.config;
 
-		FileConfiguration guiConfig = plugin.getGuiConfig();
+		FileConfiguration guiConfig = manager.getFile("GuiConfig");
 
 		Inventory pInfo = null;
 
@@ -178,7 +180,7 @@ public class PlayerInfoInventory {
 
 					if (fillSpace) {
 
-						String fI = guiConfig.getString("FillerItem").toUpperCase();
+						String fI = guiConfig.get("FillerItem").toString().toUpperCase();
 
 						if (Material.matchMaterial(fI) != null) {
 

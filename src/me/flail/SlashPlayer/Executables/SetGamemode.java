@@ -21,6 +21,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import me.flail.SlashPlayer.SlashPlayer;
+import me.flail.SlashPlayer.FileManager.FileManager;
 import me.flail.SlashPlayer.GUI.PlayerInfoInventory;
 import me.flail.SlashPlayer.Utilities.Tools;
 
@@ -28,17 +29,18 @@ import me.flail.SlashPlayer.Utilities.Tools;
 public class SetGamemode implements Listener {
 
 	private SlashPlayer plugin = SlashPlayer.getPlugin(SlashPlayer.class);
+	private FileManager manager = new FileManager();
 
 	private Tools chat = new Tools();
 
-	FileConfiguration messages = plugin.getMessages();
+	FileConfiguration messages = manager.getFile("Messages");
 
 	private ConsoleCommandSender console = plugin.console;
 
 	@EventHandler
 	public void setGamemode(InventoryClickEvent event) {
 
-		FileConfiguration guiConfig = plugin.getGuiConfig();
+		FileConfiguration guiConfig = manager.getFile("GuiConfig");
 
 		Inventory inv = event.getInventory();
 

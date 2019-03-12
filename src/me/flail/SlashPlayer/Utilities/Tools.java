@@ -21,7 +21,10 @@ public class Tools {
 
 		FileConfiguration config = plugin.config;
 
-		String prefix = config.get("Prefix").toString();
+		String prefix = "";
+		if (config != null) {
+			prefix = config.get("Prefix").toString();
+		}
 
 		return ChatColor.translateAlternateColorCodes('&', s.replaceAll("%prefix%", prefix).replaceAll(" ~!~", " \n"));
 

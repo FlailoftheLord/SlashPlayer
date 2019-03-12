@@ -18,6 +18,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import me.flail.SlashPlayer.SlashPlayer;
+import me.flail.SlashPlayer.FileManager.FileManager;
 import me.flail.SlashPlayer.GUI.PlayerInfoInventory;
 import me.flail.SlashPlayer.GUI.ReportInventory;
 import me.flail.SlashPlayer.Utilities.Tools;
@@ -26,13 +27,14 @@ import me.flail.SlashPlayer.Utilities.Tools;
 public class ReportGui implements Listener {
 
 	private SlashPlayer plugin = JavaPlugin.getPlugin(SlashPlayer.class);
+	private FileManager manager = new FileManager();
 
 	private Tools tools = new Tools();
 
 	@EventHandler
 	public void inventoryClick(InventoryClickEvent event) {
 
-		FileConfiguration guiConfig = plugin.getGuiConfig();
+		FileConfiguration guiConfig = manager.getFile("GuiConfig");
 
 		String reportInvTitle = tools.m(guiConfig.get("ReportGui.InventoryTitle").toString());
 
@@ -81,17 +83,17 @@ public class ReportGui implements Listener {
 
 									if (player.hasPermission("slashplayer.staff")) {
 
-										FileConfiguration reportedPlayers = plugin.getReportedPlayers();
+										FileConfiguration reportedPlayers = manager.getFile("ReportedPlayers");
 
 										reportedPlayers.set(pUuid, null);
 
-										plugin.saveReportedPlayers(reportedPlayers);
+										manager.saveFile(reportedPlayers);
 
 										player.closeInventory();
 										player.openInventory(new ReportInventory().reportInv(player));
 
 									} else {
-										FileConfiguration messages = plugin.getMessages();
+										FileConfiguration messages = manager.getFile("Messages");
 										String noPermission = messages.getString("NoPermission");
 
 										player.closeInventory();

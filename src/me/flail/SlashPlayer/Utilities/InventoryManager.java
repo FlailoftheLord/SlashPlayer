@@ -8,20 +8,18 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.java.JavaPlugin;
 
-import me.flail.SlashPlayer.SlashPlayer;
 import me.flail.SlashPlayer.FileManager.FileManager;
 
 public class InventoryManager {
 
-	private SlashPlayer plugin = JavaPlugin.getPlugin(SlashPlayer.class);
+	private FileManager manager = new FileManager();
 
 	public boolean clearInventory(OfflinePlayer target) {
 		if (target.isOnline()) {
 			Player subject = target.getPlayer();
-			FileManager manager = new FileManager(plugin);
-			FileConfiguration invData = manager.getFile(plugin, "InventoryData.yml");
+
+			FileConfiguration invData = manager.getFile("InventoryData.yml");
 
 			String pUuid = subject.getUniqueId().toString();
 
@@ -65,7 +63,7 @@ public class InventoryManager {
 				invData.set(pUuid + ".Extras", null);
 			}
 
-			manager.saveFile(plugin, "InventoryData.yml", invData);
+			manager.saveFile(invData);
 
 			subject.getInventory().clear();
 
@@ -79,8 +77,8 @@ public class InventoryManager {
 	public boolean restoreInventory(OfflinePlayer target) {
 		if (target.isOnline()) {
 			Player subject = target.getPlayer();
-			FileManager manager = new FileManager(plugin);
-			FileConfiguration invData = manager.getFile(plugin, "InventoryData.yml");
+			FileManager manager = new FileManager();
+			FileConfiguration invData = manager.getFile("InventoryData.yml");
 
 			String pUuid = subject.getUniqueId().toString();
 

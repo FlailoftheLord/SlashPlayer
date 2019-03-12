@@ -14,11 +14,13 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import me.flail.SlashPlayer.SlashPlayer;
+import me.flail.SlashPlayer.FileManager.FileManager;
 import me.flail.SlashPlayer.Utilities.Tools;
 
 public class PlayerListInventory {
 
 	private SlashPlayer plugin = SlashPlayer.getPlugin(SlashPlayer.class);
+	private FileManager manager = new FileManager();
 
 	private Tools chat = new Tools();
 
@@ -49,7 +51,7 @@ public class PlayerListInventory {
 
 		FileConfiguration config = plugin.config;
 
-		FileConfiguration guiConfig = plugin.getGuiConfig();
+		FileConfiguration guiConfig = manager.getFile("GuiConfig");
 
 		String invTitle = config.getString("PlayerListTitle");
 

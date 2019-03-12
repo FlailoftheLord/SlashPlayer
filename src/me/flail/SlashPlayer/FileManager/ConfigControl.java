@@ -19,34 +19,45 @@ public class ConfigControl {
 
 	public FileConfiguration get(boolean overwrite) {
 		this.load(overwrite);
-		File file = new File("plugins/SlashPlayer/config.yml");
-		FileConfiguration config = new YamlConfiguration();
 
-		try {
-			config.load(file);
-		} catch (Throwable t) {
-		}
-
-		return config;
+		return plugin.manager.getFile("config.yml");
 	}
 
 	public boolean load(boolean overwrite) {
 		try {
+			File file = new File(plugin.getDataFolder(), "config.yml");
 
-			File config = new File("plugins/SlashPlayer/config.yml");
+			FileConfiguration config = new YamlConfiguration();
+			config.load(file);
 
-			if (overwrite || !config.exists()) {
-				config.createNewFile();
-				setterUpper();
+			if (!file.exists() || config.contains("ConfigVersion")) {
+				this.forceUpdate();
 
-				BufferedWriter writer = new BufferedWriter(new FileWriter(config));
-				for (String line : configLines) {
-					writer.append(line + "\n");
-				}
-
-				writer.flush();
-				writer.close();
+			} else if (overwrite) {
+				this.forceUpdate();
 			}
+
+			return true;
+		} catch (Throwable t) {
+			return false;
+		}
+
+	}
+
+	private boolean forceUpdate() {
+		try {
+			File config = new File(plugin.getDataFolder() + "/config.yml");
+			config.createNewFile();
+			setterUpper();
+
+			BufferedWriter writer = new BufferedWriter(new FileWriter(config));
+			writer.write(header);
+			for (String line : configLines) {
+				writer.append(line + "\n");
+			}
+
+			writer.flush();
+			writer.close();
 
 			return true;
 		} catch (Throwable t) {
@@ -57,22 +68,7 @@ public class ConfigControl {
 
 	private void setterUpper() {
 
-		String[] lines = { "#-----------------------------------------------------------------",
-				"#==================================================================#",
-				"#                                                                  #",
-				"#                 Plugin by FlailoftheLord.                        #",
-				"#        -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-                   #",
-				"#       For questions please join my discord server:               #",
-				"#                https://discord.gg/wuxW5PS                        #",
-				"#   ______               __        _____                           #",
-				"#   |       |           /  \\         |        |                    #",
-				"#   |__     |          /____\\        |        |                    #",
-				"#   |       |         /      \\       |        |                    #",
-				"#   |       |_____   /        \\    __|__      |______              #",
-				"#                                                                  #",
-				"#==================================================================#",
-				"#-----------------------------------------------------------------", " ", " ",
-				"# Prefix for messages and commands.", "Prefix: \"&8(&3&lSP&8)\"", " ",
+		String[] lines = { " ", "# Prefix for messages and commands.", "Prefix: \"&8(&3&lSP&8)\"", " ",
 				"# NOTE: Ranks go from 0 - 100 (in which 0 is the lowest rank) and can be applied to a user with the permission:",
 				"#   slashplayer.rank.#   - replace # with any number from 0 - 100, ",
 				"# If a player does not have a rank permisison, their rank will default to 0.", " ",
@@ -107,5 +103,21 @@ public class ConfigControl {
 		}
 
 	}
+
+	public static String header = "#-----------------------------------------------------------------\n"
+			+ "#==================================================================#\n"
+			+ "#                                                                  #\n"
+			+ "#                 Plugin by FlailoftheLord.                        #\n"
+			+ "#        -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-                   #\n"
+			+ "#       For questions please join my discord server:               #\n"
+			+ "#                https://discord.gg/wuxW5PS                        #\n"
+			+ "#   ______               __        _____                           #\n"
+			+ "#   |       |           /  \\         |        |                    #\n"
+			+ "#   |__     |          /____\\        |        |                    #\n"
+			+ "#   |       |         /      \\       |        |                    #\n"
+			+ "#   |       |_____   /        \\    __|__      |______              #\n"
+			+ "#                                                                  #\n"
+			+ "#==================================================================#\n"
+			+ "#-----------------------------------------------------------------\n" + " ";
 
 }

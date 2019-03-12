@@ -5,11 +5,11 @@ import java.util.Calendar;
 
 import org.bukkit.configuration.file.FileConfiguration;
 
-import me.flail.SlashPlayer.SlashPlayer;
+import me.flail.SlashPlayer.FileManager.FileManager;
 
 public class Time {
 
-	private SlashPlayer plugin = SlashPlayer.getPlugin(SlashPlayer.class);
+	private FileManager manager = new FileManager();
 
 	public String monthName(int month) {
 		switch (month + 1) {
@@ -54,7 +54,7 @@ public class Time {
 
 	public void time() {
 
-		FileConfiguration pData = plugin.getPlayerData();
+		FileConfiguration pData = manager.getFile("PlayerData");
 
 		SimpleDateFormat timeM = new SimpleDateFormat("mm");
 		SimpleDateFormat timeH = new SimpleDateFormat("HH");

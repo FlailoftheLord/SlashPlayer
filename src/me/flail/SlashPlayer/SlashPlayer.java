@@ -1,8 +1,7 @@
 package me.flail.SlashPlayer;
 
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
@@ -25,9 +24,7 @@ import me.flail.SlashPlayer.ControlCenter.BanControl;
 import me.flail.SlashPlayer.ControlCenter.MuteControl;
 import me.flail.SlashPlayer.Executables.Executables;
 import me.flail.SlashPlayer.Executables.SetGamemode;
-import me.flail.SlashPlayer.FileManager.ConfigControl;
 import me.flail.SlashPlayer.FileManager.FileManager;
-import me.flail.SlashPlayer.FileManager.IFileManager;
 import me.flail.SlashPlayer.Listeners.FreezeListener;
 import me.flail.SlashPlayer.Listeners.InteractEvent;
 import me.flail.SlashPlayer.Listeners.MuteListener;
@@ -37,46 +34,42 @@ import me.flail.SlashPlayer.Utilities.PlayerEventHandler;
 import me.flail.SlashPlayer.Utilities.Tools;
 
 public class SlashPlayer extends JavaPlugin implements Listener {
+	public static SlashPlayer instance;
+	public FileManager manager = new FileManager();
 
 	public ConsoleCommandSender console = Bukkit.getConsoleSender();
-
-	public FileManager manager = new FileManager(this);
-
-	public FileConfiguration config = new YamlConfiguration();
-
 	public PluginManager pm = getServer().getPluginManager();
 
 	public Server server = this.getServer();
 	public String version = getDescription().getVersion();
 
-	public List<String> banList = new LinkedList<>();
+	public Map<UUID, Player> players = new HashMap<>();
+
+	public Map<String, Integer> banList = Collections.synchronizedMap(new HashMap<>());
 	public Map<OfflinePlayer, Integer> muteTimer = new HashMap<>();
 	public Map<Player, Integer> messageCooldowns = new HashMap<>();
 
 	private String serverVersion = getServer().getBukkitVersion();
 	private String serverType = getServer().getVersion();
 
-	public Map<UUID, Player> players = new HashMap<>();
-
-	public static SlashPlayer instance;
+	public FileConfiguration config = new YamlConfiguration();
 
 	@Override
 	public void onEnable() {
 		instance = this;
+		manager = new FileManager();
 
-		serverType = serverType.replace(serverType.substring(serverType.indexOf("(")), "");
+		// Load up the Files
+		saveDefaultConfig();
+		config = this.getConfig();
+
+		serverType = serverType.replace(serverType.substring(serverType.indexOf("(")), "v");
 
 		Tools chat = new Tools();
 
-		ConfigControl config = new ConfigControl();
-
-		// Load up the Files
-		config.load(false);
-		this.config = config.get(false);
-
-		loadGuiConfig();
-		loadPlayerData();
-		loadMessages();
+		manager.loadFile("Messages");
+		manager.loadFile("PlayerData");
+		manager.loadFile("GuiConfig");
 
 		// Register Commands and Events
 		registerCommands();
@@ -102,7 +95,7 @@ public class SlashPlayer extends JavaPlugin implements Listener {
 		// And finally initiate the Ban and Mute Timers 5 seconds after startup.
 		server.getScheduler().scheduleSyncDelayedTask(this, () -> {
 			new MuteControl().loadList();
-			new BanControl().loadBanList();
+			new BanControl().loadList();
 			startTasks();
 			console.sendMessage(chat.m("%prefix% &8Updating bans..."));
 		}, 120);
@@ -112,9 +105,6 @@ public class SlashPlayer extends JavaPlugin implements Listener {
 	@Override
 	public void onDisable() {
 		server.getScheduler().cancelTasks(this);
-		saveReportedPlayers(this.getReportedPlayers());
-		savePlayerData(this.getPlayerData());
-
 		new MuteControl().saveList();
 
 	}
@@ -177,66 +167,7 @@ public class SlashPlayer extends JavaPlugin implements Listener {
 
 	}
 
-	@Override
-	public FileConfiguration getConfig() {
-		return new ConfigControl().get(false);
-	}
-
-	public FileConfiguration getMessages() {
-		return manager.getFile(this, "Messages.yml");
-	}
-
-	public void loadMessages() {
-		manager.loadFile(this, "Messages.yml");
-
-	}
-
-	public void saveMessages(FileConfiguration config) {
-		manager.saveFile(this, "Messages.yml", config);
-	}
-
-	public FileConfiguration getReportedPlayers() {
-		return manager.getFile(this, "ReportedPlayers.yml");
-	}
-
-	public void loadReportedPlayers() {
-		manager.loadFile(this, "ReportedPlayers.yml");
-
-	}
-
-	public void saveReportedPlayers(FileConfiguration config) {
-		manager.saveFile(this, "ReportedPlayers.yml", config);
-	}
-
-	public FileConfiguration getGuiConfig() {
-		return manager.getFile(this, "GuiConfig.yml");
-	}
-
-	public void loadGuiConfig() {
-		manager.loadFile(this, "GuiConfig.yml");
-	}
-
-	public void saveGuiConfig(FileConfiguration config) {
-		manager.saveFile(this, "GuiConfig.yml", config);
-
-	}
-
-	public FileConfiguration getPlayerData() {
-		return manager.getFile(this, "PlayerData.yml");
-	}
-
-	public void loadPlayerData() {
-		manager.loadFile(this, "PlayerData.yml");
-	}
-
-	public void savePlayerData(FileConfiguration config) {
-		manager.saveFile(this, "PlayerData.yml", config);
-
-	}
-
 	public void logAction(String msg) {
-
-		IFileManager manager = new IFileManager(this);
 		manager.log(msg);
 
 	}

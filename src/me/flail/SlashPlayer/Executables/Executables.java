@@ -19,16 +19,18 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import me.flail.SlashPlayer.SlashPlayer;
+import me.flail.SlashPlayer.FileManager.FileManager;
 import me.flail.SlashPlayer.Utilities.Tools;
 
 public class Executables implements Listener {
 
 	private SlashPlayer plugin = SlashPlayer.getPlugin(SlashPlayer.class);
+	private FileManager manager = new FileManager();
 
 	@EventHandler
 	public void executables(InventoryClickEvent event) {
 
-		FileConfiguration guiConfig = plugin.manager.getFile(plugin, "GuiConfig.yml");
+		FileConfiguration guiConfig = manager.getFile("GuiConfig");
 
 		Inventory eventInv = event.getInventory();
 

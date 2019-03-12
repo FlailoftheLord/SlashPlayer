@@ -16,11 +16,13 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import me.flail.SlashPlayer.SlashPlayer;
+import me.flail.SlashPlayer.FileManager.FileManager;
 import me.flail.SlashPlayer.Utilities.Tools;
 
 public class ReportInventory {
 
 	private SlashPlayer plugin = SlashPlayer.getPlugin(SlashPlayer.class);
+	private FileManager manager = new FileManager();
 
 	private Tools tools = new Tools();
 
@@ -28,9 +30,9 @@ public class ReportInventory {
 
 		String pUuid = player.getUniqueId().toString();
 
-		FileConfiguration guiConfig = plugin.getGuiConfig();
+		FileConfiguration guiConfig = manager.getFile("GuiConfig");
 
-		FileConfiguration reports = plugin.getReportedPlayers();
+		FileConfiguration reports = manager.getFile("ReportedPlayers");
 
 		String nameFormat = tools.msg(guiConfig.getString("ReportGui.ReportList.Name"), player, player, "ReportGui",
 				"report");
@@ -96,9 +98,9 @@ public class ReportInventory {
 
 		String pUuid = player.getUniqueId().toString();
 
-		FileConfiguration guiConfig = plugin.getGuiConfig();
+		FileConfiguration guiConfig = manager.getFile("GuiConfig");
 
-		FileConfiguration reports = plugin.getReportedPlayers();
+		FileConfiguration reports = manager.getFile("ReportedPlayers");
 
 		String nameFormat = tools
 				.m(guiConfig.getString("ReportGui.ReportList.Name").replaceAll("%player%", player.getName()));
@@ -161,8 +163,8 @@ public class ReportInventory {
 	public Inventory reportInv(Player operator) {
 
 		FileConfiguration config = plugin.getConfig();
-		FileConfiguration guiConfig = plugin.getGuiConfig();
-		FileConfiguration reportedPlayerConfig = plugin.getReportedPlayers();
+		FileConfiguration guiConfig = manager.getFile("GuiConfig");
+		FileConfiguration reportedPlayerConfig = manager.getFile("ReportedPlayers");
 
 		boolean fillEmptySpace = config.getBoolean("FillEmptySpace");
 

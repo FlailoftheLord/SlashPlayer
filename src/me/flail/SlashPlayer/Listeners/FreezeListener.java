@@ -10,20 +10,22 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 
 import me.flail.SlashPlayer.SlashPlayer;
+import me.flail.SlashPlayer.FileManager.FileManager;
 import me.flail.SlashPlayer.Utilities.Tools;
 
 public class FreezeListener implements Listener {
 
 	private SlashPlayer plugin = SlashPlayer.getPlugin(SlashPlayer.class);
+	private FileManager manager = new FileManager();
 
 	private Tools chat = new Tools();
 
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void playerMove(PlayerMoveEvent event) {
 
-		FileConfiguration pData = plugin.getPlayerData();
+		FileConfiguration pData = manager.getFile("PlayerData");
 
-		FileConfiguration messages = plugin.getMessages();
+		FileConfiguration messages = manager.getFile("Messages");
 
 		Player player = event.getPlayer();
 

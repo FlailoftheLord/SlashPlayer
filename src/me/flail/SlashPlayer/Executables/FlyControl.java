@@ -6,15 +6,15 @@ import org.bukkit.GameMode;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
-import me.flail.SlashPlayer.SlashPlayer;
+import me.flail.SlashPlayer.FileManager.FileManager;
 
 public class FlyControl {
 
-	private SlashPlayer plugin = SlashPlayer.getPlugin(SlashPlayer.class);
+	private FileManager manager = new FileManager();
 
 	public boolean fly(Player player) {
 
-		FileConfiguration pData = plugin.getPlayerData();
+		FileConfiguration pData = manager.getFile("PlayerData");
 
 		String pUuid = player.getUniqueId().toString();
 
@@ -25,7 +25,7 @@ public class FlyControl {
 			player.setFlying(true);
 			pData.set(pUuid + ".IsFlying", true);
 
-			plugin.savePlayerData(pData);
+			manager.saveFile(pData);
 			return true;
 		} else {
 			pData.set(pUuid + ".IsFlying", false);
@@ -34,14 +34,14 @@ public class FlyControl {
 
 		}
 
-		plugin.savePlayerData(pData);
+		manager.saveFile(pData);
 		return false;
 
 	}
 
 	public void flyLogin(Player player) {
 
-		FileConfiguration pData = plugin.getPlayerData();
+		FileConfiguration pData = manager.getFile("PlayerData");
 
 		if (player != null) {
 
@@ -79,7 +79,7 @@ public class FlyControl {
 				player.setFlying(true);
 			}
 
-			plugin.savePlayerData(pData);
+			manager.saveFile(pData);
 		}
 
 	}

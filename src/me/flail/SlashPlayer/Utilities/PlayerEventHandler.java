@@ -16,10 +16,12 @@ import me.flail.SlashPlayer.Commands;
 import me.flail.SlashPlayer.SlashPlayer;
 import me.flail.SlashPlayer.ControlCenter.BanControl;
 import me.flail.SlashPlayer.Executables.FlyControl;
+import me.flail.SlashPlayer.FileManager.FileManager;
 
 public class PlayerEventHandler extends Tools implements Listener {
 
 	private SlashPlayer plugin = SlashPlayer.getPlugin(SlashPlayer.class);
+	private FileManager manager = new FileManager();
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void playerJoin(PlayerJoinEvent event) {
@@ -45,9 +47,9 @@ public class PlayerEventHandler extends Tools implements Listener {
 	public void playerLeave(PlayerQuitEvent event) {
 
 		BanControl bans = new BanControl();
-		bans.loadBanList();
+		bans.loadList();
 
-		FileConfiguration pData = plugin.getPlayerData();
+		FileConfiguration pData = manager.getFile("PlayerData.yml");
 
 		Player player = event.getPlayer();
 
@@ -60,11 +62,13 @@ public class PlayerEventHandler extends Tools implements Listener {
 		pData.set(pUuid + ".Name", pName);
 		pData.set(pUuid + ".IsOnline", false);
 
-		if (pData.getBoolean(pUuid + ".IsBanned")) {
+		if (pData.getBoolean(pUuid + ".IsBanned") || plugin.banList.containsKey(pUuid)) {
+			pData.set(pUuid + ".IsBanned", true);
+			pData.set(pUuid + ".BanDuration", plugin.banList.get(pUuid));
 			event.setQuitMessage("");
 		}
 
-		plugin.savePlayerData(pData);
+		manager.saveFile(pData);
 
 	}
 
@@ -72,9 +76,9 @@ public class PlayerEventHandler extends Tools implements Listener {
 	public void playerKicked(PlayerKickEvent event) {
 
 		BanControl bans = new BanControl();
-		bans.loadBanList();
+		bans.loadList();
 
-		FileConfiguration pData = plugin.getPlayerData();
+		FileConfiguration pData = manager.getFile("PlayerData");
 
 		Player player = event.getPlayer();
 
@@ -87,17 +91,19 @@ public class PlayerEventHandler extends Tools implements Listener {
 		pData.set(pUuid + ".Name", pName);
 		pData.set(pUuid + ".IsOnline", false);
 
-		if (pData.getBoolean(pUuid + ".IsBanned")) {
+		if (pData.getBoolean(pUuid + ".IsBanned") || plugin.banList.containsKey(pUuid)) {
+			pData.set(pUuid + ".IsBanned", true);
+			pData.set(pUuid + ".BanDuration", plugin.banList.get(pUuid));
 			event.setLeaveMessage("");
 		}
 
-		plugin.savePlayerData(pData);
+		manager.saveFile(pData);
 
 	}
 
 	public void setData(Player player) {
 
-		FileConfiguration pData = plugin.getPlayerData();
+		FileConfiguration pData = manager.getFile("PlayerData");
 		pData.options().header(
 				"All relevant Player data is stored in this file. \nThis is for storage purposes ONLY. \nPlease do not edit or change anything!\n");
 
@@ -116,7 +122,7 @@ public class PlayerEventHandler extends Tools implements Listener {
 
 		}
 
-		if (plugin.banList.contains(pUuid.toString())) {
+		if (plugin.banList.containsKey(pUuid.toString())) {
 			BanControl bans = new BanControl();
 
 			int banTime = bans.getBanDuration(player);
@@ -135,7 +141,7 @@ public class PlayerEventHandler extends Tools implements Listener {
 		pData.set(pUuid + ".IsOnline", true);
 		pData.set(pUuid + ".Gamemode", player.getGameMode().toString());
 
-		plugin.savePlayerData(pData);
+		manager.saveFile(pData);
 
 		PluginCommand pCommand = getCommand(pName, plugin);
 		pCommand.setExecutor(new Commands());

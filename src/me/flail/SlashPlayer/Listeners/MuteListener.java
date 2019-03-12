@@ -8,19 +8,21 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import me.flail.SlashPlayer.SlashPlayer;
 import me.flail.SlashPlayer.ControlCenter.MuteControl;
+import me.flail.SlashPlayer.FileManager.FileManager;
 import me.flail.SlashPlayer.Utilities.Tools;
 
 public class MuteListener implements Listener {
 
 	private SlashPlayer plugin = SlashPlayer.getPlugin(SlashPlayer.class);
+	private FileManager manager = new FileManager();
 
 	private Tools chat = new Tools();
 
 	@EventHandler
 	public void playerChat(AsyncPlayerChatEvent event) {
 
-		FileConfiguration pData = plugin.getPlayerData();
-		FileConfiguration messages = plugin.getMessages();
+		FileConfiguration pData = manager.getFile("PlayerData");
+		FileConfiguration messages = manager.getFile("Messages");
 		FileConfiguration config = plugin.getConfig();
 
 		Player player = event.getPlayer();
@@ -63,7 +65,7 @@ public class MuteListener implements Listener {
 
 		}
 
-		plugin.savePlayerData(pData);
+		manager.saveFile(pData);
 	}
 
 }

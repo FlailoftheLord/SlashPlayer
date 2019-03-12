@@ -14,6 +14,7 @@ import org.bukkit.inventory.Inventory;
 
 import me.flail.SlashPlayer.ControlCenter.BanControl;
 import me.flail.SlashPlayer.ControlCenter.MuteControl;
+import me.flail.SlashPlayer.FileManager.FileManager;
 import me.flail.SlashPlayer.GUI.PlayerInfoInventory;
 import me.flail.SlashPlayer.GUI.PlayerListInventory;
 import me.flail.SlashPlayer.GUI.ReportInventory;
@@ -23,6 +24,7 @@ import me.flail.SlashPlayer.Utilities.Tools;
 public class Commands implements CommandExecutor {
 
 	private SlashPlayer plugin = SlashPlayer.getPlugin(SlashPlayer.class);
+	private FileManager manager = new FileManager();
 
 	private Tools chat = new Tools();
 
@@ -56,11 +58,11 @@ public class Commands implements CommandExecutor {
 
 		}
 
-		FileConfiguration reportedPlayers = plugin.getReportedPlayers();
+		FileConfiguration reportedPlayers = manager.getFile("ReportedPlayers");
 
-		FileConfiguration pData = plugin.getPlayerData();
+		FileConfiguration pData = manager.getFile("PlayerData");
 
-		FileConfiguration messages = plugin.getMessages();
+		FileConfiguration messages = manager.getFile("Messages");
 
 		if (cmd.equals("slashplayer") || cmd.equals("player")) {
 
@@ -84,7 +86,7 @@ public class Commands implements CommandExecutor {
 							}
 
 							BanControl bans = new BanControl();
-							bans.loadBanList();
+							bans.loadList();
 
 							MuteControl mutes = new MuteControl();
 							mutes.saveList();
@@ -95,9 +97,9 @@ public class Commands implements CommandExecutor {
 								pHandler.setData(player);
 							}
 
-							plugin.loadGuiConfig();
-							plugin.loadPlayerData();
-							plugin.loadMessages();
+							manager.loadFile("PlayerData");
+							manager.loadFile("GuiConfig");
+							manager.loadFile("Messages");
 							plugin.reloadConfig();
 
 							plugin.server.getScheduler().cancelTasks(plugin);
@@ -168,7 +170,7 @@ public class Commands implements CommandExecutor {
 
 								boolean playerBanned = false;
 
-								for (String uuid : plugin.banList) {
+								for (String uuid : plugin.banList.keySet()) {
 									OfflinePlayer p = plugin.server.getOfflinePlayer(UUID.fromString(uuid));
 
 									if (p.getName().equalsIgnoreCase(args[1])) {
@@ -320,6 +322,8 @@ public class Commands implements CommandExecutor {
 
 						}
 
+						manager.saveFile(reportedPlayers);
+
 					} else {
 
 						String usage = chat.msg(messages.getString("CommandUsage"), player, player, "ReportPlayer",
@@ -327,8 +331,6 @@ public class Commands implements CommandExecutor {
 						player.sendMessage(usage);
 
 					}
-
-					plugin.saveReportedPlayers(reportedPlayers);
 
 				} else {
 
@@ -384,7 +386,8 @@ public class Commands implements CommandExecutor {
 							plugin.console.sendMessage(
 									tools.m("%prefix% &aUnbanned player &c%player%!").replaceAll("%player%", pName));
 							validPlayer = true;
-							plugin.savePlayerData(pData);
+
+							manager.saveFile(pData);
 							break;
 
 						}

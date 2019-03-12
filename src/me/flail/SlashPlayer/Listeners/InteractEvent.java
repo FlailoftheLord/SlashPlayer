@@ -8,20 +8,21 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import me.flail.SlashPlayer.SlashPlayer;
+import me.flail.SlashPlayer.FileManager.FileManager;
 import me.flail.SlashPlayer.GUI.PlayerInfoInventory;
 import me.flail.SlashPlayer.Utilities.Tools;
 
 public class InteractEvent extends Tools implements Listener {
 
-	SlashPlayer plugin = JavaPlugin.getPlugin(SlashPlayer.class);
+	private SlashPlayer plugin = SlashPlayer.instance;
+	private FileManager manager = plugin.manager;
 
 	@EventHandler
 	public void playerInteract(PlayerInteractEvent event) {
 
-		FileConfiguration pData = plugin.getPlayerData();
+		FileConfiguration pData = manager.getFile("PlayerData");
 
 		Player player = event.getPlayer();
 
@@ -37,7 +38,7 @@ public class InteractEvent extends Tools implements Listener {
 
 			if (blockInteract.equalsIgnoreCase("deny")) {
 
-				FileConfiguration messages = plugin.getMessages();
+				FileConfiguration messages = manager.getFile("Messages");
 
 				String cantInteractWhileFrozen = msg(messages.getString("FreezeInteract"), player, player, "Freeze",
 						"freeze");

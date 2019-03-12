@@ -26,6 +26,7 @@ public class Executioner {
 	public boolean execute(OfflinePlayer targetPlayer, Player operator, String executable, String configSection,
 			boolean closeInv, boolean offline) {
 
+		FileManager manager = new FileManager();
 		Tools chat = new Tools();
 		ExeHandler handler = new ExeHandler();
 
@@ -33,13 +34,11 @@ public class Executioner {
 
 		String pUuid = targetPlayer.getUniqueId().toString();
 
-		FileManager manager = plugin.manager;
-
 		InventoryManager invManager = new InventoryManager();
 
-		FileConfiguration pData = plugin.getPlayerData();
+		FileConfiguration pData = manager.getFile("PlayerData");
+		FileConfiguration messages = manager.getFile("Messages");
 		FileConfiguration config = plugin.getConfig();
-		FileConfiguration messages = plugin.getMessages();
 
 		if (!executable.isEmpty() && (executable != null)) {
 
@@ -384,7 +383,7 @@ public class Executioner {
 				operator.sendMessage(chat.m(cantUseExe.replace("%executable%", handler.exeType(executable))));
 			}
 
-			plugin.savePlayerData(pData);
+			manager.saveFile(pData);
 
 			if (closeInv) {
 				operator.closeInventory();
