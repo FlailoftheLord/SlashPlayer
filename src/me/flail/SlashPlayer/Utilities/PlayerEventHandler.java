@@ -22,18 +22,18 @@ public class PlayerEventHandler extends Tools implements Listener {
 
 	private SlashPlayer plugin = SlashPlayer.getPlugin(SlashPlayer.class);
 	private FileManager manager = new FileManager();
+	BanControl bans = new BanControl();
+	Time time = new Time();
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void playerJoin(PlayerJoinEvent event) {
 
 		Player player = event.getPlayer();
 
-		BanControl banControl = new BanControl();
-
-		boolean isBanned = banControl.checkBanned(player);
+		boolean isBanned = bans.checkBanned(player);
 
 		if (isBanned) {
-			banControl.kickBanned(player, null);
+			bans.kickBanned(player, null);
 			event.setJoinMessage("");
 			return;
 		}
@@ -46,8 +46,7 @@ public class PlayerEventHandler extends Tools implements Listener {
 	@EventHandler(priority = EventPriority.LOW)
 	public void playerLeave(PlayerQuitEvent event) {
 
-		BanControl bans = new BanControl();
-		bans.loadList();
+
 
 		FileConfiguration pData = manager.getFile("PlayerData.yml");
 
@@ -60,11 +59,10 @@ public class PlayerEventHandler extends Tools implements Listener {
 		String pName = player.getName();
 
 		pData.set(pUuid + ".Name", pName);
-		pData.set(pUuid + ".IsOnline", false);
+		pData.set(pUuid + ".IsOnline", Boolean.valueOf(false));
 
-		if (pData.getBoolean(pUuid + ".IsBanned") || plugin.banList.containsKey(pUuid)) {
-			pData.set(pUuid + ".IsBanned", true);
-			pData.set(pUuid + ".BanDuration", plugin.banList.get(pUuid));
+		if (bans.checkBanned(player)) {
+			bans.kickBanned(player, null);
 			event.setQuitMessage("");
 		}
 

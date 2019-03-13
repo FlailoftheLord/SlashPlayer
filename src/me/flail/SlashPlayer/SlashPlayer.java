@@ -1,6 +1,5 @@
 package me.flail.SlashPlayer;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -8,7 +7,6 @@ import java.util.UUID;
 import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.Server;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -20,7 +18,6 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import me.flail.SlashPlayer.ControlCenter.BanControl;
 import me.flail.SlashPlayer.ControlCenter.MuteControl;
 import me.flail.SlashPlayer.Executables.Executables;
 import me.flail.SlashPlayer.Executables.SetGamemode;
@@ -45,8 +42,6 @@ public class SlashPlayer extends JavaPlugin implements Listener {
 
 	public Map<UUID, Player> players = new HashMap<>();
 
-	public Map<String, Integer> banList = Collections.synchronizedMap(new HashMap<>());
-	public Map<OfflinePlayer, Integer> muteTimer = new HashMap<>();
 	public Map<Player, Integer> messageCooldowns = new HashMap<>();
 
 	private String serverVersion = getServer().getBukkitVersion();
@@ -92,14 +87,6 @@ public class SlashPlayer extends JavaPlugin implements Listener {
 			pHandler.setData(p);
 		}
 
-		// And finally initiate the Ban and Mute Timers 5 seconds after startup.
-		server.getScheduler().scheduleSyncDelayedTask(this, () -> {
-			new MuteControl().loadList();
-			new BanControl().loadList();
-			startTasks();
-			console.sendMessage(chat.m("%prefix% &8Updating bans..."));
-		}, 120);
-
 	}
 
 	@Override
@@ -112,8 +99,6 @@ public class SlashPlayer extends JavaPlugin implements Listener {
 	public void startTasks() {
 		this.stopTasks();
 		server.getScheduler().scheduleSyncRepeatingTask(this, () -> {
-
-			new BanControl().runTimer();
 
 		}, 64, 1200);
 

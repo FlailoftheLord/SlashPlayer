@@ -7,66 +7,28 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import me.flail.SlashPlayer.SlashPlayer;
 import me.flail.SlashPlayer.FileManager.FileManager;
+import me.flail.SlashPlayer.Utilities.Time;
 import me.flail.SlashPlayer.Utilities.Tools;
 
 public class BanControl {
 
 	private SlashPlayer plugin = JavaPlugin.getPlugin(SlashPlayer.class);
 	private Tools tools = new Tools();
+	private Time time = new Time();
 	private FileManager manager = new FileManager();
 
-	public void runTimer() {
-		FileConfiguration pData = manager.getFile("PlayerData");
-
-		this.loadList();
-
-		for (String uuid : plugin.banList.keySet()) {
-			if (pData.getBoolean(uuid + ".IsBanned", false)) {
-				int time = plugin.banList.get(uuid).intValue();
-				pData.set(uuid + ".BanDuration", time - 1);
-
-			}
-
-		}
-
-		manager.saveFile(pData);
-	}
-
-	public void loadList() {
-		FileConfiguration pData = manager.getFile("PlayerData");
-
-		for (String pUuid : pData.getKeys(false)) {
-			boolean isBanned = pData.getBoolean(pUuid + ".IsBanned", false);
-			if (isBanned) {
-				plugin.banList.put(pUuid,
-						Integer.valueOf(pData.getInt(pUuid + ".BanDuration", plugin.banList.get(pUuid).intValue())));
-			}
-
-		}
-
-	}
-
-	public void saveList() {
-		FileConfiguration pData = manager.getFile("PlayerData");
-
-		for (String pUuid : plugin.banList.keySet()) {
-			pData.set(pUuid + ".IsBanned", Boolean.valueOf(true));
-			pData.set(pUuid + ".BanDuration", plugin.banList.get(pUuid));
-		}
-
-		manager.saveFile(pData);
-	}
 
 	public boolean banPlayer(OfflinePlayer player, String reason, int time) {
 
 		FileConfiguration pData = manager.getFile("PlayerData");
 		String pUuid = player.getUniqueId().toString();
+		String timeOfBan = this.time.currentTime(true);
 
 		pData.set(pUuid + ".IsBanned", Boolean.valueOf(true));
-		pData.set(pUuid + ".BanDuration", Integer.valueOf(time));
+		pData.set(pUuid + ".BanDate", timeOfBan);
+		pData.set(pUuid + ".BanDuration", Integer.valueOf(this.time.toSeconds("minute", time)));
 		pData.set(pUuid + ".IsOnline", Boolean.valueOf(false));
 
-		plugin.banList.put(pUuid, Integer.valueOf(time));
 
 		// Finally, we kick teh player off if he's still online!
 		if (player.isOnline()) {
@@ -84,10 +46,9 @@ public class BanControl {
 		FileConfiguration pData = manager.getFile("PlayerData");
 		String pUuid = player.getUniqueId().toString();
 
-		plugin.banList.remove(pUuid);
-
 		pData.set(pUuid + ".IsBanned", null);
 		pData.set(pUuid + ".BanDuration", null);
+		pData.set(pUuid + ".BanDate", null);
 		manager.saveFile(pData);
 
 		return true;
@@ -105,9 +66,9 @@ public class BanControl {
 		return false;
 	}
 
-	public int getBanDuration(OfflinePlayer player) {
+	public String getBanDuration(OfflinePlayer player) {
 		FileConfiguration pData = manager.getFile("PlayerData");
-		return pData.getInt(player.getUniqueId().toString() + ".BanDuration");
+		return time.fromSeconds(pData.getInt(player.getUniqueId().toString() + ".BanDuration", 0), true);
 	}
 
 	public void kickBanned(Player player, String reason) {

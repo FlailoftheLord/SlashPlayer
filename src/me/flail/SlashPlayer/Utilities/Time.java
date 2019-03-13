@@ -2,31 +2,28 @@ package me.flail.SlashPlayer.Utilities;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-
-import org.bukkit.configuration.file.FileConfiguration;
-
-import me.flail.SlashPlayer.FileManager.FileManager;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Time {
 
-	private FileManager manager = new FileManager();
-
 	public String monthName(int month) {
-		switch (month + 1) {
+		switch (month) {
 
-		case 1:
+		case 01:
 			return "January";
-		case 2:
+		case 02:
 			return "Febuary";
-		case 3:
+		case 03:
 			return "March";
-		case 4:
+		case 04:
 			return "April";
-		case 5:
+		case 05:
 			return "May";
-		case 6:
+		case 06:
 			return "June";
-		case 7:
+		case 07:
 			return "July";
 		case 8:
 			return "August";
@@ -46,31 +43,120 @@ public class Time {
 
 	public String currentDayTime() {
 
-		String time = new SimpleDateFormat("(HH:mm:ss)").format(Calendar.getInstance().getTime());
+		String time = new SimpleDateFormat("MMM dd, yyyy  (HH:mm.ss)").format(Calendar.getInstance().getTime());
 
 		return time;
 
 	}
 
-	public void time() {
+	public String currentTime(boolean formatted) {
+		Date date = Calendar.getInstance().getTime();
 
-		FileConfiguration pData = manager.getFile("PlayerData");
+		int timeS = Integer.parseInt(new SimpleDateFormat("ss").format(date));
+		int timeM = Integer.parseInt(new SimpleDateFormat("mm").format(date));
+		int timeH = Integer.parseInt(new SimpleDateFormat("HH").format(date));
+		int timeD = Integer.parseInt(new SimpleDateFormat("dd").format(date));
+		int month = Integer.parseInt(new SimpleDateFormat("MM").format(date));
+		int year = Integer.parseInt(new SimpleDateFormat("yyyy").format(date));
 
-		SimpleDateFormat timeM = new SimpleDateFormat("mm");
-		SimpleDateFormat timeH = new SimpleDateFormat("HH");
-		SimpleDateFormat timeD = new SimpleDateFormat("dd");
-		SimpleDateFormat month = new SimpleDateFormat("MM");
-		SimpleDateFormat year = new SimpleDateFormat("yyyy");
+		return this.format(timeS, timeM, timeH, timeD, month, year, formatted);
+	}
 
-		pData.set("RealTime.Year", year);
-		pData.set("RealTime.Month", month);
-		pData.set("RealTime.Day", timeD);
-		pData.set("RealTime.Hour", timeH);
-		pData.set("RealTime.Minute", timeM);
+	public String fromSeconds(int value, boolean format) {
+		if (value >= 60) {  // minutes
+			if (value >= 3600) {  // hours
+				if (value >= 86400) {  // days
+					if (value >= 2592000) {  // months
+						if (value >= 31104000) {  // years
+							return (value / 31104000) + "Y, " + (value % 2592000) + "M ," + (value % 86400) + "d " + (value % 3600)
+									+ "h " + (value % 60) + "m "
+							+ (value % 31104000) + "s";
+						}
+						return (value / 2592000) + "M ," + (value % 86400) + "d " + (value % 3600) + "h " + (value % 60) + "m "
+						+ (value % 2592000) + "s";
+					}
+					return (value / 86400) + "d " + (value % 3600) + "h " + (value % 60) + "m " + (value % 86400) + "s";
+				}
+				return (value / 3600) + "h " + (value % 60) + "m " + (value % 3600) + "s";
+			}
+			return (value / 60) + "m " + (value % 60) + "s";
+		}
+		return value + "s";
+	}
+
+	public int subtractDates(String initial, String subtractor, boolean isFormatted) {
+		if (isFormatted) {
+			int unit = 0;
+			Map<String, Integer> initDate = this.rawDate(initial);
+			Map<String, Integer> subDate = this.rawDate(subtractor);
+			for (String value : initDate.keySet()) {
+				unit += this.toSeconds(value, initDate.get(value).intValue() - subDate.get(value).intValue());
+			}
+
+			return unit;
+		} else {
+			int initDate = this.trimDate(initial);
+			int subDate = this.trimDate(subtractor);
+
+			return initDate - subDate;
+		}
 
 	}
 
-	public String serverTime() {
+	public Map<String, Integer> rawDate(String date) {
+		Map<String, Integer> timestamp = new HashMap<>();
+		String[] time = date.split("-");
+		for (String s : time) {
+			String unit = s.split(":")[0].toLowerCase();
+			switch (unit) {
+			case "second":
+				timestamp.put(unit, Integer.valueOf(Integer.parseInt(s.split(":")[1])));
+				break;
+			case "minute":
+				timestamp.put(unit, Integer.valueOf(Integer.parseInt(s.split(":")[1])));
+				break;
+			case "hour":
+				timestamp.put(unit, Integer.valueOf(Integer.parseInt(s.split(":")[1])));
+				break;
+			case "day":
+				timestamp.put(unit, Integer.valueOf(Integer.parseInt(s.split(":")[1])));
+				break;
+			case "month":
+				timestamp.put(unit, Integer.valueOf(Integer.parseInt(s.split(":")[1])));
+				break;
+			case "year":
+				timestamp.put(unit, Integer.valueOf(Integer.parseInt(s.split(":")[1])));
+			}
+
+		}
+
+		return timestamp;
+	}
+
+	public int toSeconds(String type, int value) {
+		switch (type.toLowerCase()) {
+		case "year":
+			return value * 365 * 24 * 60 * 60;
+		case "month":
+			return value * 30 * 24 * 60 * 60;
+		case "day":
+			return value * 24 * 60 * 60;
+		case "hour":
+			return value * 60 * 60;
+		case "minute":
+			return value * 60;
+		default:
+			return value;
+		}
+	}
+
+	private int trimDate(String date) {
+		return Integer
+				.parseInt(date.replace("/", "").replace(" (", "").replace(")", "").replace("_", ""));
+
+	}
+
+	public String serverUptime() {
 
 		long second = System.currentTimeMillis() / 1000;
 
@@ -80,7 +166,18 @@ public class Time {
 
 		long day = hour / 24;
 
-		String time = "Day: " + day + " Hour: " + hour + " Minute: " + minute + " Second: " + second;
+		String time = "Days: " + day + " Hours: " + hour + " Minutes: " + minute + " Seconds: " + second;
+
+		return time;
+
+	}
+
+	public String format(int s, int m, int h, int day, int month, int year, boolean format) {
+		String time = month + "/" + day + "/" + year + " (" + h + "_" + m + "_" + s + ")";
+
+		if (format) {
+			time = "Year:" + year + "-Month:" + month + "-Day:" + day + "-Hour:" + h + "-Minute:" + m + "-Second:" + s;
+		}
 
 		return time;
 
