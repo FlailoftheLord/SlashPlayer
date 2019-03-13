@@ -73,9 +73,6 @@ public class PlayerEventHandler extends Tools implements Listener {
 	@EventHandler
 	public void playerKicked(PlayerKickEvent event) {
 
-		BanControl bans = new BanControl();
-		bans.loadList();
-
 		FileConfiguration pData = manager.getFile("PlayerData");
 
 		Player player = event.getPlayer();
