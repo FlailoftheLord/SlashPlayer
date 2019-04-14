@@ -2,7 +2,6 @@ package me.flail.SlashPlayer;
 
 import java.util.List;
 import java.util.Locale;
-import java.util.UUID;
 
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -13,7 +12,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
 import me.flail.SlashPlayer.ControlCenter.BanControl;
-import me.flail.SlashPlayer.ControlCenter.MuteControl;
 import me.flail.SlashPlayer.FileManager.FileManager;
 import me.flail.SlashPlayer.GUI.PlayerInfoInventory;
 import me.flail.SlashPlayer.GUI.PlayerListInventory;
@@ -84,13 +82,6 @@ public class Commands implements CommandExecutor {
 							for (Player p : plugin.server.getOnlinePlayers()) {
 								plugin.players.put(p.getUniqueId(), p);
 							}
-
-							BanControl bans = new BanControl();
-							bans.loadList();
-
-							MuteControl mutes = new MuteControl();
-							mutes.saveList();
-							mutes.loadList();
 
 							for (Player player : plugin.players.values()) {
 								PlayerEventHandler pHandler = new PlayerEventHandler();
@@ -170,21 +161,21 @@ public class Commands implements CommandExecutor {
 
 								boolean playerBanned = false;
 
-								for (String uuid : plugin.banList.keySet()) {
-									OfflinePlayer p = plugin.server.getOfflinePlayer(UUID.fromString(uuid));
+								for (OfflinePlayer p : plugin.server.getOfflinePlayers()) {
 
 									if (p.getName().equalsIgnoreCase(args[1])) {
 
-										BanControl bans = new BanControl();
+										if (pData.getBoolean(p.getUniqueId().toString() + ".IsBanned")) {
+											BanControl bans = new BanControl();
 
-										bans.unbanPlayer(p);
-										operator.sendMessage(chat.msg(plugin.manager.getMessage("UnbanPlayer"), p,
-												operator, "Unban", label));
+											bans.unbanPlayer(p);
+											operator.sendMessage(chat.msg(plugin.manager.getMessage("UnbanPlayer"), p,
+													operator, "Unban", label));
 
-										playerBanned = true;
-										break;
-									} else {
-										playerBanned = false;
+											playerBanned = true;
+											break;
+
+										}
 									}
 								}
 								if (!playerBanned) {

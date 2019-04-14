@@ -18,7 +18,6 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import me.flail.SlashPlayer.ControlCenter.MuteControl;
 import me.flail.SlashPlayer.Executables.Executables;
 import me.flail.SlashPlayer.Executables.SetGamemode;
 import me.flail.SlashPlayer.FileManager.FileManager;
@@ -92,7 +91,6 @@ public class SlashPlayer extends JavaPlugin implements Listener {
 	@Override
 	public void onDisable() {
 		server.getScheduler().cancelTasks(this);
-		new MuteControl().saveList();
 
 	}
 

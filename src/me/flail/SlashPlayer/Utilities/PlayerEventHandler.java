@@ -6,7 +6,6 @@ import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
@@ -25,7 +24,7 @@ public class PlayerEventHandler extends Tools implements Listener {
 	BanControl bans = new BanControl();
 	Time time = new Time();
 
-	@EventHandler(priority = EventPriority.HIGHEST)
+	@EventHandler
 	public void playerJoin(PlayerJoinEvent event) {
 
 		Player player = event.getPlayer();
@@ -43,10 +42,8 @@ public class PlayerEventHandler extends Tools implements Listener {
 		this.setData(player);
 	}
 
-	@EventHandler(priority = EventPriority.LOW)
+	@EventHandler
 	public void playerLeave(PlayerQuitEvent event) {
-
-
 
 		FileConfiguration pData = manager.getFile("PlayerData.yml");
 
@@ -73,7 +70,7 @@ public class PlayerEventHandler extends Tools implements Listener {
 	@EventHandler
 	public void playerKicked(PlayerKickEvent event) {
 
-		FileConfiguration pData = manager.getFile("PlayerData");
+		FileConfiguration pData = manager.getFile("PlayerData.yml");
 
 		Player player = event.getPlayer();
 
@@ -84,11 +81,9 @@ public class PlayerEventHandler extends Tools implements Listener {
 		String pName = player.getName();
 
 		pData.set(pUuid + ".Name", pName);
-		pData.set(pUuid + ".IsOnline", false);
+		pData.set(pUuid + ".IsOnline", Boolean.valueOf(false));
 
-		if (pData.getBoolean(pUuid + ".IsBanned") || plugin.banList.containsKey(pUuid)) {
-			pData.set(pUuid + ".IsBanned", true);
-			pData.set(pUuid + ".BanDuration", plugin.banList.get(pUuid));
+		if (pData.getBoolean(pUuid + ".IsBanned")) {
 			event.setLeaveMessage("");
 		}
 
@@ -98,7 +93,7 @@ public class PlayerEventHandler extends Tools implements Listener {
 
 	public void setData(Player player) {
 
-		FileConfiguration pData = manager.getFile("PlayerData");
+		FileConfiguration pData = manager.getFile("PlayerData.yml");
 		pData.options().header(
 				"All relevant Player data is stored in this file. \nThis is for storage purposes ONLY. \nPlease do not edit or change anything!\n");
 
@@ -117,23 +112,8 @@ public class PlayerEventHandler extends Tools implements Listener {
 
 		}
 
-		if (plugin.banList.containsKey(pUuid.toString())) {
-			BanControl bans = new BanControl();
-
-			int banTime = bans.getBanDuration(player);
-
-			if ((banTime < 1)) {
-				pData.set(pUuid + ".IsBanned", null);
-				pData.set(pUuid + ".BanDuration", null);
-			} else {
-				pData.set(pUuid + ".IsBanned", true);
-				pData.set(pUuid + ".BanDuration", banTime);
-			}
-
-		}
-
 		pData.set(pUuid + ".Name", pName);
-		pData.set(pUuid + ".IsOnline", true);
+		pData.set(pUuid + ".IsOnline", Boolean.valueOf(true));
 		pData.set(pUuid + ".Gamemode", player.getGameMode().toString());
 
 		manager.saveFile(pData);

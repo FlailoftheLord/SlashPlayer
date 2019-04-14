@@ -14,7 +14,7 @@ public class FlyControl {
 
 	public boolean fly(Player player) {
 
-		FileConfiguration pData = manager.getFile("PlayerData");
+		FileConfiguration pData = manager.getFile("PlayerData.yml");
 
 		String pUuid = player.getUniqueId().toString();
 
@@ -41,7 +41,7 @@ public class FlyControl {
 
 	public void flyLogin(Player player) {
 
-		FileConfiguration pData = manager.getFile("PlayerData");
+		FileConfiguration pData = manager.getFile("PlayerData.yml");
 
 		if (player != null) {
 
