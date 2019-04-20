@@ -5,7 +5,6 @@ import java.util.Locale;
 
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -19,15 +18,21 @@ import me.flail.SlashPlayer.GUI.ReportInventory;
 import me.flail.SlashPlayer.Utilities.PlayerEventHandler;
 import me.flail.SlashPlayer.Utilities.Tools;
 
-public class Commands implements CommandExecutor {
+public class Commands {
 
 	private SlashPlayer plugin = SlashPlayer.getPlugin(SlashPlayer.class);
 	private FileManager manager = new FileManager();
 
 	private Tools chat = new Tools();
+	private Command command;
+	private CommandSender sender;
 
-	@Override
-	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+	public Commands(CommandSender sender, Command command) {
+		this.command = command;
+		this.sender = sender;
+	}
+
+	public boolean run(String label, String[] args) {
 
 		String cmd = label.toLowerCase(Locale.ENGLISH);
 
@@ -193,7 +198,7 @@ public class Commands implements CommandExecutor {
 								if (p.getName().equalsIgnoreCase(args[1].trim())) {
 
 									operator.sendMessage(chat
-											.m("%prefix% &3" + p.getName() + "s&a Rank is &7" + Tools.playerRank(p)));
+											.m("%prefix% &3" + p.getName() + "'s&a Rank is &7" + Tools.playerRank(p)));
 
 								}
 
@@ -205,6 +210,7 @@ public class Commands implements CommandExecutor {
 						}
 
 					} else {
+
 
 						operator.sendMessage(chat
 								.m("%prefix% &cPlayer is not online! Proper usage&8: &7/player [player:unban:reload]"));

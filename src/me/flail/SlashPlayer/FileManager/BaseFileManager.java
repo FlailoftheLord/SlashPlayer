@@ -19,10 +19,7 @@ public class BaseFileManager {
 	}
 
 	public FileConfiguration getFile(String fileName) {
-
-		if (!fileName.endsWith(".yml") && !fileName.isEmpty()) {
-			fileName = fileName + ".yml";
-		}
+		fileName = yamlFile(fileName);
 
 		File settingsFile = new File(plugin.getDataFolder() + "/" + fileName);
 
@@ -42,10 +39,7 @@ public class BaseFileManager {
 	}
 
 	public void loadFile(String fileName) {
-
-		if (!fileName.endsWith(".yml") && !fileName.isEmpty()) {
-			fileName = fileName + ".yml";
-		}
+		fileName = yamlFile(fileName);
 
 		File settingsFile = new File(plugin.getDataFolder() + "/" + fileName);
 
@@ -62,12 +56,7 @@ public class BaseFileManager {
 
 	public void saveFile(FileConfiguration file) {
 		try {
-
-			String fileName = file.getName();
-
-			if (!fileName.endsWith(".yml") && !fileName.isEmpty()) {
-				fileName = fileName.concat(".yml");
-			}
+			String fileName = yamlFile(file.getName());
 
 			File settingsFile = new File(plugin.getDataFolder() + "/" + fileName);
 
@@ -78,4 +67,10 @@ public class BaseFileManager {
 
 	}
 
+	private String yamlFile(String fileName) {
+		if (!fileName.endsWith(".yml") && !fileName.isEmpty()) {
+			fileName = fileName.concat(".yml");
+		}
+		return fileName;
+	}
 }

@@ -1,6 +1,7 @@
 package me.flail.SlashPlayer;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
@@ -8,6 +9,8 @@ import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -27,6 +30,7 @@ import me.flail.SlashPlayer.Listeners.MuteListener;
 import me.flail.SlashPlayer.Listeners.PlayerListGui;
 import me.flail.SlashPlayer.Listeners.ReportGui;
 import me.flail.SlashPlayer.Utilities.PlayerEventHandler;
+import me.flail.SlashPlayer.Utilities.TabCompleter;
 import me.flail.SlashPlayer.Utilities.Tools;
 
 public class SlashPlayer extends JavaPlugin implements Listener {
@@ -90,8 +94,17 @@ public class SlashPlayer extends JavaPlugin implements Listener {
 
 	@Override
 	public void onDisable() {
-		server.getScheduler().cancelTasks(this);
+		stopTasks();
+	}
 
+	@Override
+	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+		return new Commands(sender, command).run(label, args);
+	}
+
+	@Override
+	public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
+		return new TabCompleter(command).construct(args);
 	}
 
 	public void startTasks() {
@@ -109,19 +122,23 @@ public class SlashPlayer extends JavaPlugin implements Listener {
 	@EventHandler
 	private void handleAliases(PlayerCommandPreprocessEvent event) {
 
-		String commandLabel = event.getMessage().toLowerCase(Locale.ENGLISH);
+		String message = event.getMessage().toLowerCase(Locale.ENGLISH);
 
-		if (commandLabel.equalsIgnoreCase("/sp") || commandLabel.startsWith("/sp ")) {
-
-			event.setMessage(commandLabel.replaceAll("/sp", "/slashplayer"));
-
+		if (message.equalsIgnoreCase("/sp") || message.startsWith("/sp ") || message.startsWith("/player ")) {
+			message = message.replaceAll("/sp", "/slashplayer").replaceAll("/player", "/slashplayer");
+			event.setMessage(message);
 		}
 
 		for (Player p : players.values()) {
 			String pName = p.getName().toLowerCase();
 
-			if (commandLabel.startsWith("/" + pName)) {
-				event.setMessage(commandLabel.replaceAll("(?i)" + Pattern.quote("/" + pName), "/slashplayer " + pName));
+			if (message.startsWith("/" + pName)) {
+				event.setMessage(message.replaceAll("(?i)" + Pattern.quote("/" + pName), "/slashplayer " + pName));
+				break;
+			}
+
+			if (message.startsWith("/slashplayer report ")) {
+				event.setMessage(message.replace("/slashplayer report ", "/slashplayer report "));
 				break;
 			}
 
@@ -130,9 +147,8 @@ public class SlashPlayer extends JavaPlugin implements Listener {
 	}
 
 	public void registerCommands() {
-
 		for (String command : this.getDescription().getCommands().keySet()) {
-			this.getCommand(command).setExecutor(new Commands());
+			this.getCommand(command).setExecutor(this);
 		}
 
 	}
