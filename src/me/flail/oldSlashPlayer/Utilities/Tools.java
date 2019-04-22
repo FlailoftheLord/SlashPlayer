@@ -11,7 +11,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-import me.flail.SlashPlayer.SlashPlayer;
+import me.flail.oldSlashPlayer.SlashPlayer;
 
 public class Tools {
 

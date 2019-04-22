@@ -5,10 +5,10 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import me.flail.SlashPlayer.SlashPlayer;
 import me.flail.SlashPlayer.FileManager.FileManager;
 import me.flail.SlashPlayer.Utilities.Time;
 import me.flail.SlashPlayer.Utilities.Tools;
+import me.flail.oldSlashPlayer.SlashPlayer;
 
 public class BanControl {
 

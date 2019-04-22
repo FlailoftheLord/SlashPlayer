@@ -6,7 +6,7 @@ import java.util.List;
 import org.bukkit.command.Command;
 import org.bukkit.entity.Player;
 
-import me.flail.SlashPlayer.SlashPlayer;
+import me.flail.oldSlashPlayer.SlashPlayer;
 
 public class TabCompleter extends ArrayList<String> {
 	private SlashPlayer plugin = SlashPlayer.instance;

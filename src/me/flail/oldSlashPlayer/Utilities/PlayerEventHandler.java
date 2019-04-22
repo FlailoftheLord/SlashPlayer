@@ -11,10 +11,10 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import me.flail.SlashPlayer.SlashPlayer;
 import me.flail.SlashPlayer.ControlCenter.BanControl;
 import me.flail.SlashPlayer.Executables.FlyControl;
 import me.flail.SlashPlayer.FileManager.FileManager;
+import me.flail.oldSlashPlayer.SlashPlayer;
 
 public class PlayerEventHandler extends Tools implements Listener {
 

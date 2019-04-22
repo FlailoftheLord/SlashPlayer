@@ -1,5 +1,6 @@
-main: me.flail.SlashPlayer.SlashPlayer
+main: me.flail.oldSlashPlayer.SlashPlayer
 name: SlashPlayer
+website: https://www.github.com/flailofthelord
 author: [FlailoftheLord, WulfGamesYT]
 description: player managment GUI system
 version: 2.1.2

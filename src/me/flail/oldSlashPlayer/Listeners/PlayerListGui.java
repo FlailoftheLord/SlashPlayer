@@ -9,9 +9,9 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import me.flail.SlashPlayer.SlashPlayer;
 import me.flail.SlashPlayer.GUI.PlayerInfoInventory;
 import me.flail.SlashPlayer.Utilities.Tools;
+import me.flail.oldSlashPlayer.SlashPlayer;
 
 @SuppressWarnings("deprecation")
 public class PlayerListGui implements Listener {

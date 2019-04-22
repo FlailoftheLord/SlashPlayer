@@ -9,9 +9,9 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 
-import me.flail.SlashPlayer.SlashPlayer;
 import me.flail.SlashPlayer.FileManager.FileManager;
 import me.flail.SlashPlayer.Utilities.Tools;
+import me.flail.oldSlashPlayer.SlashPlayer;
 
 public class FreezeListener implements Listener {
 

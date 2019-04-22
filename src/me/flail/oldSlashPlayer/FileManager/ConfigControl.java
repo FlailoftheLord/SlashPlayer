@@ -9,7 +9,7 @@ import java.util.List;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import me.flail.SlashPlayer.SlashPlayer;
+import me.flail.oldSlashPlayer.SlashPlayer;
 
 public class ConfigControl {
 

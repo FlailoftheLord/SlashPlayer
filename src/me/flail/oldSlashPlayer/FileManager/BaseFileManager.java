@@ -5,7 +5,7 @@ import java.io.File;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import me.flail.SlashPlayer.SlashPlayer;
+import me.flail.oldSlashPlayer.SlashPlayer;
 
 public class BaseFileManager {
 	SlashPlayer plugin = SlashPlayer.instance;

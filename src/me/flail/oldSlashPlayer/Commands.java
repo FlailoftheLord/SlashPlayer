@@ -1,4 +1,4 @@
-package me.flail.SlashPlayer;
+package me.flail.oldSlashPlayer;
 
 import java.util.List;
 import java.util.Locale;

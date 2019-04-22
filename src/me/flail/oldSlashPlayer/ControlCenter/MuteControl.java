@@ -4,10 +4,10 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import me.flail.SlashPlayer.SlashPlayer;
 import me.flail.SlashPlayer.FileManager.BaseFileManager;
 import me.flail.SlashPlayer.FileManager.FileManager;
 import me.flail.SlashPlayer.Utilities.Time;
+import me.flail.oldSlashPlayer.SlashPlayer;
 
 public class MuteControl {
 

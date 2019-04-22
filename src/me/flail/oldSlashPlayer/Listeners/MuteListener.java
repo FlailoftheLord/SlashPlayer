@@ -6,10 +6,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-import me.flail.SlashPlayer.SlashPlayer;
 import me.flail.SlashPlayer.ControlCenter.MuteControl;
 import me.flail.SlashPlayer.FileManager.FileManager;
 import me.flail.SlashPlayer.Utilities.Tools;
+import me.flail.oldSlashPlayer.SlashPlayer;
 
 public class MuteListener implements Listener {
 

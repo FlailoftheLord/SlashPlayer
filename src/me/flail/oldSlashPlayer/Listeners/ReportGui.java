@@ -17,11 +17,11 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import me.flail.SlashPlayer.SlashPlayer;
 import me.flail.SlashPlayer.FileManager.FileManager;
 import me.flail.SlashPlayer.GUI.PlayerInfoInventory;
 import me.flail.SlashPlayer.GUI.ReportInventory;
 import me.flail.SlashPlayer.Utilities.Tools;
+import me.flail.oldSlashPlayer.SlashPlayer;
 
 @SuppressWarnings("deprecation")
 public class ReportGui implements Listener {
