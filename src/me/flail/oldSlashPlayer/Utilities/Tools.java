@@ -64,17 +64,17 @@ public class Tools {
 
 			reply = ChatColor.translateAlternateColorCodes('&',
 					s.replaceAll("%prefix%", prefix).replaceAll("%player%", pName).replaceAll("%operator%", sender)
-							.replaceAll("%reporter%", sender).replaceAll("%command%", command)
-							.replaceAll("%executable%", exe).replaceAll("%website%", website)
-							.replaceAll("%ban-duration%", banTime).replaceAll("%mute-duration%", muteTime)
-							.replaceAll("%gamemode%", gamemode).replaceAll("%uuid%", pUuid));
+					.replaceAll("%reporter%", sender).replaceAll("%command%", command)
+					.replaceAll("%executable%", exe).replaceAll("%website%", website)
+					.replaceAll("%ban-duration%", banTime).replaceAll("%mute-duration%", muteTime)
+					.replaceAll("%gamemode%", gamemode).replaceAll("%uuid%", pUuid));
 
 		} else if (s == null) {
 			reply = s;
 			plugin.console.sendMessage(this.m(
 					"%prefix% &cAn error occured while translating placeholders, please contact me on my support server with this message: "));
 			plugin.console
-					.sendMessage("Exe: " + exe + " Operator: " + sender + " Target: " + pName + " Command: " + command);
+			.sendMessage("Exe: " + exe + " Operator: " + sender + " Target: " + pName + " Command: " + command);
 		}
 
 		return reply;
@@ -192,7 +192,7 @@ public class Tools {
 		return false;
 	}
 
-	public static String removeChatPrefix(char prefix, String message) {
+	public static String removeChar(char prefix, String message) {
 
 		char c = message.charAt(0);
 

@@ -21,17 +21,17 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import me.flail.SlashPlayer.Executables.Executables;
-import me.flail.SlashPlayer.Executables.SetGamemode;
-import me.flail.SlashPlayer.FileManager.FileManager;
-import me.flail.SlashPlayer.Listeners.FreezeListener;
-import me.flail.SlashPlayer.Listeners.InteractEvent;
-import me.flail.SlashPlayer.Listeners.MuteListener;
-import me.flail.SlashPlayer.Listeners.PlayerListGui;
-import me.flail.SlashPlayer.Listeners.ReportGui;
-import me.flail.SlashPlayer.Utilities.PlayerEventHandler;
-import me.flail.SlashPlayer.Utilities.TabCompleter;
-import me.flail.SlashPlayer.Utilities.Tools;
+import me.flail.oldSlashPlayer.Executables.Executables;
+import me.flail.oldSlashPlayer.Executables.SetGamemode;
+import me.flail.oldSlashPlayer.FileManager.FileManager;
+import me.flail.oldSlashPlayer.Listeners.FreezeListener;
+import me.flail.oldSlashPlayer.Listeners.InteractEvent;
+import me.flail.oldSlashPlayer.Listeners.MuteListener;
+import me.flail.oldSlashPlayer.Listeners.PlayerListGui;
+import me.flail.oldSlashPlayer.Listeners.ReportGui;
+import me.flail.oldSlashPlayer.Utilities.PlayerEventHandler;
+import me.flail.oldSlashPlayer.Utilities.TabCompleter;
+import me.flail.oldSlashPlayer.Utilities.Tools;
 
 public class SlashPlayer extends JavaPlugin implements Listener {
 	public static SlashPlayer instance;
