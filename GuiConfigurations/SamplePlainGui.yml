@@ -1,0 +1,35 @@
+# Set the gui title.
+Title: "&cSample menu or soemthing..."
+# Set the type to 'plain'
+Type: "Plain"
+# Plain type doesn't require a Source file.
+# But it does have a header item, this represents the player being moderated. Each moderation window MUST have a player header.
+# You can change the Header Item formatting in the 'GuiConfig.yml' file.
+HeaderSlot: 5
+
+# Next just set all the items, use the slot number as the section.
+# you can have a max of 54 slots per-menu
+# Set it's Executable type. you can find a full list in the 'GuiConfig.yml' file.
+# Close: 'true/false'  closes the gui after you click the item.
+
+Format:
+  # You can specify a filler item if you wish, otherwise, it uses the default settings from the 'GuiConfig.yml'
+  # FillerItem: "black_stained_glass_pane"
+
+  1:
+    Item: "Emerald_block"
+    Name: "&eSomething"
+    Lore: 
+    - "line 1"
+    - " more useless lore..."
+    - "&5this isn't purple btw."
+    Execute: "KillPlayer"
+    Close: false
+    
+  6:
+    Item: "mossy_StOne_brIcks"
+    Name: "&o&lHii"
+    Lore: 
+    - "lore is supposed to go here..."
+    Execute: "Ban"
+    Close: true

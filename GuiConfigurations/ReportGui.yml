@@ -1,0 +1,13 @@
+Title: "&cReported Players"
+Type: "List"
+Source: "ReportedPlayers.yml"
+
+Format:
+  Name: "%player%"
+  Lore:
+  - "%reason%"
+  - ""
+  - "&8middle-click to remove"
+  FillerItem: ""
+  
+  

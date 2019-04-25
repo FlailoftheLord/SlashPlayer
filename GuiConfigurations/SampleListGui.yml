@@ -1,0 +1,21 @@
+# Set the gui title.
+Title: "&cPlayer list gui"
+# set the type to 'list'
+Type: "List"
+# Next, specify the source file to get the list from.
+# If this is left empty or the file doesn't exist...
+# the plugin will just open an empty Inventory.
+Source: ""
+
+# Now you can set the format for the item used to display each player.
+# use %player% for their name.
+# there are other placeholders like %reason% %ban-time% %mute-time% and %status-frozen% ect...
+Format:
+  Name: "&a%player%"
+  Lore:
+  - "Yes"
+  - "more lines of lore..."
+  - "these are obviously exampls..."
+  EnchantedGlow: false
+  # You can set a custom filler item... if you choose not to set this, it will default to the item in the GuiConfig.yml file.
+  FillerItem: "BLUE_Stained_glAss_pane"

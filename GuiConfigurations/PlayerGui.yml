@@ -1,0 +1,160 @@
+Title: "&2Manage %player%"
+Type: "Plain"
+
+HeaderSlot: 5
+
+Format:
+  # FillerItem: "lime_stained_glass_pAne"
+  
+  11:
+    Item: "Compass"
+    Name: "&aTeleport to %player%"
+    Lore:
+    - "&7click to teleport"
+    Execute: "Teleport"
+    CloseInventory: true
+    
+  12:
+    Item: "Ender_Pearl"
+    Name: "&aSummon %player% to you"
+    Lore:
+    - "&7click to teleport"
+    Execute: "Summon"
+    CloseInventory: true
+    
+  13:
+    Item: "Feather"
+    Name: "&bToggle fly for %player%"
+    Lore:
+    - "&7click to toggle fly"
+    Execute: "ToggleFly"
+    CloseInventory: true
+    
+  14:
+    Item: "Crafting_Table"
+    Name: "&6Set %player%'s Gamemode"
+    Lore:
+    - "&7click to open"
+    - "&7the gamemode selector"
+    Execute: "Gamemode"
+    CloseInventory: true
+    
+  15:
+    Item: "Ice"
+    Name: "&bFreeze %player%"
+    Lore:
+    - "&7click to freeze %player%"
+    - "&7for eternity... ;3"
+    Execute: "Freeze"
+    CloseInventory: true
+    
+  16:
+    Item: "Blaze_Powder"
+    Name: "&eUnfreeze %player%"
+    Lore:
+    - "&7click to unfreeze"
+    Execute: "Unfreeze"
+    CloseInventory: true
+  
+  17:
+    Item: "Cooked_Beef"
+    Name: "&2Feed %player%"
+    Lore:
+    - "&7click to feed player"
+    Execute: "Feed"
+    CloseInventory: true
+    
+  20:
+    Item: "GOLDEN_APPLE"
+    Name: "&aHeal %player%"
+    Lore:
+    - "&7click to heal player"
+    Execute: "Heal"
+    CloseInventory: true
+    
+  21:
+    Item: "Iron_Boots"
+    Name: "&cKick %player%"
+    Lore:
+    - "&7kick player from"
+    - "&7the server with a message"
+    Execute: "Kick"
+    CloseInventory: true
+    
+  22:
+    Item: "Diamond_Axe"
+    Name: "&4Ban %player%"
+    Lore:
+    - "&7ban this player"
+    - "&7with the message"
+    - "&7set in the config.yml"
+    Execute: "Ban"
+    CloseInventory: false
+    
+  23:
+    Item: "Sugar"
+    Name: "&eUnban %player%"
+    Lore:
+    - "&7unban this player"
+    Execute: "Unban"
+    CloseInventory: true
+    
+  24:
+    Item: "Anvil"
+    Name: "&cMute %player%"
+    Lore:
+    - "&7click to mute this player"
+    Execute: "Mute"
+    CloseInventory: true
+    
+  25:
+    Item: "Glowstone_Dust"
+    Name: "&eUnMute %player%"
+    Lore:
+    - "&7click to unmute"
+    Execute: "Unmute"
+    CloseInventory: true
+    
+  26:
+    Item: "iron_sword"
+    Name: "&cKill %player%"
+    Lore: 
+    - "&7click to kill player"
+    Execute: "Kill"
+    CloseInventory: true
+    
+  29:
+    Item: "BuckEt"
+    Name: "&cClear Inventory"
+    Lore:
+    - "&7click to clear their inventory"
+    Execute: "ClearInventory"
+    CloseInventory: true
+    
+  30:
+    Item: "Lime_Shulker_box"
+    Name: "&aRestore Inventory"
+    Lore:
+    - "&7Undoes the last time"
+    - "&7this player's inventory"
+    - "&7was cleared through SlashPlayer"
+    Execute: "restoreInventory"
+    CloseInventory: true
+    
+  31:
+    Item: "CHEST"
+    Name: "&eView Inventory"
+    Lore: 
+    - "&7click to view this player's inventory"
+    Execute: "openinventory"
+    CloseInventory: true
+    
+  32:
+    Item: "Ender_chEST"
+    Name: "&dView Enderchest"
+    Lore: 
+    - "&7click to view "
+    - "&7this player's enderchest."
+    Execute: "enderchest"
+    CloseInventory: true
+    

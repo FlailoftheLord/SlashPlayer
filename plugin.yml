@@ -1,4 +1,4 @@
-main: me.flail.oldSlashPlayer.SlashPlayer
+main: me.flail.slashplayer.SlashPlayer
 name: SlashPlayer
 website: https://www.github.com/flailofthelord
 author: [FlailoftheLord, WulfGamesYT]

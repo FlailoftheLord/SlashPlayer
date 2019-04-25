@@ -1,0 +1,49 @@
+Title: "&aSet %player%'s gamemode"
+Type: "Plain"
+HeaderSlot: 5
+    
+Format:
+
+  11:
+    Item: "Grass_Block"
+    Name: "&aSurvival"
+    Lore:
+    - "&7click to change"
+    - "&7player's gamemode"
+    - "&7to survival"
+    Execute: "GamemodeSurvival"
+    
+  13:
+    Item: "Barrier"
+    Name: "&eAdventure"
+    Lore:
+    - "&7click to change"
+    - "&7%player%'s gamemode"
+    - "&7to adventure"
+    Execute: "GamemodeAdventure"
+    
+  15:
+    Item: "Wooden_Pickaxe"
+    Name: "&6Creative"
+    Lore:
+    - "&7click to change"
+    - "&7%player%'s gamemode"
+    - "&7to creative"
+    Execute: "GamemodeCreative"
+    
+  17:
+    Item: "Feather"
+    Name: "&3Spectator"
+    Lore:
+    - "&7click to change"
+    - "&7%player%'s gamemode"
+    - "&7to spectator"
+    Execute: "GamemodeSpectator"
+    
+  32:
+    Item: "Redstone"
+    Name: "&c&nBack"
+    Lore:
+    - "&7click to go back"
+    Execute: "BackButton"
+    

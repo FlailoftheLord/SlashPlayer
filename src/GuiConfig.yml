@@ -1,8 +1,16 @@
 
 # Customize the Guis Shown
 # Each Number is for that slot in the GUI
-# There is a total of 45 slots for each GUI Menu
-
+# There is a max of 54 slots for each GUI Menu
+#
+# There are several different types of Gui files...
+# You can set each file's type by changing the ' Type: "" ' option at the top.
+# Valid types:
+#   List  -> this creates a list of players from the specified ' Source: "<file-name>.yml" ' file.
+#   Plain  -> a basic gui, you set each item per-slot.
+#   There will be a sample GuiFile for each gui-filetype... just so you can see how to configure yours.
+#  You can also follow the format of the default files like the 'PlayerGui and ReportGui' files.
+ 
 # This is the GUI which shows the players info when you click on their skull
 # after typing /player
 # For the Display Items, make sure to use the BUKKIT NAME
@@ -22,20 +30,21 @@
 #  Kick  - boots them off the server if they're online.
 #  Kill  - kills them. Pure and simple.
 #  Fly  - toggles their fly mode, if they're flying, their fly will be turned off, vice-versa.
-#  Gamemode  - opens a gui to change the player's gamemode.
+#  Gamemode  - opens a gui to change the player's gamemode. (Gamemode<mode> like GamemodeSurvival) are also valid.
 #  Whitelist  - toggles their whitelist status, can't add a player to the whitelist if they're already online!
 #  Freeze  - forces them to chill out.
-#  unFreeze  - melt the ice, get outta jail free!
+#  Unfreeze  - melt the ice, get outta jail free!
 #  Mute  - no talking in chat!
-#  unMute  - unmutes them if they're muted...
+#  Unmute  - unmutes them if they're muted...
 #  Ban  - Get YEETED!
-#  unBan  - Yup, removes them from being banned.
+#  Unban  - Yup, removes them from being banned.
 #  ClearInventory  - throws all the player's items into the void! permanently.
 #  RestoreInventory  - restores the player's inventory from the last time you cleared it.
 #  OpenInventory  - opens the player's inventory.
 #  Enderchest  - opens their enderchest.
 #  Burn  - GET HAWT!  (toggle)
 #  Friend  - spawns a friend of your choosing at their location.
+#  BackButton  - goes back to the previous menu.
 #
 # = = = = = = = = = = = = = = = = = #
 #
@@ -58,247 +67,15 @@
 # enabled in the config, you can get a full list of 1.13 item names from here:
 #   https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
 # = = = = = = = = = = #
+
+FillerItem: "Gray_stained_glass_pane"
+
 Header:
   NameColor: "&a"
   Info:
-  - "&bIsFrozen&8: &e%frozen_status%"
-  - "&bIsMuted&8: &e%mute_status%"
-  - "&6Gamemode&8: &7%player_gamemode%"
-  - "&2Health&8: &7%player_health%"
+  - "&bIsFrozen&8: &e%status-frozen%"
+  - "&bIsMuted&8: &e%status-mute%"
+  - "&6Gamemode&8: &7%gamemode%"
+  - "&2Health&8: &7%health%"
   
-  
-FillerItem: "Gray_stained_glass_pane"
-
-
-PlayerInfo:
-
-  Header:
-    Slot: 5
-
-  11:
-    Item: "Compass"
-    Name: "&aTeleport to %player%"
-    Lore:
-    - "&7click to teleport"
-    Execute: "TeleportToPlayer"
-    CloseInventory: true
-    
-  12:
-    Item: "Ender_Pearl"
-    Name: "&aSummon %player% to you"
-    Lore:
-    - "&7click to teleport"
-    Execute: "SummonPlayer"
-    CloseInventory: true
-    
-  13:
-    Item: "Feather"
-    Name: "&bToggle fly for %player%"
-    Lore:
-    - "&7click to toggle fly"
-    Execute: "ToggleFly"
-    CloseInventory: true
-    
-  14:
-    Item: "Crafting_Table"
-    Name: "&6Set %player%'s Gamemode"
-    Lore:
-    - "&7click to open"
-    - "&7the gamemode selector"
-    Execute: "SetGamemode"
-    CloseInventory: true
-    
-  15:
-    Item: "Ice"
-    Name: "&bFreeze %player%"
-    Lore:
-    - "&7click to freeze %player%"
-    - "&7for eternity... ;3"
-    Execute: "FreezePlayer"
-    CloseInventory: true
-    
-  16:
-    Item: "Blaze_Powder"
-    Name: "&eUnfreeze %player%"
-    Lore:
-    - "&7click to unfreeze"
-    Execute: "UnfreezePlayer"
-    CloseInventory: true
-  
-  17:
-    Item: "Cooked_Beef"
-    Name: "&2Feed %player%"
-    Lore:
-    - "&7click to feed player"
-    Execute: "FeedPlayer"
-    CloseInventory: true
-    
-  20:
-    Item: "GOLDEN_APPLE"
-    Name: "&aHeal %player%"
-    Lore:
-    - "&7click to heal player"
-    Execute: "HealPlayer"
-    CloseInventory: true
-    
-  21:
-    Item: "Iron_Boots"
-    Name: "&cKick %player%"
-    Lore:
-    - "&7kick player from"
-    - "&7the server with a message"
-    Execute: "KickPlayer"
-    CloseInventory: true
-    
-  22:
-    Item: "Diamond_Axe"
-    Name: "&4Ban %player%"
-    Lore:
-    - "&7ban this player"
-    - "&7with the message"
-    - "&7set in the config.yml"
-    Execute: "BanPlayer"
-    CloseInventory: false
-    
-  23:
-    Item: "Sugar"
-    Name: "&eUnban %player%"
-    Lore:
-    - "&7unban this player"
-    Execute: "UnbanPlayer"
-    CloseInventory: true
-    
-  24:
-    Item: "Anvil"
-    Name: "&cMute %player%"
-    Lore:
-    - "&7click to mute this player"
-    Execute: "MutePlayer"
-    CloseInventory: true
-    
-  25:
-    Item: "Glowstone_Dust"
-    Name: "&eUnMute %player%"
-    Lore:
-    - "&7click to unmute"
-    Execute: "UnmutePlayer"
-    CloseInventory: true
-    
-  26:
-    Item: "iron_sword"
-    Name: "&cKill %player%"
-    Lore: 
-    - "&7click to kill player"
-    Execute: "KillPlayer"
-    CloseInventory: true
-    
-  29:
-    Item: "BuckEt"
-    Name: "&cClear Inventory"
-    Lore:
-    - "&7click to clear their inventory"
-    Execute: "ClearInventory"
-    CloseInventory: true
-    
-  30:
-    Item: "Lime_Shulker_box"
-    Name: "&aRestore Inventory"
-    Lore:
-    - "&7Undoes the last time"
-    - "&7this player's inventory"
-    - "&7was cleared through SlashPlayer"
-    Execute: "restoreInventory"
-    CloseInventory: true
-    
-  31:
-    Item: "CHEST"
-    Name: "&eView Inventory"
-    Lore: 
-    - "&7click to view this player's inventory"
-    Execute: "openinventory"
-    CloseInventory: true
-    
-  32:
-    Item: "Ender_chEST"
-    Name: "&dView Enderchest"
-    Lore: 
-    - "&7click to view "
-    - "&7this player's enderchest."
-    Execute: "enderchest"
-    CloseInventory: true
-    
-    
-GamemodeInventory:
-
-  Title: "&aSet %player%'s gamemode"
-  
-  Header:
-    Slot: 5
-    
-  11:
-    Item: "Grass_Block"
-    Name: "&aSurvival"
-    Lore:
-    - "&7click to change"
-    - "&7player's gamemode"
-    - "&7to survival"
-    Mode: "survival"
-    
-  13:
-    Item: "Barrier"
-    Name: "&eAdventure"
-    Lore:
-    - "&7click to change"
-    - "&7%player%'s gamemode"
-    - "&7to adventure"
-    Mode: "adventure"
-    
-  15:
-    Item: "Wooden_Pickaxe"
-    Name: "&6Creative"
-    Lore:
-    - "&7click to change"
-    - "&7%player%'s gamemode"
-    - "&7to creative"
-    Mode: "creative"
-    
-  17:
-    Item: "Feather"
-    Name: "&3Spectator"
-    Lore:
-    - "&7click to change"
-    - "&7%player%'s gamemode"
-    - "&7to spectator"
-    Mode: "spectator"
-    
-  32:
-    Item: "Redstone"
-    Name: "&c&nBack"
-    Lore:
-    - "&7click to go back"
-    Mode: "BackButton"
-    
-  
-ReportGui:
-  
-  InventoryTitle: "&2Reported Players"
-  
-  ReportList:
-    
-    Name: "&3%player%"
-    Lore:
-    - "&aReported by: &7%reporter%"
-   
-    Reason:
-      Name: "&aReason:"
-      Color: '&7'
-    
-  
-  
-    
-    
-    
-    
-    
-
 
