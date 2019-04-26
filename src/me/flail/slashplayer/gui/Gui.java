@@ -25,6 +25,7 @@ public class Gui extends BaseGui {
 
 	public void open() {
 		user.player().openInventory(inv);
+		plugin.openGuis.add(this);
 	}
 
 }
