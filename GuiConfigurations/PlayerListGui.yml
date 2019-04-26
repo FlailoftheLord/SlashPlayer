@@ -1,0 +1,10 @@
+Title: "&aOnlinePlayers"
+Type: "List"
+Source: "%online-players%"
+# Oof... ;D
+Format:
+  Name: "&a%player%"
+  Lore:
+  - ""
+  - "&7click to manage"
+  FillerItem: "LIGHT_graY_STAInED_gLASS_pAne"

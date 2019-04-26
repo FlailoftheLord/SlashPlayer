@@ -4,13 +4,12 @@ import java.util.UUID;
 
 import org.bukkit.entity.Player;
 
-import me.flail.slashplayer.SlashPlayer;
 import me.flail.slashplayer.tools.DataFile;
 
 public class User extends UserData {
 
-	public User(SlashPlayer plugin, UUID uuid) {
-		super(plugin, uuid);
+	public User(UUID uuid) {
+		super(uuid);
 	}
 
 	public UUID uuid() {
@@ -29,20 +28,41 @@ public class User extends UserData {
 		return this.getDataFile();
 	}
 
+	/**
+	 * Loads the user's data file. Always trigger this when they join the server.
+	 */
+	public void setup(boolean verbose) {
+		plugin.server.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+			dataFile().load();
+			loadDefaultValues(this);
+			if (verbose) {
+				console("Loaded UserData for &7" + name() + "&8[" + ip() + "]" + "  &8(" + uuid() + ")");
+			}
+		}, 12L);
+	}
+
 	public String name() {
 		return player().getName();
 	}
 
+	public String ip() {
+		return player().getAddress().toString().replace("/", "");
+	}
+
+	public String gamemode() {
+		return player().getGameMode().toString().toLowerCase();
+	}
+
 	public boolean isBanned() {
-		return false;
+		return dataFile().getBoolean("Banned");
 	}
 
 	public boolean isMuted() {
-		return false;
+		return dataFile().getBoolean("Muted");
 	}
 
 	public boolean isFrozen() {
-		return false;
+		return dataFile().getBoolean("Frozen");
 	}
 
 	public boolean isDead() {

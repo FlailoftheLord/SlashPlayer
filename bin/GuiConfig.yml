@@ -30,20 +30,21 @@
 #  Kick  - boots them off the server if they're online.
 #  Kill  - kills them. Pure and simple.
 #  Fly  - toggles their fly mode, if they're flying, their fly will be turned off, vice-versa.
-#  Gamemode  - opens a gui to change the player's gamemode.
+#  Gamemode  - opens a gui to change the player's gamemode. (Gamemode<mode> like GamemodeSurvival) are also valid.
 #  Whitelist  - toggles their whitelist status, can't add a player to the whitelist if they're already online!
 #  Freeze  - forces them to chill out.
-#  unFreeze  - melt the ice, get outta jail free!
+#  Unfreeze  - melt the ice, get outta jail free!
 #  Mute  - no talking in chat!
-#  unMute  - unmutes them if they're muted...
+#  Unmute  - unmutes them if they're muted...
 #  Ban  - Get YEETED!
-#  unBan  - Yup, removes them from being banned.
+#  Unban  - Yup, removes them from being banned.
 #  ClearInventory  - throws all the player's items into the void! permanently.
 #  RestoreInventory  - restores the player's inventory from the last time you cleared it.
 #  OpenInventory  - opens the player's inventory.
 #  Enderchest  - opens their enderchest.
 #  Burn  - GET HAWT!  (toggle)
 #  Friend  - spawns a friend of your choosing at their location.
+#  BackButton  - goes back to the previous menu.
 #
 # = = = = = = = = = = = = = = = = = #
 #
@@ -67,24 +68,14 @@
 #   https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
 # = = = = = = = = = = #
 
+FillerItem: "Gray_stained_glass_pane"
+
 Header:
   NameColor: "&a"
   Info:
-  - "&bIsFrozen&8: &e%frozen_status%"
-  - "&bIsMuted&8: &e%mute_status%"
-  - "&6Gamemode&8: &7%player_gamemode%"
-  - "&2Health&8: &7%player_health%"
+  - "&bIsFrozen&8: &e%status-frozen%"
+  - "&bIsMuted&8: &e%status-mute%"
+  - "&6Gamemode&8: &7%gamemode%"
+  - "&2Health&8: &7%health%"
   
-  
-FillerItem: "Gray_stained_glass_pane"
-
-    
-  
-  
-    
-    
-    
-    
-    
-
 

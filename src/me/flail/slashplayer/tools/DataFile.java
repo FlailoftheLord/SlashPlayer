@@ -15,19 +15,29 @@ public class DataFile extends Logger {
 	private FileConfiguration config = new YamlConfiguration();
 
 	public DataFile(String path) {
-		plugin = JavaPlugin.getPlugin(SlashPlayer.class);
-		file = new File(path);
 		try {
+			plugin = JavaPlugin.getPlugin(SlashPlayer.class);
+			file = new File(plugin.getDataFolder() + path);
+			if (!file.exists()) {
+
+				file.createNewFile();
+
+			}
+
 			config.load(file);
-		} catch (Throwable t) {
-			this.console("&cError while loading file: " + path);
+		} catch (Exception e) {
+		}
+	}
+
+	public void load() {
+		try {
+			config.save(file);
+		} catch (Exception e) {
 		}
 	}
 
 	public void loadFromPlugin(String fileName) {
 		plugin.saveResource(fileName, false);
-
-
 	}
 
 	public DataFile save(FileConfiguration config) {
@@ -59,6 +69,10 @@ public class DataFile extends Logger {
 	public DataFile setHeader(String string) {
 		config.options().header(string);
 		return save(config);
+	}
+
+	public boolean hasValue(String key) {
+		return config.contains(key);
 	}
 
 }
