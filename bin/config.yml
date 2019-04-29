@@ -2,7 +2,7 @@
 #==================================================================#
 #                                                                  #
 #                 Plugin by FlailoftheLord.                        #
-#        -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-                   #
+#         -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-                  #
 #       For questions please join my discord server:               #
 #                https://discord.gg/wuxW5PS                        #
 #   ______               __        _____                           #
@@ -13,10 +13,6 @@
 #                                                                  #
 #==================================================================#
 #-----------------------------------------------------------------
- 
- 
-# Prefix for messages and commands.
-Prefix: "&8(&3&lSP&8)"
  
 # NOTE: Ranks go from 0 - 100 (in which 0 is the lowest rank) and can be applied to a user with the permission:
 #   slashplayer.rank.#   - replace # with any number from 0 - 100, 
@@ -32,12 +28,8 @@ KickOnUnWhitelist: true
 # You can set the filler item type in the 'GuiConfig.yml' file.
 FillEmptySpace: true
  
-# Title for the player-list GUI
-PlayerListTitle: "&2&lOnline Players"
- 
-# Title for the player moderation menu.
-# Use the %player% placeholder for their name.
-PlayerMenuTitle: "&2&l%player%"
+# Prefix for messages and commands.
+Prefix: "&8(&3&lSP&8)"
  
 # Used for the %website% placeholder.
 Website: "www.myserver.com/ban-apppeals"
@@ -67,15 +59,3 @@ Broadcast:
 # More console output?
 # Note: All actions are logged in the logs files located under /logs/[Date]
 ConsoleVerbose: true
- 
-# Force update your config file? 
-# Setting this to true will allow the plugin to update your config file to the latest settings.
-# Doing this, though, will reset all settings to default.
-# A copy of your old config will be saved to the location: 'old-config.yml'
-ForceConfigUpdates: false
- 
- 
- 
- 
-# No touchy pls, unless you want the plugin to go boom-boom.  :>
-ConfigVersion: 212
