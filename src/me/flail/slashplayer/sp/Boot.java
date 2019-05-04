@@ -5,6 +5,7 @@ import org.bukkit.plugin.PluginManager;
 
 import me.flail.slashplayer.SlashPlayer;
 import me.flail.slashplayer.listeners.PlayerListener;
+import me.flail.slashplayer.tools.DataFile;
 import me.flail.slashplayer.tools.Logger;
 import me.flail.slashplayer.user.User;
 
@@ -27,19 +28,19 @@ public class Boot extends Logger {
 			plugin.saveDefaultConfig();
 			plugin.verbose = plugin.getConfig().getBoolean("ConsoleVerbose");
 			new FileManager().setupGuiFiles(guiFiles);
+			plugin.messages = new DataFile("Messages.yml");
 
 			nl();
 			loadEvents();
 			console("Registered Listeners.");
 			nl();
 			loadCommands();
-			int players = this.loadOnlinePlayers();
-			switch (players) {
+			switch (this.loadOnlinePlayers()) {
 			case 1:
 				console("&aLoaded one player...");
 				break;
 			default:
-				console("&aLoaded " + players + " players...");
+				console("&aLoaded " + plugin.players.size() + " players...");
 			}
 
 		} catch (Exception e) {
@@ -71,6 +72,7 @@ public class Boot extends Logger {
 		for (Player p : plugin.server.getOnlinePlayers()) {
 			User user = new User(p.getUniqueId());
 			plugin.players.add(user);
+
 			user.setup(false);
 			onlinePlayers++;
 		}

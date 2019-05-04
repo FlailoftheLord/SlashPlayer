@@ -7,15 +7,20 @@ import java.util.List;
 import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import me.flail.slashplayer.gui.Gui;
 import me.flail.slashplayer.sp.Boot;
+import me.flail.slashplayer.tools.DataFile;
 import me.flail.slashplayer.tools.TabCompleter;
 import me.flail.slashplayer.user.User;
 
 public class SlashPlayer extends JavaPlugin {
 	public static SlashPlayer instance;
+
+	public FileConfiguration config;
+	public DataFile messages;
 
 	public List<Gui> openGuis = new LinkedList<>();
 	public List<User> players = new ArrayList<>();

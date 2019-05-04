@@ -40,4 +40,11 @@ public class UserData extends Logger {
 
 	}
 
+	public String getBanMessage() {
+		if (file.hasValue("UnbanTime")) {
+			String banMsg = plugin.getConfig().get("BanMessage").toString();
+
+		}
+	}
+
 }

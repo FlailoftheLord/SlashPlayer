@@ -77,4 +77,8 @@ public class User extends UserData {
 		return plugin.server.dispatchCommand(player(), command);
 	}
 
+	public boolean ban(long duration) {
+
+	}
+
 }
