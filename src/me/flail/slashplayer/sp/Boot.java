@@ -19,7 +19,7 @@ public class Boot extends Logger {
 
 	public boolean startup() {
 		String[] guiFiles = { "GamemodeGui.yml", "PlayerListGui.yml", "PlayerGui.yml", "ReportGui.yml", "SampleListGui.yml",
-				"SamplePlainGui.yml" };
+		"SamplePlainGui.yml" };
 		long startTime = System.currentTimeMillis();
 
 		try {
@@ -70,6 +70,7 @@ public class Boot extends Logger {
 		int onlinePlayers = 0;
 		for (Player p : plugin.server.getOnlinePlayers()) {
 			User user = new User(p.getUniqueId());
+			plugin.players.add(user);
 			user.setup(false);
 			onlinePlayers++;
 		}

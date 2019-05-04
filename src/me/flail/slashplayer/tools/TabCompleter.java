@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.command.Command;
-import org.bukkit.entity.Player;
 
-import me.flail.oldSlashPlayer.SlashPlayer;
+import me.flail.slashplayer.SlashPlayer;
+import me.flail.slashplayer.user.User;
 
 public class TabCompleter extends ArrayList<String> {
 	private SlashPlayer plugin = SlashPlayer.instance;
@@ -23,12 +23,10 @@ public class TabCompleter extends ArrayList<String> {
 	public TabCompleter construct(String label, String[] args) {
 		if (command.getName().equalsIgnoreCase("slashplayer")) {
 			List<String> baseArgs = new ArrayList<>();
-			for (Player p : plugin.players.values()) {
-				baseArgs.add(p.getName());
-			}
 
 			switch (args.length) {
 			case 1:
+				baseArgs.addAll(usernames());
 				baseArgs.add("reload");
 				baseArgs.add("report");
 				baseArgs.add("rank");
@@ -40,14 +38,25 @@ public class TabCompleter extends ArrayList<String> {
 				break;
 			case 2:
 				switch (args[0].toLowerCase()) {
+				case "report":
+					baseArgs.addAll(usernames());
+					break;
+				case "rank":
+					baseArgs.addAll(usernames());
+					break;
 				default:
-					for (String s : baseArgs) {
-						if (s.toLowerCase().startsWith(args[1].toLowerCase())) {
-							this.add(s);
-						}
-					}
+					baseArgs.clear();
+					break;
 
 				}
+
+				for (String s : baseArgs) {
+					if (s.toLowerCase().startsWith(args[1].toLowerCase())) {
+						this.add(s);
+					}
+				}
+
+
 				break;
 			case 3:
 				if (args[0].equalsIgnoreCase("report")) {
@@ -59,6 +68,14 @@ public class TabCompleter extends ArrayList<String> {
 		}
 
 		return this;
+	}
+
+	private List<String> usernames() {
+		List<String> names = new ArrayList<>();
+		for (User user : plugin.players) {
+			names.add(user.name());
+		}
+		return names;
 	}
 
 }
