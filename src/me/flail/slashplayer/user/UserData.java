@@ -1,10 +1,14 @@
 package me.flail.slashplayer.user;
 
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
 import me.flail.slashplayer.SlashPlayer;
+import me.flail.slashplayer.sp.Messages;
 import me.flail.slashplayer.tools.DataFile;
 import me.flail.slashplayer.tools.Logger;
 
@@ -40,9 +44,18 @@ public class UserData extends Logger {
 
 	}
 
+	public String banExpiry() {
+		Instant instant = (Instant) getDataFile().getObj("UnbanTime");
+		return new SimpleDateFormat("MM/dd/yyyy 'at' HH:mm.ss").format(Date.from(instant));
+	}
+
+	public Long banDuration() {
+		return Long.valueOf(getDataFile().getValue("BanDuration").replaceAll("[^0-9]", ""));
+	}
+
 	public String getBanMessage() {
 		if (file.hasValue("UnbanTime")) {
-			String banMsg = plugin.getConfig().get("BanMessage").toString();
+			String banMsg = Messages.get("Banned");
 
 		}
 	}

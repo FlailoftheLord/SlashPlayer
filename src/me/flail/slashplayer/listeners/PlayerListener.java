@@ -32,4 +32,5 @@ public class PlayerListener implements Listener {
 		user.setup(plugin.verbose);
 	}
 
+
 }

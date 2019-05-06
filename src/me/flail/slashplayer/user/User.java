@@ -1,12 +1,18 @@
 package me.flail.slashplayer.user;
 
+import java.time.Instant;
 import java.util.UUID;
 
 import org.bukkit.entity.Player;
 
 import me.flail.slashplayer.tools.DataFile;
+import me.flail.slashplayer.tools.Time;
 
 public class User extends UserData {
+
+	public enum KickReason {
+		BANNED, MUTED
+	}
 
 	public User(UUID uuid) {
 		super(uuid);
@@ -77,7 +83,12 @@ public class User extends UserData {
 		return plugin.server.dispatchCommand(player(), command);
 	}
 
+	public void kick(KickReason reason) {
+
+	}
+
 	public boolean ban(long duration) {
+		Instant instant = Time.currentInstant();
 
 	}
 

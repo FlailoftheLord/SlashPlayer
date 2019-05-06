@@ -49,13 +49,24 @@ public class DataFile extends Logger {
 		return this;
 	}
 
+	/**
+	 * Sets the specified <code>value</code> under the defined <code>key</code> in the data file.
+	 * 
+	 * @param key
+	 * @param value
+	 * @return the {@link DataFile} to which this value was set.
+	 */
 	public DataFile setValue(String key, Object value) {
 		config.set(key, value);
 		return save(config);
 	}
 
+	public Object getObj(String key) {
+		return config.get(key);
+	}
+
 	public String getValue(String key) {
-		return config.get(key).toString();
+		return getObj(key).toString();
 	}
 
 	public boolean getBoolean(String key) {
@@ -71,6 +82,12 @@ public class DataFile extends Logger {
 		return save(config);
 	}
 
+	/**
+	 * Checks wether this DataFile contains the specified <code>key</code> value.
+	 * 
+	 * @param key
+	 * @return true if found, false otherwise.
+	 */
 	public boolean hasValue(String key) {
 		return config.contains(key);
 	}
