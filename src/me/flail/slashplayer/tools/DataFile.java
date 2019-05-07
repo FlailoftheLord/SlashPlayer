@@ -77,6 +77,10 @@ public class DataFile extends Logger {
 		return config.getStringList(key);
 	}
 
+	public String[] getArray(String key) {
+		return getValue(key).replace("[", "").replace("]", "").split(", ");
+	}
+
 	public DataFile setHeader(String string) {
 		config.options().header(string);
 		return save(config);

@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import org.bukkit.entity.Player;
 
+import me.flail.slashplayer.gui.Gui;
 import me.flail.slashplayer.sp.Message;
 import me.flail.slashplayer.tools.DataFile;
 import me.flail.slashplayer.tools.Time;
@@ -49,6 +50,7 @@ public class User extends UserData {
 
 	public void logout() {
 		setOnline(false);
+		closeGui();
 	}
 
 	public String name() {
@@ -95,6 +97,16 @@ public class User extends UserData {
 		dataFile().setValue("Online", Boolean.valueOf(status));
 	}
 
+	public void closeGui() {
+		for (Gui ui : plugin.openGuis) {
+			if (ui.owner().uuid().equals(uuid())) {
+				plugin.openGuis.remove(ui);
+				return;
+			}
+		}
+	}
+
+
 	public void kick(KickReason reason) {
 		setOnline(false);
 		switch (reason) {
@@ -123,6 +135,15 @@ public class User extends UserData {
 		}
 
 		return this.isBanned();
+	}
+
+	/**
+	 * Opens the SlashPlayer GUI of the specified <code>subject</code> for this user.
+	 * 
+	 * @param subject
+	 */
+	public void moderatePlayer(User subject) {
+
 	}
 
 }

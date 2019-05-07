@@ -38,10 +38,10 @@ public class Boot extends Logger {
 			loadCommands();
 			switch (this.loadOnlinePlayers()) {
 			case 1:
-				console("&aLoaded one player...");
+				console("&aLoaded &7one&a player...");
 				break;
 			default:
-				console("&aLoaded " + plugin.players.size() + " players...");
+				console("&aLoaded &7" + plugin.players.size() + " &aplayers...");
 			}
 
 		} catch (Exception e) {

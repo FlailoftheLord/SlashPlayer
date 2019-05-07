@@ -23,6 +23,10 @@ public class Gui extends BaseGui {
 		return this;
 	}
 
+	public User owner() {
+		return user;
+	}
+
 	public void open() {
 		user.player().openInventory(inv);
 		plugin.openGuis.add(this);

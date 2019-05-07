@@ -2,8 +2,10 @@ package me.flail.slashplayer.user;
 
 import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -29,9 +31,9 @@ public class UserData extends Logger {
 	protected void loadDefaultValues(User user) {
 		Map<String, Object> values = new HashMap<>();
 		values.put("UUID", user.uuid().toString());
-		values.put("Name", user.name());
+		values.put("Name", new String[] {user.name()});
 		values.put("Online", Boolean.valueOf(true));
-		values.put("IP", user.ip());
+		values.put("IP", new String[] {user.ip()});
 		values.put("Gamemode", user.player().getGameMode().toString().toLowerCase());
 		values.put("Frozen", Boolean.valueOf(false));
 		values.put("Muted", Boolean.valueOf(false));
@@ -40,7 +42,45 @@ public class UserData extends Logger {
 		for (String key : values.keySet()) {
 			if (!file.hasValue(key)) {
 				file.setValue(key, values.get(key));
+				continue;
 			}
+			String[] list = file.getArray(key);
+			List<String> newList = new ArrayList<>();
+			switch (key) {
+			case "Name":
+				boolean newName = false;
+				for (String s : list) {
+					newList.add(s);
+					if (!s.equalsIgnoreCase(user.name())) {
+						newName = true;
+						continue;
+					}
+					newName = false;
+				}
+
+				if (newName) {
+					newList.add(user.name());
+					file.setValue(key, newList.toArray(new String[] {}));
+				}
+				break;
+			case "IP":
+				boolean newIp = false;
+				for (String s : list) {
+					newList.add(s);
+					if (!s.equalsIgnoreCase(user.ip())) {
+						newIp = true;
+						continue;
+					}
+					newIp = false;
+				}
+
+				if (newIp) {
+					newList.add(user.ip());
+					file.setValue(key, newList.toArray(new String[] {}));
+				}
+				break;
+			}
+
 		}
 
 	}
@@ -55,7 +95,7 @@ public class UserData extends Logger {
 	}
 
 	public String getBanMessage() {
-		if (file.hasValue("UnbanTime")) {
+		if (file.getBoolean("Banned")) {
 			Map<String, String> placeholders = new HashMap<>();
 			placeholders.put("%ban-duration%", banDuration() + "");
 
