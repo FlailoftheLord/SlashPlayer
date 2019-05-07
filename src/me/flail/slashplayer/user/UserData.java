@@ -56,8 +56,9 @@ public class UserData extends Logger {
 	public String getBanMessage() {
 		if (file.hasValue("UnbanTime")) {
 			String banMsg = Messages.get("Banned");
-
+			return banMsg.replace("%ban-duration%", banDuration() + "");
 		}
+		return "";
 	}
 
 }
