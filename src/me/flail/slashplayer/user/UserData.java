@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import me.flail.slashplayer.SlashPlayer;
-import me.flail.slashplayer.sp.Messages;
+import me.flail.slashplayer.sp.Message;
 import me.flail.slashplayer.tools.DataFile;
 import me.flail.slashplayer.tools.Logger;
 
@@ -30,6 +30,7 @@ public class UserData extends Logger {
 		Map<String, Object> values = new HashMap<>();
 		values.put("UUID", user.uuid().toString());
 		values.put("Name", user.name());
+		values.put("Online", Boolean.valueOf(true));
 		values.put("IP", user.ip());
 		values.put("Gamemode", user.player().getGameMode().toString().toLowerCase());
 		values.put("Frozen", Boolean.valueOf(false));
@@ -55,8 +56,11 @@ public class UserData extends Logger {
 
 	public String getBanMessage() {
 		if (file.hasValue("UnbanTime")) {
-			String banMsg = Messages.get("Banned");
-			return banMsg.replace("%ban-duration%", banDuration() + "");
+			Map<String, String> placeholders = new HashMap<>();
+			placeholders.put("%ban-duration%", banDuration() + "");
+
+			Message banMsg = new Message("Banned");
+			return banMsg.placeholders(placeholders);
 		}
 		return "";
 	}

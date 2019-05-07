@@ -29,6 +29,7 @@ public class Boot extends Logger {
 			plugin.verbose = plugin.getConfig().getBoolean("ConsoleVerbose");
 			new FileManager().setupGuiFiles(guiFiles);
 			plugin.messages = new DataFile("Messages.yml");
+			plugin.messages.load();
 
 			nl();
 			loadEvents();

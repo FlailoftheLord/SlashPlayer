@@ -8,10 +8,13 @@ import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import me.flail.slashplayer.gui.Gui;
 import me.flail.slashplayer.sp.Boot;
+import me.flail.slashplayer.sp.SlashPlayerCommand;
 import me.flail.slashplayer.tools.DataFile;
 import me.flail.slashplayer.tools.TabCompleter;
 import me.flail.slashplayer.user.User;
@@ -43,7 +46,7 @@ public class SlashPlayer extends JavaPlugin {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		return false;
+		return new SlashPlayerCommand(sender, command, label, args).run();
 	}
 
 	@Override
@@ -51,5 +54,21 @@ public class SlashPlayer extends JavaPlugin {
 		return new TabCompleter(command).construct(label, args);
 	}
 
+	@EventHandler
+	public void cmdProcess(PlayerCommandPreprocessEvent event) {
+		String message = event.getMessage();
+		if (message.startsWith("/sp ")) {
+			message = message.replace("/sp ", "/slashplayer ");
+		}
+		for (User user : players) {
+			String name = user.name();
+			if (message.toLowerCase().startsWith("/"+ name.toLowerCase()+" ")) {
+				message = message.replaceAll("(?i)" + "/" + name + " ", "/slashplayer " + name + " ");
+				break;
+			}
+		}
+
+		event.setMessage(message);
+	}
 
 }

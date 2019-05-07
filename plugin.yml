@@ -12,7 +12,7 @@ commands:
   slashplayer:
     usage: /slashplayer [reload:report:player-name]
     description: opens the player list menu
-    aliases: [player, sp, report, reportplayer, spr, reports, spunban]
+    aliases: [player, sp, report, reports]
    
   ouch:
     description: ouch!

@@ -14,7 +14,11 @@ public class Time extends StringUtils {
 		return currentDate().toInstant();
 	}
 
-	public boolean isExpired(Date date, long duration) {
+	public static Instant finalBan(Instant initial, long duration) {
+		return initial.plusSeconds(duration);
+	}
+
+	public static boolean isExpired(Date date, long duration) {
 		return date.toInstant().plusSeconds(duration).isBefore(currentInstant());
 	}
 

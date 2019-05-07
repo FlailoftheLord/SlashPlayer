@@ -13,34 +13,34 @@
 #                                                                  #
 #==================================================================#
 #-----------------------------------------------------------------
- 
+# - - -
 # NOTE: Ranks go from 0 - 100 (in which 0 is the lowest rank) and can be applied to a user with the permission:
 #   slashplayer.rank.#   - replace # with any number from 0 - 100, 
 # If a player does not have a rank permisison, their rank will default to 0.
- 
+# - - -
+
 # Wether players of the same ranking can execute on each other.
 EqualsCanExecute: true
- 
+
 # Kick the player if they've been un-whitelisted?
 KickOnUnWhitelist: true
- 
+
 # Fill empty space in GUI's?
 # You can set the filler item type in the 'GuiConfig.yml' file.
 FillEmptySpace: true
- 
+
 # Prefix for messages and commands.
 Prefix: "&8(&3&lSP&8)"
- 
+
 # Used for the %website% placeholder.
 Website: "www.myserver.com/ban-apppeals"
-# The time to ban the player for in Minutes.
-# 1 hour = 60 minutes
-# 1 day = 24 hours = 1440 minutes
-# 1 week = 7 days = 10080 minutes
-BanTime: 60
- 
-# Mute time in minutes.
-MuteTime: 5
+
+# 1 hour = 3600 seconds
+# 1 day = 24 hours = 86400 seconds
+# 1 week = 7 days = 604800 seconds
+# 1 month = 30 days = 2592000 seconds
+BanTime: 3600
+MuteTime: 300
  
 # Settings for frozen players.
 # Use 'deny' or 'allow' to specify.
@@ -49,13 +49,13 @@ Frozen:
   AdventureMode: true
   Interact: deny
   Chat: deny
- 
+  
 # Broadcast options, enable or disable for each one.
 Broadcast: 
   Kick: false
   Mute: false
   Ban: true
- 
+
 # More console output?
 # Note: All actions are logged in the logs files located under /logs/[Date]
 ConsoleVerbose: true

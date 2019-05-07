@@ -7,8 +7,8 @@
 # to ->
 #  Message: |-
 #    %prefix% &aExample messages...
-#     &cthese mssages have two lines.. hehe :>
-#     &a and a thirDDddDd!!!
+#    &cthese mssages have two lines.. hehe :>
+#    &a and a thirDDddDd!!!
 #
 # = = = # Placeholders # = = = #
 # %player% the subject of the command
