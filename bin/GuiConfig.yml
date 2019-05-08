@@ -1,8 +1,8 @@
-
+# - - -
 # Customize the Guis Shown
 # Each Number is for that slot in the GUI
 # There is a max of 54 slots for each GUI Menu
-#
+# - - -
 # There are several different types of Gui files...
 # You can set each file's type by changing the ' Type: "" ' option at the top.
 # Valid types:
@@ -10,18 +10,18 @@
 #   Plain  -> a basic gui, you set each item per-slot.
 #   There will be a sample GuiFile for each gui-filetype... just so you can see how to configure yours.
 #  You can also follow the format of the default files like the 'PlayerGui and ReportGui' files.
- 
+# - - -
 # This is the GUI which shows the players info when you click on their skull
 # after typing /player
 # For the Display Items, make sure to use the BUKKIT NAME
 # You can get the full list of Bukkit Item Names from here:
 #   https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
 # If you want a slot to be empty, set it to ""
-
+# - - -
 # For the Execute: "" set it to one of the Moderation Executables from the list below, 
 # This will run the command on the player when clicked
 # For the %player% placeholder is the name of the player you selected in the player list.
-
+# - - -
 # Full List of Executables:
 #  Teleport  - teleports you to the player.
 #  Summon  - summons (teleports) the player to you.
@@ -45,9 +45,9 @@
 #  Burn  - GET HAWT!  (toggle)
 #  Friend  - spawns a friend of your choosing at their location.
 #  BackButton  - goes back to the previous menu.
-#
+# - - -
 # = = = = = = = = = = = = = = = = = #
-#
+# - - -
 # For the GamemodeInventory set the Mode: "" to whatever gamemode you want each one to change,
 # The GamemodeInventory is only 36 slots... so any slot from 1 - 36 is allowed
 # Modes:

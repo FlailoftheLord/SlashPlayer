@@ -2,6 +2,7 @@ package me.flail.slashplayer.tools;
 
 import java.io.File;
 import java.util.List;
+import java.util.Set;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -21,6 +22,10 @@ public class DataFile extends Logger {
 			if (!file.exists()) {
 
 				file.createNewFile();
+				try {
+					plugin.saveResource(path, true);
+				} catch (Throwable t) {
+				}
 
 			}
 
@@ -36,8 +41,8 @@ public class DataFile extends Logger {
 		}
 	}
 
-	public void loadFromPlugin(String fileName) {
-		plugin.saveResource(fileName, false);
+	public void loadFromPlugin(String fileName, boolean overwrite) {
+		plugin.saveResource(fileName, overwrite);
 	}
 
 	public DataFile save(FileConfiguration config) {
@@ -47,6 +52,14 @@ public class DataFile extends Logger {
 			this.console("&cError while saving configuration: " + config.getName() + " to: " + file.getPath());
 		}
 		return this;
+	}
+
+	/**
+	 * @return A {@link Set} of all the top-level keys in this file. Will return an empty Set if the
+	 *         file is empty.
+	 */
+	public Set<String> keySet() {
+		return config.getKeys(false);
 	}
 
 	/**

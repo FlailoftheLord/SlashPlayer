@@ -25,7 +25,6 @@ public class SlashPlayerCommand extends Logger {
 		if (command.getName().equalsIgnoreCase("slashplayer")) {
 			switch (label) {
 
-
 			}
 
 			return true;

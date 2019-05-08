@@ -3,7 +3,11 @@ package me.flail.slashplayer.user;
 import java.time.Instant;
 import java.util.UUID;
 
+import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.SkullMeta;
 
 import me.flail.slashplayer.gui.Gui;
 import me.flail.slashplayer.sp.Message;
@@ -24,11 +28,19 @@ public class User extends UserData {
 		return playerUuid;
 	}
 
+	public String id() {
+		return uuid().toString();
+	}
+
 	/**
 	 * @return This user's {@link Player} object if online. null otherwise.
 	 */
 	public Player player() {
-		return plugin.server.getOfflinePlayer(playerUuid).isOnline() ? plugin.server.getPlayer(playerUuid) : null;
+		return plugin.server.getOfflinePlayer(uuid()).isOnline() ? plugin.server.getPlayer(uuid()) : null;
+	}
+
+	public OfflinePlayer offlinePlayer() {
+		return plugin.server.getOfflinePlayer(uuid());
 	}
 
 	public DataFile dataFile() {
@@ -149,6 +161,14 @@ public class User extends UserData {
 	public void ouch() {
 		player().damage(0.1);
 		player().sendMessage(chat("&4&l<3"));
+	}
+
+	public ItemStack getSkull() {
+		ItemStack item = new ItemStack(Material.PLAYER_HEAD);
+		SkullMeta meta = (SkullMeta) item.getItemMeta();
+		meta.setOwningPlayer(offlinePlayer());
+		item.setItemMeta(meta);
+		return item;
 	}
 
 }

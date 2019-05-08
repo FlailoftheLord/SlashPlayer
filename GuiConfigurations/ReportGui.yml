@@ -3,11 +3,12 @@ Type: "List"
 Source: "ReportedPlayers.yml"
 
 Format:
-  Name: "%player%"
+  Name: "&a%player%"
   Lore:
-  - "%reason%"
+  - "&aReporter&8: %reporter%"
   - ""
-  - "&8middle-click to remove"
+  - " &aReason&8: &7%information%"
+  - ""
   FillerItem: ""
   
   
