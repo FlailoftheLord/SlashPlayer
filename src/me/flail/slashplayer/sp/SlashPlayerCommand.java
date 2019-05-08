@@ -2,8 +2,10 @@ package me.flail.slashplayer.sp;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import me.flail.slashplayer.tools.Logger;
+import me.flail.slashplayer.user.User;
 
 public class SlashPlayerCommand extends Logger {
 	private CommandSender operator;
@@ -23,9 +25,19 @@ public class SlashPlayerCommand extends Logger {
 		if (command.getName().equalsIgnoreCase("slashplayer")) {
 			switch (label) {
 
+
 			}
 
+			return true;
 		}
+		if (command.getName().equals("ouch")) {
+			if (operator instanceof Player) {
+				Player player = (Player) operator;
+				User user = new User(player.getUniqueId());
+				user.ouch();
+			}
+		}
+
 		return operator != null;
 	}
 

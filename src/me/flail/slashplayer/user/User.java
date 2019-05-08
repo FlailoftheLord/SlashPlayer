@@ -146,4 +146,9 @@ public class User extends UserData {
 
 	}
 
+	public void ouch() {
+		player().damage(0.1);
+		player().sendMessage(chat("&4&l<3"));
+	}
+
 }
