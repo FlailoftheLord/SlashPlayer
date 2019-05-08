@@ -70,12 +70,25 @@
 
 FillerItem: "Gray_stained_glass_pane"
 
+Editor:
+  title: '&2SlashPlayer Gui editor'
+
 Header:
   NameColor: "&a"
-  Info:
+  info:
   - "&bIsFrozen&8: &e%status-frozen%"
   - "&bIsMuted&8: &e%status-mute%"
   - "&6Gamemode&8: &7%gamemode%"
   - "&2Health&8: &7%health%"
+  
+ErrorItem:
+  type: 'barrier'
+  name: '&cInvalid Item in %gui%'
+  lore:
+  - '&7this is a placeholder'
+  - '&7for an invalid item in'
+  - '&7this gui...'
+  - '&7make sure to go into the file'
+  - '&7and fix the wrong item.'
   
 

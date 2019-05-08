@@ -17,7 +17,7 @@ public class DataFile extends Logger {
 	public DataFile(String path) {
 		try {
 			plugin = JavaPlugin.getPlugin(SlashPlayer.class);
-			file = new File(plugin.getDataFolder() + path);
+			file = new File(plugin.getDataFolder() + "/" + path);
 			if (!file.exists()) {
 
 				file.createNewFile();

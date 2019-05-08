@@ -10,7 +10,7 @@ public class Message extends FileManager {
 	private String message;
 
 	public Message(String key) {
-		file = new DataFile("Messages.yml");
+		file = plugin.messages;
 		prefix = chat(plugin.getConfig().getString("Prefix"));
 		message = file.getValue(key);
 	}
