@@ -12,28 +12,32 @@ public class GuiControl extends Gui {
 	}
 
 	public GuiControl playerList() {
-		loadGui("PlayerListGui.yml");
-		return this;
+		return loadGui("PlayerListGui.yml");
 	}
 
 	public GuiControl playerGui() {
-		loadGui("PlayerGui.yml");
-		return this;
+		return loadGui("PlayerGui.yml");
 	}
 
 	public GuiControl reportGui() {
-		loadGui("ReportGui.yml");
-		return this;
+		return loadGui("ReportGui.yml");
 	}
 
 	public GuiControl gamemodeGui() {
-		loadGui("GamemodeGui.yml");
+		return loadGui("GamemodeGui.yml");
+	}
+
+	protected GuiControl loadGui(String path) {
+		file = new DataFile("/GuiConfigurations/" + path);
 		return this;
 	}
 
-	protected void loadGui(String path) {
-		file = new DataFile("/GuiConfigurations/" + path);
+	public Gui get() {
+		return ui;
+	}
 
+	public DataFile getGuiFile() {
+		return file;
 	}
 
 }

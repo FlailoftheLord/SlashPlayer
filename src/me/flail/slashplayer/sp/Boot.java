@@ -19,15 +19,14 @@ public class Boot extends Logger {
 	}
 
 	public boolean startup() {
-		String[] guiFiles = { "GamemodeGui.yml", "PlayerListGui.yml", "PlayerGui.yml", "ReportGui.yml", "SampleListGui.yml",
-		"SamplePlainGui.yml" };
+
 		long startTime = System.currentTimeMillis();
 
 		try {
 			console("&aLoading Files...");
 			plugin.saveDefaultConfig();
 			plugin.verbose = plugin.getConfig().getBoolean("ConsoleVerbose");
-			new FileManager().setupGuiFiles(guiFiles);
+			new FileManager().setupGuiFiles(plugin.guiFiles);
 			plugin.messages = new DataFile("Messages.yml");
 			plugin.messages.load();
 

@@ -28,6 +28,9 @@ public class SlashPlayer extends JavaPlugin {
 	public List<Gui> openGuis = new LinkedList<>();
 	public List<User> players = new ArrayList<>();
 
+	public String[] guiFiles = { "GamemodeGui.yml", "PlayerListGui.yml", "PlayerGui.yml", "ReportGui.yml", "SampleListGui.yml",
+			"SamplePlainGui.yml" };
+
 	public Server server;
 	public boolean verbose = false;
 

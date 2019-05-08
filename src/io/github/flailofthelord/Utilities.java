@@ -5,7 +5,6 @@ import java.util.Map;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
-@SuppressWarnings("unused")
 public class Utilities {
 	protected Class<? extends JavaPlugin> plugin;
 
