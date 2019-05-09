@@ -28,11 +28,7 @@ public class Message extends FileManager {
 	}
 
 	public String placeholders(Map<String, String> placeholders) {
-		message = get();
-		for (String p : placeholders.keySet()) {
-			message = message.replace(p, placeholders.get(p));
-		}
-		return placeholders != null ? message : get();
+		return this.placeholders(get(), placeholders);
 	}
 }
 

@@ -48,7 +48,7 @@
 # - - -
 # = = = = = = = = = = = = = = = = = #
 # - - -
-# For the GamemodeInventory set the Mode: "" to whatever gamemode you want each one to change,
+# For the GamemodeInventory set the Execute: "" to whatever gamemode you want each one to change,
 # The GamemodeInventory is only 36 slots... so any slot from 1 - 36 is allowed
 # Modes:
 #  Survival  - survival gamemode - this is normal for all players

@@ -45,4 +45,9 @@ public class GuiControl extends Gui {
 		return file;
 	}
 
+	public void openModerationGui(User subject) {
+		this.setSubject(user);
+		this.open();
+	}
+
 }

@@ -17,14 +17,20 @@ public class BaseGui extends Logger {
 	protected User user;
 	private String title;
 
-	protected BaseGui(User user, int size, String title, InventoryType type) {
+	protected BaseGui(User user, int size, String title) {
 		this.user = user;
 		this.title = title;
 		inv = Bukkit.createInventory(null, size, chat(title));
 	}
 
-	protected void setSubject(User user) {
+	protected BaseGui setType(InventoryType type) {
+		inv = Bukkit.createInventory(user.player(), type, title);
+		return this;
+	}
+
+	protected BaseGui setSubject(User user) {
 		inv = Bukkit.createInventory(user.player(), inv.getSize(), title);
+		return this;
 	}
 
 }

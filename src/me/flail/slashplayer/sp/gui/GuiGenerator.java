@@ -1,6 +1,7 @@
 package me.flail.slashplayer.sp.gui;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -168,8 +169,39 @@ public class GuiGenerator extends Logger {
 		}
 
 		private void loadPlain(DataFile file) {
+			int headerSlot = Integer.parseInt(file.getValue("HeaderSlot").replaceAll("[^0-9]", ""));
 
 			new GeneratedGui(gui, items).create();
+		}
+
+		private ItemStack headerItem(User user) {
+			ItemStack skull = user.getSkull();
+			DataFile guiConfig = new DataFile("GuiConfig.yml");
+			List<String> lore = new ArrayList<>();
+			lore.add(chat("&8" + user.uuid()));
+
+			List<String> loreFormat = guiConfig.getList("Header.info");
+
+			Map<String, String> placeholders = new HashMap<>();
+			placeholders.put("%health%", user.player().getHealth() + "");
+			placeholders.put("%food%", user.player().getFoodLevel() + "");
+			placeholders.put("%gamemode%", user.player().getGameMode().toString().toLowerCase());
+			placeholders.put("%status-mute%", user.isMuted() + "");
+			placeholders.put("%status-frozen%", user.isFrozen() + "");
+			placeholders.put("%status-ban%", user.isBanned() + "");
+			placeholders.put("%uuid%", user.uuid().toString());
+			placeholders.put("%player%", user.name());
+
+			for (String line : loreFormat) {
+				lore.add(placeholders(line, placeholders));
+			}
+
+			ItemMeta meta = skull.getItemMeta();
+			meta.setDisplayName(chat(guiConfig.getValue("Header.NameColor") + user.name()));
+			meta.setLore(lore);
+			skull.setItemMeta(meta);
+
+			return skull;
 		}
 
 		private String getColor(String string, String before) {
