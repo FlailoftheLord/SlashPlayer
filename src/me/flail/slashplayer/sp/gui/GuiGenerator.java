@@ -64,6 +64,14 @@ public class GuiGenerator extends Logger {
 		private void loadList(DataFile file) {
 			List<User> userList = new ArrayList<>(8);
 			String source = file.getValue("Source");
+			if (source == null) {
+				console("&cInvalid source path for the " + file.name() + " Gui file!");
+				console("&cPlease specify a source for this List file. "
+						+ "&7You can use &f%online-players% &7for a list of the players who are currently online.");
+
+				return;
+			}
+
 			DataFile userListFile = null;
 			if (source.contains("%") || source.contains("online-players")) {
 				userList.addAll(plugin.players);
@@ -156,11 +164,12 @@ public class GuiGenerator extends Logger {
 				}
 			}
 
-			plugin.loadedGuis.add(new GeneratedGui(gui, items));
+			new GeneratedGui(gui, items).create();
 		}
 
 		private void loadPlain(DataFile file) {
 
+			new GeneratedGui(gui, items).create();
 		}
 
 		private String getColor(String string, String before) {

@@ -11,6 +11,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 
 import me.flail.slashplayer.gui.Gui;
 import me.flail.slashplayer.sp.Message;
+import me.flail.slashplayer.sp.gui.GuiControl;
 import me.flail.slashplayer.tools.DataFile;
 import me.flail.slashplayer.tools.Time;
 
@@ -155,7 +156,7 @@ public class User extends UserData {
 	 * @param subject
 	 */
 	public void moderatePlayer(User subject) {
-
+		new GuiControl(this).openModerationGui(subject);
 	}
 
 	public void ouch() {

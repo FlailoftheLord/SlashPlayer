@@ -4,6 +4,11 @@ import me.flail.slashplayer.gui.Gui;
 import me.flail.slashplayer.tools.DataFile;
 import me.flail.slashplayer.user.User;
 
+/**
+ * Use this to create new instances of a GUI
+ * 
+ * @author FlailoftheLord
+ */
 public class GuiControl extends Gui {
 	private DataFile file;
 
@@ -33,7 +38,7 @@ public class GuiControl extends Gui {
 	}
 
 	public Gui get() {
-		return ui;
+		return this;
 	}
 
 	public DataFile getGuiFile() {

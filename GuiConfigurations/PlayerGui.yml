@@ -1,6 +1,7 @@
 Title: "&2Manage %player%"
 Type: "Plain"
 
+# You can customize the header item in the 'GuiConfig.yml' file
 HeaderSlot: 5
 
 Format:

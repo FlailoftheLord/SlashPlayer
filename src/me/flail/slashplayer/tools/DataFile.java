@@ -34,6 +34,10 @@ public class DataFile extends Logger {
 		}
 	}
 
+	public String name() {
+		return file.getName();
+	}
+
 	public void load() {
 		try {
 			config.save(file);
@@ -74,14 +78,25 @@ public class DataFile extends Logger {
 		return save(config);
 	}
 
+	/**
+	 * @param key
+	 * @return null if the object could not be found.
+	 */
 	public Object getObj(String key) {
 		return config.get(key);
 	}
 
+	/**
+	 * @param key
+	 * @return null if the value couldn't be found.
+	 */
 	public String getValue(String key) {
 		return getObj(key).toString();
 	}
 
+	/**
+	 * @return false if value wasn't found.
+	 */
 	public boolean getBoolean(String key) {
 		return Boolean.valueOf(getValue(key)).booleanValue();
 	}
