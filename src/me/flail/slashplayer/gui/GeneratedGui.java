@@ -2,6 +2,7 @@ package me.flail.slashplayer.gui;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import org.bukkit.inventory.ItemStack;
 
@@ -9,16 +10,29 @@ import me.flail.slashplayer.tools.Logger;
 
 public class GeneratedGui extends Logger {
 
-	private Map<Gui, Map<Integer, ItemStack>> guiSet = new HashMap<>();
+	private String name;
+	private Map<Integer, ItemStack> guiSet = new HashMap<>();
 
-	public GeneratedGui(Gui gui, Map<Integer, ItemStack> itemSet) {
-		Map<Integer, ItemStack> items = new HashMap<>();
+	public GeneratedGui(String guiName, Map<Integer, ItemStack> itemSet) {
+		name = guiName;
 		guiSet.clear();
-		items.clear();
-		items.putAll(itemSet);
-		guiSet.put(gui, items);
+		guiSet.putAll(itemSet);
 	}
 
+	public String name() {
+		if (!name.endsWith(".yml")) {
+			name = name.concat(".yml");
+		}
+		return name;
+	}
+
+	public Set<Integer> slots() {
+		return guiSet.keySet();
+	}
+
+	public ItemStack get(Integer slot) {
+		return guiSet.get(slot);
+	}
 
 	public boolean create() {
 		return plugin.loadedGuis.add(this);

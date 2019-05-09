@@ -58,7 +58,7 @@ public class PlayerListener implements Listener {
 				if (operator.player().hasPermission("slashplayer.command")) {
 					User subject = new User(player.getUniqueId());
 
-					operator.moderatePlayer(subject);
+					operator.moderatePlayer(subject, "main");
 				}
 
 			}

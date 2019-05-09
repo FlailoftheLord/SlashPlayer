@@ -5,6 +5,7 @@ import org.bukkit.plugin.PluginManager;
 
 import me.flail.slashplayer.SlashPlayer;
 import me.flail.slashplayer.listeners.PlayerListener;
+import me.flail.slashplayer.sp.gui.GuiGenerator;
 import me.flail.slashplayer.tools.DataFile;
 import me.flail.slashplayer.tools.Logger;
 import me.flail.slashplayer.user.User;
@@ -29,7 +30,7 @@ public class Boot extends Logger {
 			new FileManager().setupGuiFiles(plugin.guiFiles);
 			plugin.messages = new DataFile("Messages.yml");
 			new DataFile("GuiConfig.yml");
-
+			loadGuiFiles();
 			nl();
 			loadEvents();
 			console("Registered Listeners.");
@@ -77,6 +78,13 @@ public class Boot extends Logger {
 			onlinePlayers++;
 		}
 		return onlinePlayers;
+	}
+
+	private void loadGuiFiles() {
+		for (String guiName : plugin.guiFiles) {
+			new GuiGenerator(guiName).run();
+		}
+
 	}
 
 }

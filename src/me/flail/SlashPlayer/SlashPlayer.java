@@ -13,7 +13,7 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import me.flail.slashplayer.gui.GeneratedGui;
-import me.flail.slashplayer.gui.Gui;
+import me.flail.slashplayer.gui_old.Gui;
 import me.flail.slashplayer.sp.Boot;
 import me.flail.slashplayer.sp.SlashPlayerCommand;
 import me.flail.slashplayer.tools.DataFile;
@@ -47,6 +47,12 @@ public class SlashPlayer extends JavaPlugin {
 		Boot boot = new Boot(this);
 		boot.startup();
 
+	}
+
+	@Override
+	public void onDisable() {
+		server.getScheduler().getPendingTasks().clear();
+		server.getScheduler().cancelTasks(this);
 	}
 
 	@Override

@@ -2,7 +2,7 @@ main: me.flail.slashplayer.SlashPlayer
 name: SlashPlayer
 prefix: SlashPlayer
 website: https://www.github.com/flailofthelord
-author: [FlailoftheLord, WulfGamesYT]
+authors: [FlailoftheLord, WulfGamesYT]
 description: player managment GUI system
 version: 2.1.2
 api-version: 1.13

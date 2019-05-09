@@ -1,15 +1,20 @@
 package me.flail.slashplayer.user;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
-import me.flail.slashplayer.gui.Gui;
+import me.flail.slashplayer.gui_old.Gui;
 import me.flail.slashplayer.sp.Message;
 import me.flail.slashplayer.sp.gui.GuiControl;
 import me.flail.slashplayer.tools.DataFile;
@@ -52,13 +57,12 @@ public class User extends UserData {
 	 * Loads the user's data file. Always trigger this when they join the server.
 	 */
 	public void setup(boolean verbose) {
-		plugin.server.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
-			dataFile().load();
-			loadDefaultValues(this);
-			if (verbose) {
-				console("Loaded UserData for &7" + name() + "&8[" + ip() + "]" + "  &8(" + uuid() + ")");
-			}
-		}, 12L);
+		dataFile().load();
+		loadDefaultValues(this);
+		if (verbose) {
+			console("Loaded UserData for &7" + name() + "&8[" + ip() + "]" + "  &8(" + uuid() + ")");
+		}
+
 	}
 
 	public void logout() {
@@ -150,13 +154,19 @@ public class User extends UserData {
 		return this.isBanned();
 	}
 
+	public void openGui(String guiName) {
+		new GuiControl(this).open(guiName);
+	}
+
 	/**
 	 * Opens the SlashPlayer GUI of the specified <code>subject</code> for this user.
 	 * 
 	 * @param subject
+	 * @param type
+	 *                    whether to open the main menu or the Gamemode changer
 	 */
-	public void moderatePlayer(User subject) {
-		new GuiControl(this).openModerationGui(subject);
+	public void moderatePlayer(User subject, String type) {
+		new GuiControl(subject).openModerationGui(this, type);
 	}
 
 	public void ouch() {
@@ -170,6 +180,36 @@ public class User extends UserData {
 		meta.setOwningPlayer(offlinePlayer());
 		item.setItemMeta(meta);
 		return item;
+	}
+
+	public ItemStack headerItem() {
+		ItemStack skull = getSkull();
+		DataFile guiConfig = new DataFile("GuiConfig.yml");
+		List<String> lore = new ArrayList<>();
+		lore.add(chat("&8" + uuid()));
+
+		List<String> loreFormat = guiConfig.getList("Header.info");
+
+		Map<String, String> placeholders = new HashMap<>();
+		placeholders.put("%health%", player().getHealth() + "");
+		placeholders.put("%food%", player().getFoodLevel() + "");
+		placeholders.put("%gamemode%", player().getGameMode().toString().toLowerCase());
+		placeholders.put("%status-mute%", isMuted() + "");
+		placeholders.put("%status-frozen%", isFrozen() + "");
+		placeholders.put("%status-ban%", isBanned() + "");
+		placeholders.put("%uuid%", uuid().toString());
+		placeholders.put("%player%", name());
+
+		for (String line : loreFormat) {
+			lore.add(placeholders(line, placeholders));
+		}
+
+		ItemMeta meta = skull.getItemMeta();
+		meta.setDisplayName(chat(guiConfig.getValue("Header.NameColor") + name()));
+		meta.setLore(lore);
+		skull.setItemMeta(meta);
+
+		return skull;
 	}
 
 }

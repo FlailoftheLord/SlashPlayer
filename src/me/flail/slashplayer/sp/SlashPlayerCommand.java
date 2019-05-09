@@ -25,6 +25,16 @@ public class SlashPlayerCommand extends Logger {
 		if (command.getName().equalsIgnoreCase("slashplayer")) {
 			switch (label) {
 
+			default:
+				if ((args.length > 0) && args[0].equalsIgnoreCase("test")) {
+					if (operator instanceof Player) {
+						Player player = (Player) operator;
+						User user = new User(player.getUniqueId());
+						user.openGui("PlayerListGui.yml");
+
+					}
+
+				}
 			}
 
 			return true;

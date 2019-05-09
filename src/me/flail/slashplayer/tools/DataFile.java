@@ -98,7 +98,7 @@ public class DataFile extends Logger {
 	 * @return false if value wasn't found.
 	 */
 	public boolean getBoolean(String key) {
-		return Boolean.valueOf(getValue(key)).booleanValue();
+		return config.getBoolean(key);
 	}
 
 	public List<String> getList(String key) {

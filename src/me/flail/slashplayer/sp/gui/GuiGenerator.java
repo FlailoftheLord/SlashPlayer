@@ -6,61 +6,60 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import me.flail.slashplayer.gui.GeneratedGui;
-import me.flail.slashplayer.gui.Gui;
 import me.flail.slashplayer.tools.DataFile;
 import me.flail.slashplayer.tools.Logger;
 import me.flail.slashplayer.user.User;
 
 public class GuiGenerator extends Logger {
+	private String guiName;
 
 	/**
 	 * idek... ;p
 	 */
-	public GuiGenerator() {
+	public GuiGenerator(String guiName) {
+		this.guiName = guiName;
 	}
 
 	/**
 	 * RUN IT Baby!
 	 */
 	public void run() {
-		new Generator().runTaskLaterAsynchronously(plugin, 3L);
+		new Generator(guiName).runTask(plugin);
 	}
 
 	private class Generator extends BukkitRunnable {
-		private String[] guiList;
-		public Generator() {
-			guiList = plugin.guiFiles.clone();
+		String fileName;
+
+		public Generator(String guiName) {
+			fileName = guiName;
 		}
 
-		private Gui gui;
-		private Map<Integer, ItemStack> items;
+		private Map<Integer, ItemStack> items = new HashMap<>();
 
 		@Override
 		public void run() {
-			for (String fileName : guiList) {
-				DataFile file = new DataFile("GuiConfigurations/" + fileName);
-				gui = new GuiControl(null);
+			DataFile file = new DataFile("GuiConfigurations/" + fileName);
 
-				if (file.hasValue("Type")) {
-					switch (file.getValue("Type").toLowerCase()) {
+			if (file.hasValue("Type")) {
+				switch (file.getValue("Type").toLowerCase()) {
 
-					case "list":
-						loadList(file);
-						break;
-					case "plain":
-						loadPlain(file);
-						break;
-					}
-					continue;
+				case "list":
+					loadList(file);
+					break;
+				case "plain":
+					loadPlain(file);
+					break;
 				}
 			}
-			/** LOOP **/
+			return;
 		}
+
 
 		private void loadList(DataFile file) {
 			List<User> userList = new ArrayList<>(8);
@@ -165,45 +164,36 @@ public class GuiGenerator extends Logger {
 				}
 			}
 
-			new GeneratedGui(gui, items).create();
+			while (items.size() < 55) {
+				int i = items.size() - 1;
+
+				String filler = file.getValue("Format.FillerItem").replaceAll("[0-9]", "").toUpperCase();
+				if (Material.matchMaterial(filler) != null) {
+					items.put(Integer.valueOf(i), new ItemStack(Material.matchMaterial(filler)));
+				}
+
+				i++;
+			}
+
+
+			new GeneratedGui(file.name(), items).create();
 		}
 
 		private void loadPlain(DataFile file) {
 			int headerSlot = Integer.parseInt(file.getValue("HeaderSlot").replaceAll("[^0-9]", ""));
 
-			new GeneratedGui(gui, items).create();
+			new GeneratedGui(file.name(), items).create();
 		}
 
-		private ItemStack headerItem(User user) {
-			ItemStack skull = user.getSkull();
-			DataFile guiConfig = new DataFile("GuiConfig.yml");
-			List<String> lore = new ArrayList<>();
-			lore.add(chat("&8" + user.uuid()));
 
-			List<String> loreFormat = guiConfig.getList("Header.info");
 
-			Map<String, String> placeholders = new HashMap<>();
-			placeholders.put("%health%", user.player().getHealth() + "");
-			placeholders.put("%food%", user.player().getFoodLevel() + "");
-			placeholders.put("%gamemode%", user.player().getGameMode().toString().toLowerCase());
-			placeholders.put("%status-mute%", user.isMuted() + "");
-			placeholders.put("%status-frozen%", user.isFrozen() + "");
-			placeholders.put("%status-ban%", user.isBanned() + "");
-			placeholders.put("%uuid%", user.uuid().toString());
-			placeholders.put("%player%", user.name());
-
-			for (String line : loreFormat) {
-				lore.add(placeholders(line, placeholders));
-			}
-
-			ItemMeta meta = skull.getItemMeta();
-			meta.setDisplayName(chat(guiConfig.getValue("Header.NameColor") + user.name()));
-			meta.setLore(lore);
-			skull.setItemMeta(meta);
-
-			return skull;
-		}
-
+		/**
+		 * Grabs the color code which modifies the substring {@linkplain before} in the string
+		 * {@linkplain string}
+		 * 
+		 * @param string
+		 * @param before
+		 */
 		private String getColor(String string, String before) {
 			String first = string.split(before)[0];
 			char c = first.charAt(first.lastIndexOf("&") + 1);

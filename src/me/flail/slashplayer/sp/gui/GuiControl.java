@@ -1,6 +1,6 @@
 package me.flail.slashplayer.sp.gui;
 
-import me.flail.slashplayer.gui.Gui;
+import me.flail.slashplayer.gui_old.Gui;
 import me.flail.slashplayer.tools.DataFile;
 import me.flail.slashplayer.user.User;
 
@@ -14,6 +14,10 @@ public class GuiControl extends Gui {
 
 	public GuiControl(User user) {
 		super(user);
+	}
+
+	public GuiControl(User user, int size, String title) {
+		super(user, size, title);
 	}
 
 	public GuiControl playerList() {
@@ -37,17 +41,29 @@ public class GuiControl extends Gui {
 		return this;
 	}
 
-	public Gui get() {
+	/**
+	 * @return the raw tier Gui for modification purposes.
+	 */
+	public Gui gui() {
 		return this;
 	}
 
-	public DataFile getGuiFile() {
+	/**
+	 * Get the Data file for this Gui
+	 * 
+	 * @return this Gui's {@link DataFile}
+	 */
+	public DataFile file() {
 		return file;
 	}
 
-	public void openModerationGui(User subject) {
-		this.setSubject(user);
-		this.open();
+	public void openModerationGui(User operator, String type) {
+
+		if (type.contains("gamemode")) {
+			this.open("GamemodeGui.yml");
+			return;
+		}
+		this.open("PlayerGui.yml");
 	}
 
 }
