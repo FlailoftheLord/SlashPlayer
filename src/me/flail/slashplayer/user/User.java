@@ -14,7 +14,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
-import me.flail.slashplayer.gui_old.Gui;
 import me.flail.slashplayer.sp.Message;
 import me.flail.slashplayer.sp.gui.GuiControl;
 import me.flail.slashplayer.tools.DataFile;
@@ -67,7 +66,7 @@ public class User extends UserData {
 
 	public void logout() {
 		setOnline(false);
-		closeGui();
+		plugin.openGuis.remove(this);
 	}
 
 	public String name() {
@@ -114,16 +113,6 @@ public class User extends UserData {
 		dataFile().setValue("Online", Boolean.valueOf(status));
 	}
 
-	public void closeGui() {
-		for (Gui ui : plugin.openGuis) {
-			if (ui.owner().uuid().equals(uuid())) {
-				plugin.openGuis.remove(ui);
-				return;
-			}
-		}
-	}
-
-
 	public void kick(KickReason reason) {
 		setOnline(false);
 		switch (reason) {
@@ -152,10 +141,6 @@ public class User extends UserData {
 		}
 
 		return this.isBanned();
-	}
-
-	public void openGui(String guiName) {
-		new GuiControl(this).open(guiName);
 	}
 
 	/**
@@ -191,17 +176,19 @@ public class User extends UserData {
 		List<String> loreFormat = guiConfig.getList("Header.info");
 
 		Map<String, String> placeholders = new HashMap<>();
-		placeholders.put("%health%", player().getHealth() + "");
-		placeholders.put("%food%", player().getFoodLevel() + "");
-		placeholders.put("%gamemode%", player().getGameMode().toString().toLowerCase());
-		placeholders.put("%status-mute%", isMuted() + "");
-		placeholders.put("%status-frozen%", isFrozen() + "");
-		placeholders.put("%status-ban%", isBanned() + "");
 		placeholders.put("%uuid%", uuid().toString());
 		placeholders.put("%player%", name());
 
+		if (this.isOnline()) {
+			placeholders.put("%health%", player().getHealth() + "");
+			placeholders.put("%food%", player().getFoodLevel() + "");
+			placeholders.put("%gamemode%", player().getGameMode().toString().toLowerCase());
+			placeholders.put("%status-mute%", isMuted() + "");
+			placeholders.put("%status-frozen%", isFrozen() + "");
+			placeholders.put("%status-ban%", isBanned() + "");
+		}
 		for (String line : loreFormat) {
-			lore.add(placeholders(line, placeholders));
+			lore.add(this.placeholders(line, placeholders));
 		}
 
 		ItemMeta meta = skull.getItemMeta();

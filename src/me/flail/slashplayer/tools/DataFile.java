@@ -94,6 +94,10 @@ public class DataFile extends Logger {
 		return getObj(key).toString();
 	}
 
+	public int getNumber(String key) {
+		return config.getInt(key);
+	}
+
 	/**
 	 * @return false if value wasn't found.
 	 */

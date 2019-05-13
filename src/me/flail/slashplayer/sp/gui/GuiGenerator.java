@@ -18,12 +18,17 @@ import me.flail.slashplayer.user.User;
 
 public class GuiGenerator extends Logger {
 	private String guiName;
+	private DataFile file;
 
 	/**
 	 * idek... ;p
 	 */
 	public GuiGenerator(String guiName) {
 		this.guiName = guiName;
+	}
+
+	public GuiGenerator(DataFile file) {
+		this.file = file;
 	}
 
 	/**
@@ -44,7 +49,7 @@ public class GuiGenerator extends Logger {
 
 		@Override
 		public void run() {
-			DataFile file = new DataFile("GuiConfigurations/" + fileName);
+			file = new DataFile("GuiConfigurations/" + fileName);
 
 			if (file.hasValue("Type")) {
 				switch (file.getValue("Type").toLowerCase()) {
@@ -176,13 +181,13 @@ public class GuiGenerator extends Logger {
 			}
 
 
-			new GeneratedGui(file.name(), items).create();
+			new GeneratedGui(file, items).create();
 		}
 
 		private void loadPlain(DataFile file) {
 			int headerSlot = Integer.parseInt(file.getValue("HeaderSlot").replaceAll("[^0-9]", ""));
 
-			new GeneratedGui(file.name(), items).create();
+			new GeneratedGui(file, items).create();
 		}
 
 

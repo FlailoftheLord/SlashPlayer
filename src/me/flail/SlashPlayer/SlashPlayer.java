@@ -1,8 +1,9 @@
 package me.flail.slashplayer;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.bukkit.Server;
 import org.bukkit.command.Command;
@@ -12,8 +13,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import me.flail.slashplayer.gui.GeneratedGui;
-import me.flail.slashplayer.gui_old.Gui;
+import me.flail.slashplayer.gui.Gui;
 import me.flail.slashplayer.sp.Boot;
 import me.flail.slashplayer.sp.SlashPlayerCommand;
 import me.flail.slashplayer.tools.DataFile;
@@ -26,8 +26,8 @@ public class SlashPlayer extends JavaPlugin {
 	public FileConfiguration config;
 	public DataFile messages;
 
-	public List<GeneratedGui> loadedGuis = new ArrayList<>(3);
-	public List<Gui> openGuis = new LinkedList<>();
+	public List<Gui> loadedGuis = new ArrayList<>(8);
+	public Map<User, Gui> openGuis = new HashMap<>();
 	public List<User> players = new ArrayList<>(8);
 
 	public String[] guiFiles = { "GamemodeGui.yml", "PlayerListGui.yml", "PlayerGui.yml", "ReportGui.yml", "SampleListGui.yml",
