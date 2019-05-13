@@ -30,7 +30,6 @@ public class SlashPlayerCommand extends Logger {
 					if (operator instanceof Player) {
 						Player player = (Player) operator;
 						User user = new User(player.getUniqueId());
-						user.openGui("PlayerListGui.yml");
 
 					}
 

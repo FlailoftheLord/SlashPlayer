@@ -29,6 +29,7 @@ public class GuiGenerator extends Logger {
 
 	public GuiGenerator(DataFile file) {
 		this.file = file;
+		guiName = file.name();
 	}
 
 	/**
@@ -165,18 +166,22 @@ public class GuiGenerator extends Logger {
 					meta.setLore(actualLore);
 					userHead.setItemMeta(meta);
 
-					items.put(Integer.valueOf(index), userHead);
+					if (index < 55) {
+						items.put(Integer.valueOf(index), userHead);
+					} else {
+						console("&cThere are more than 54 players online... "
+								+ "This may cause issues with some GUIs on SlashPlayer, "
+								+ "as it doesn't currently support multiple pages for the Player list.");
+					}
+					index++;
 				}
 			}
 
+			int i = 1;
 			while (items.size() < 55) {
-				int i = items.size() - 1;
-
-				String filler = file.getValue("Format.FillerItem").replaceAll("[0-9]", "").toUpperCase();
-				if (Material.matchMaterial(filler) != null) {
-					items.put(Integer.valueOf(i), new ItemStack(Material.matchMaterial(filler)));
+				if (!items.containsKey(Integer.valueOf(i))) {
+					items.put(Integer.valueOf(i), fillerItem(file));
 				}
-
 				i++;
 			}
 
@@ -185,7 +190,7 @@ public class GuiGenerator extends Logger {
 		}
 
 		private void loadPlain(DataFile file) {
-			int headerSlot = Integer.parseInt(file.getValue("HeaderSlot").replaceAll("[^0-9]", ""));
+			int headerSlot = file.getNumber("HeaderSlot");
 
 			new GeneratedGui(file, items).create();
 		}
@@ -203,6 +208,19 @@ public class GuiGenerator extends Logger {
 			String first = string.split(before)[0];
 			char c = first.charAt(first.lastIndexOf("&") + 1);
 			return "&" + c;
+		}
+
+		private ItemStack fillerItem(DataFile file) {
+			ItemStack item = new ItemStack(Material.AIR);
+			String filler = file.getValue("Format.FillerItem").replaceAll("[0-9]", "").toUpperCase();
+			if (Material.matchMaterial(filler) != null) {
+				item.setType(Material.matchMaterial(filler));
+				ItemMeta meta = item.getItemMeta();
+				meta.setDisplayName("");
+				item.setItemMeta(meta);
+			}
+
+			return item;
 		}
 
 	}

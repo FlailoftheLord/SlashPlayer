@@ -95,7 +95,7 @@ public class DataFile extends Logger {
 	}
 
 	public int getNumber(String key) {
-		return config.getInt(key);
+		return Integer.parseInt(getValue(key).replaceAll("[^0-9\\p.]", ""));
 	}
 
 	/**

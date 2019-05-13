@@ -1,23 +1,18 @@
 package me.flail.slashplayer.sp.gui;
 
-import me.flail.slashplayer.gui_old.Gui;
 import me.flail.slashplayer.tools.DataFile;
-import me.flail.slashplayer.user.User;
+import me.flail.slashplayer.tools.Logger;
 
 /**
- * Use this to create new instances of a GUI
+ * Use this to load Gui files
  * 
  * @author FlailoftheLord
  */
-public class GuiControl extends Gui {
+public class GuiControl extends Logger {
 	private DataFile file;
 
-	public GuiControl(User user) {
-		super(user);
-	}
+	public GuiControl() {
 
-	public GuiControl(User user, int size, String title) {
-		super(user, size, title);
 	}
 
 	public GuiControl playerList() {
@@ -36,34 +31,13 @@ public class GuiControl extends Gui {
 		return loadGui("GamemodeGui.yml");
 	}
 
-	protected GuiControl loadGui(String path) {
+	public GuiControl loadGui(String path) {
 		file = new DataFile("/GuiConfigurations/" + path);
 		return this;
 	}
 
-	/**
-	 * @return the raw tier Gui for modification purposes.
-	 */
-	public Gui gui() {
-		return this;
-	}
-
-	/**
-	 * Get the Data file for this Gui
-	 * 
-	 * @return this Gui's {@link DataFile}
-	 */
 	public DataFile file() {
 		return file;
-	}
-
-	public void openModerationGui(User operator, String type) {
-
-		if (type.contains("gamemode")) {
-			this.open("GamemodeGui.yml");
-			return;
-		}
-		this.open("PlayerGui.yml");
 	}
 
 }
