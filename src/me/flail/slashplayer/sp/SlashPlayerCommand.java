@@ -31,7 +31,7 @@ public class SlashPlayerCommand extends Logger {
 					if (operator instanceof Player) {
 						Player player = (Player) operator;
 						User user = new User(player.getUniqueId());
-						new Gui(plugin.loadedGuis.get("playerlist")).open(user, null);
+						new Gui(plugin.loadedGuis.get("PlayerListGui.yml")).open(user, null);
 					}
 
 				}

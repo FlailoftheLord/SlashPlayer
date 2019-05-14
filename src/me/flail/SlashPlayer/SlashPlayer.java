@@ -31,8 +31,7 @@ public class SlashPlayer extends JavaPlugin {
 	public Map<User, Gui> openGuis = new HashMap<>();
 	public List<User> players = new ArrayList<>(8);
 
-	public String[] guiFiles = { "GamemodeGui.yml", "PlayerListGui.yml", "PlayerGui.yml", "ReportGui.yml", "SampleListGui.yml",
-	"SamplePlainGui.yml" };
+	public String[] guiFiles = { "GamemodeGui.yml", "PlayerListGui.yml", "PlayerGui.yml", "ReportGui.yml" };
 
 	public Server server;
 	public boolean verbose = false;

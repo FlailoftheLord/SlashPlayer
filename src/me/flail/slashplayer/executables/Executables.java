@@ -44,7 +44,7 @@ public class Executables extends Logger {
 			return super.toString().toLowerCase();
 		}
 
-		public Exe get(String s) {
+		public static Exe get(String s) {
 			return Exe.valueOf(s.toUpperCase().replaceAll("[^A-Z]", ""));
 		}
 

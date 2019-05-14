@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -40,11 +41,11 @@ public class User extends UserData {
 	 * @return This user's {@link Player} object if online. null otherwise.
 	 */
 	public Player player() {
-		return offlinePlayer().getPlayer() != null ? offlinePlayer().getPlayer() : null;
+		return Bukkit.getPlayer(name());
 	}
 
 	public OfflinePlayer offlinePlayer() {
-		return plugin.server.getOfflinePlayer(uuid());
+		return Bukkit.getOfflinePlayer(uuid());
 	}
 
 	public DataFile dataFile() {
@@ -65,6 +66,7 @@ public class User extends UserData {
 
 	public void logout() {
 		setOnline(false);
+		plugin.players.remove(this);
 		plugin.openGuis.remove(this);
 	}
 

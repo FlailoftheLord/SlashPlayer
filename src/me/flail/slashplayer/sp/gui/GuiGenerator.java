@@ -11,6 +11,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import me.flail.slashplayer.executables.Executables.Exe;
 import me.flail.slashplayer.gui.GeneratedGui;
 import me.flail.slashplayer.tools.DataFile;
 import me.flail.slashplayer.tools.Logger;
@@ -99,7 +100,7 @@ public class GuiGenerator extends Logger {
 
 			}
 
-			int index = 1;
+			int index = 0;
 
 			if (file.hasValue("Format")) {
 				for (User user : userList) {
@@ -172,33 +173,48 @@ public class GuiGenerator extends Logger {
 					meta.setLore(actualLore);
 					userHead.setItemMeta(meta);
 
-					if (index < 55) {
+					if (index < 54) {
 						items.put(Integer.valueOf(index), userHead);
 					} else {
 						console("&cThere are more than 54 players online... "
 								+ "This may cause issues with some GUIs on SlashPlayer, "
 								+ "as it doesn't currently support multiple pages for the Player list.");
+						break;
 					}
 					index++;
 				}
 			}
 
-			int i = 1;
-			while (items.size() < 55) {
+			for (int i = 0; i < 54; i++) {
 				if (!items.containsKey(Integer.valueOf(i))) {
 					items.put(Integer.valueOf(i), fillerItem(file));
 				}
-				i++;
 			}
 
-
-			new GeneratedGui(file, items).create(file.name().toLowerCase().replace("gui.yml", ""));
+			new GeneratedGui(file, items).create(file.name());
 		}
 
 		private void loadPlain(DataFile file) {
 			int headerSlot = file.getNumber("HeaderSlot");
+			for (int i = 0; i < 54; i++) {
+				String itemKey = "Format." + (i + 1) + "";
+				if (file.hasValue(itemKey)) {
+					String itemType = file.getValue(itemKey + ".Item").toUpperCase().replaceAll("[0-9]", "");
+					String itemName = chat(file.getValue(itemKey + ".Name"));
+					List<String> itemLore = file.getList(itemKey + ".Lore");
+					Exe exe = Exe.get(file.getValue(itemKey + ".Execute"));
+					boolean glowing = file.getBoolean(itemKey + ".Glowing");
+					boolean unbreakable = file.getBoolean(itemKey + ".Unbreakable");
+					boolean closeAfterClick = file.getBoolean(itemKey + ".CloseInventory");
+					int durability = file.getNumber(itemKey + ".Durability");
 
-			new GeneratedGui(file, items).create(file.name().toLowerCase().replace("gui.yml", ""));
+					continue;
+				}
+
+				items.put(Integer.valueOf(i), fillerItem(file));
+			}
+
+			new GeneratedGui(file, items).create(file.name());
 		}
 
 
@@ -218,11 +234,16 @@ public class GuiGenerator extends Logger {
 
 		private ItemStack fillerItem(DataFile file) {
 			ItemStack item = new ItemStack(Material.AIR);
-			String filler = file.getValue("Format.FillerItem").replaceAll("[0-9]", "").toUpperCase();
+			String filler = new DataFile("GuiConfig.yml").getValue("FillerItem").replaceAll("[0-9]", "").toUpperCase();
+
+			if (file.hasValue("Format.FillerItem")) {
+				filler = file.getValue("Format.FillerItem").replaceAll("[0-9]", "").toUpperCase();
+			}
+
 			if (Material.matchMaterial(filler) != null) {
 				item.setType(Material.matchMaterial(filler));
 				ItemMeta meta = item.getItemMeta();
-				meta.setDisplayName("");
+				meta.setDisplayName(" ");
 				item.setItemMeta(meta);
 			}
 

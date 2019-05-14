@@ -22,10 +22,11 @@ public class PlayerListener implements Listener {
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void playerLogin(PlayerLoginEvent event) {
 		User user = new User(event.getPlayer().getUniqueId());
-		user.setup(plugin.verbose);
 		if (user.isBanned()) {
 			String banMsg = user.getBanMessage();
 			event.disallow(Result.KICK_BANNED, banMsg);
+			user.logout();
+			return;
 		}
 
 	}
@@ -33,6 +34,7 @@ public class PlayerListener implements Listener {
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void playerJoin(PlayerJoinEvent event) {
 		User user = new User(event.getPlayer().getUniqueId());
+		user.setup(plugin.verbose);
 		plugin.players.add(user);
 	}
 

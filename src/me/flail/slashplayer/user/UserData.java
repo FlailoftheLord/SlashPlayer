@@ -34,7 +34,7 @@ public class UserData extends Logger {
 		values.put("Name", new String[] {user.name()});
 		values.put("Online", Boolean.valueOf(true));
 		values.put("IP", new String[] {user.ip()});
-		values.put("Gamemode", user.player().getGameMode().toString().toLowerCase());
+		values.put("Gamemode", user.gamemode());
 		values.put("Frozen", Boolean.valueOf(false));
 		values.put("Muted", Boolean.valueOf(false));
 		values.put("Banned", Boolean.valueOf(false));

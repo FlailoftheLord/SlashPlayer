@@ -40,9 +40,9 @@ public class GeneratedGui extends Logger {
 	}
 
 	public Inventory generatedInv() {
-		Inventory inv = Bukkit.createInventory(null, guiSet.size() - 1, chat(file.getValue("Title")));
+		Inventory inv = Bukkit.createInventory(null, guiSet.size(), chat(file.getValue("Title")));
 		for (Integer i : slots()) {
-			inv.setItem(i.intValue() - 1, get(i));
+			inv.setItem(i.intValue(), get(Integer.valueOf(i.intValue())));
 		}
 
 		return inv;

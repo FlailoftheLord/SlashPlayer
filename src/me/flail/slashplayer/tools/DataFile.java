@@ -21,10 +21,10 @@ public class DataFile extends Logger {
 			file = new File(plugin.getDataFolder() + "/" + path);
 			if (!file.exists()) {
 
-				file.createNewFile();
 				try {
 					plugin.saveResource(path, true);
 				} catch (Throwable t) {
+					file.createNewFile();
 				}
 
 			}
@@ -95,7 +95,7 @@ public class DataFile extends Logger {
 	}
 
 	public int getNumber(String key) {
-		return Integer.parseInt(getValue(key).replaceAll("[^0-9\\p.]", ""));
+		return getValue(key) != null ? Integer.parseInt(getValue(key).replaceAll("[a-zA-Z]", "")) : -1;
 	}
 
 	/**
