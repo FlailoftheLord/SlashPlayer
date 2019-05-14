@@ -77,8 +77,13 @@ public class CommonUtilities extends BaseUtilities {
 		boolean closeAfterClick = file.getBoolean(itemKey + ".CloseInventory");
 		// int durability = file.getNumber(itemKey + ".Durability");
 
-		ItemStack item = new ItemStack(Material.AIR);
+		ItemStack item = new ItemStack(Material.BARRIER);
 		ItemMeta meta = item.getItemMeta();
+
+		Material type = Material.matchMaterial(itemType);
+		if (type != null) {
+			item.setType(type);
+		}
 
 		List<String> lore = new ArrayList<>();
 
@@ -97,10 +102,7 @@ public class CommonUtilities extends BaseUtilities {
 
 		item.setItemMeta(meta);
 
-		Material type = Material.matchMaterial(itemType);
-		if (type != null) {
-			item.setType(type);
-		}
+
 
 		item = this.addTag(item, "close-after-click", closeAfterClick + "");
 		item = this.addTag(item, "execute", exe.toString());

@@ -26,6 +26,7 @@ public class Executables extends Logger {
 		FREEZE,
 		UNFREEZE,
 		FLY,
+		TOGGLEFLY,
 		FRIEND,
 		REPORT,
 		GAMEMODE,

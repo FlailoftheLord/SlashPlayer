@@ -37,7 +37,7 @@ public class Gui extends Logger {
 		if (subject != null) {
 			setHeader(subject);
 		}
-		Inventory inventory = this.updateItemPlaceholders(data.generatedInv(), subject.commonPlaceholders());
+		Inventory inventory = this.updateItemPlaceholders(inv, subject.commonPlaceholders());
 
 		operator.player().openInventory(inventory);
 		plugin.openGuis.put(operator, this);
