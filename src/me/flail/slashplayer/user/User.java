@@ -15,7 +15,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import me.flail.slashplayer.sp.Message;
-import me.flail.slashplayer.sp.gui.GuiControl;
 import me.flail.slashplayer.tools.DataFile;
 import me.flail.slashplayer.tools.Time;
 
@@ -41,7 +40,7 @@ public class User extends UserData {
 	 * @return This user's {@link Player} object if online. null otherwise.
 	 */
 	public Player player() {
-		return plugin.server.getOfflinePlayer(uuid()).isOnline() ? plugin.server.getPlayer(uuid()) : null;
+		return offlinePlayer().getPlayer() != null ? offlinePlayer().getPlayer() : null;
 	}
 
 	public OfflinePlayer offlinePlayer() {
@@ -70,7 +69,7 @@ public class User extends UserData {
 	}
 
 	public String name() {
-		return player().getName();
+		return offlinePlayer().getName();
 	}
 
 	public String ip() {
@@ -141,17 +140,6 @@ public class User extends UserData {
 		}
 
 		return this.isBanned();
-	}
-
-	/**
-	 * Opens the SlashPlayer GUI of the specified <code>subject</code> for this user.
-	 * 
-	 * @param subject
-	 * @param type
-	 *                    whether to open the main menu or the Gamemode changer
-	 */
-	public void moderatePlayer(User subject, String type) {
-		new GuiControl(subject).openModerationGui(this, type);
 	}
 
 	public void ouch() {

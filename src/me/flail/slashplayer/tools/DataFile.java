@@ -35,7 +35,7 @@ public class DataFile extends Logger {
 	}
 
 	public String name() {
-		return file.getName();
+		return file.getName().replaceFirst("/", "");
 	}
 
 	public void load() {

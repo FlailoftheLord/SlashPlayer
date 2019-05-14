@@ -28,9 +28,14 @@ public class Gui extends Logger {
 		inv.setItem(slot - 1, item);
 	}
 
+	public Gui setHeader(User subject) {
+		data = data.setHeader(subject);
+		return this;
+	}
+
 	public void open(User operator, User subject) {
 		if (subject != null) {
-			data = data.setHeader(subject);
+			setHeader(subject);
 		}
 		operator.player().openInventory(data.generatedInv());
 		plugin.openGuis.put(operator, this);

@@ -13,6 +13,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import me.flail.slashplayer.gui.GeneratedGui;
 import me.flail.slashplayer.gui.Gui;
 import me.flail.slashplayer.sp.Boot;
 import me.flail.slashplayer.sp.SlashPlayerCommand;
@@ -26,7 +27,7 @@ public class SlashPlayer extends JavaPlugin {
 	public FileConfiguration config;
 	public DataFile messages;
 
-	public List<Gui> loadedGuis = new ArrayList<>(8);
+	public Map<String, GeneratedGui> loadedGuis = new HashMap<>(4);
 	public Map<User, Gui> openGuis = new HashMap<>();
 	public List<User> players = new ArrayList<>(8);
 

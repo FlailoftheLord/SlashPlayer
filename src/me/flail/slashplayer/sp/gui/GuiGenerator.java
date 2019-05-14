@@ -32,6 +32,11 @@ public class GuiGenerator extends Logger {
 		guiName = file.name();
 	}
 
+	public DataFile file() {
+		file = new DataFile("GuiConfigurations/" + guiName);
+		return file;
+	}
+
 	/**
 	 * RUN IT Baby!
 	 */
@@ -41,16 +46,17 @@ public class GuiGenerator extends Logger {
 
 	private class Generator extends BukkitRunnable {
 		String fileName;
+		DataFile file;
 
 		public Generator(String guiName) {
 			fileName = guiName;
+			file = new DataFile("GuiConfigurations/" + fileName);
 		}
 
 		private Map<Integer, ItemStack> items = new HashMap<>();
 
 		@Override
 		public void run() {
-			file = new DataFile("GuiConfigurations/" + fileName);
 
 			if (file.hasValue("Type")) {
 				switch (file.getValue("Type").toLowerCase()) {
@@ -186,13 +192,13 @@ public class GuiGenerator extends Logger {
 			}
 
 
-			new GeneratedGui(file, items).create();
+			new GeneratedGui(file, items).create(file.name().toLowerCase().replace("gui.yml", ""));
 		}
 
 		private void loadPlain(DataFile file) {
 			int headerSlot = file.getNumber("HeaderSlot");
 
-			new GeneratedGui(file, items).create();
+			new GeneratedGui(file, items).create(file.name().toLowerCase().replace("gui.yml", ""));
 		}
 
 

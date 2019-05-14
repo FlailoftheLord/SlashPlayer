@@ -35,8 +35,8 @@ public class GeneratedGui extends Logger {
 		return guiSet.get(slot);
 	}
 
-	public boolean create() {
-		return false;
+	public boolean create(String name) {
+		return plugin.loadedGuis.put(name, this) != null;
 	}
 
 	public Inventory generatedInv() {

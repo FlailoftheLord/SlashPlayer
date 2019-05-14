@@ -12,7 +12,6 @@ public class GuiControl extends Logger {
 	private DataFile file;
 
 	public GuiControl() {
-
 	}
 
 	public GuiControl playerList() {
@@ -33,6 +32,7 @@ public class GuiControl extends Logger {
 
 	public GuiControl loadGui(String path) {
 		file = new DataFile("/GuiConfigurations/" + path);
+		new GuiGenerator(file).run();
 		return this;
 	}
 

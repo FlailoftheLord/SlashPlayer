@@ -4,6 +4,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import me.flail.slashplayer.gui.Gui;
 import me.flail.slashplayer.tools.Logger;
 import me.flail.slashplayer.user.User;
 
@@ -30,7 +31,7 @@ public class SlashPlayerCommand extends Logger {
 					if (operator instanceof Player) {
 						Player player = (Player) operator;
 						User user = new User(player.getUniqueId());
-
+						new Gui(plugin.loadedGuis.get("playerlist")).open(user, null);
 					}
 
 				}
