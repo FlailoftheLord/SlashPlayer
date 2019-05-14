@@ -6,14 +6,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import me.flail.slashplayer.executables.Executables.Exe;
 import me.flail.slashplayer.gui.GeneratedGui;
 import me.flail.slashplayer.tools.DataFile;
 import me.flail.slashplayer.tools.Logger;
@@ -48,6 +44,7 @@ public class GuiGenerator extends Logger {
 	}
 
 	private class Generator extends BukkitRunnable {
+		private Logger util = new Logger();
 		String fileName;
 		DataFile file;
 
@@ -197,11 +194,10 @@ public class GuiGenerator extends Logger {
 		}
 
 		private void loadPlain(DataFile file) {
-			int headerSlot = file.getNumber("HeaderSlot");
 			for (int i = 0; i < 54; i++) {
 				String itemKey = "Format." + (i + 1) + "";
 				if (file.hasValue(itemKey)) {
-					items.put(Integer.valueOf(i), this.createItem(file, itemKey));
+					items.put(Integer.valueOf(i), util.createItem(file, itemKey));
 					continue;
 				}
 
@@ -211,37 +207,7 @@ public class GuiGenerator extends Logger {
 			new GeneratedGui(file, items).create(file.name());
 		}
 
-		private ItemStack createItem(DataFile file, String itemKey) {
-			String itemType = file.getValue(itemKey + ".Item").toUpperCase().replaceAll("[0-9]", "");
-			String itemName = chat(file.getValue(itemKey + ".Name"));
-			List<String> itemLore = file.getList(itemKey + ".Lore");
-			Exe exe = Exe.get(file.getValue(itemKey + ".Execute"));
-			boolean glowing = file.getBoolean(itemKey + ".Glowing");
-			boolean unbreakable = file.getBoolean(itemKey + ".Unbreakable");
-			boolean closeAfterClick = file.getBoolean(itemKey + ".CloseInventory");
-			int durability = file.getNumber(itemKey + ".Durability");
 
-			ItemStack item = new ItemStack(Material.AIR);
-			ItemMeta meta = item.getItemMeta();
-
-			List<String> lore = new ArrayList<>();
-
-			for (String line : itemLore) {
-				lore.add(chat(line));
-			}
-			meta.setLore(lore);
-
-			meta.setDisplayName(itemName);
-			meta.setUnbreakable(unbreakable);
-			meta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
-			if (glowing) {
-				meta.addEnchant(Enchantment.MENDING, 69, glowing);
-				meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-			}
-
-			item.setItemMeta(meta);
-			return item;
-		}
 
 
 

@@ -4,7 +4,7 @@ import java.time.Instant;
 import java.util.Calendar;
 import java.util.Date;
 
-public class Time extends StringUtils {
+public class Time extends CommonUtilities {
 
 	public static Date currentDate() {
 		return Calendar.getInstance().getTime();

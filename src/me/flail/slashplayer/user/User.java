@@ -110,6 +110,10 @@ public class User extends UserData {
 		return player().isOnline();
 	}
 
+	public String onlineStatus() {
+		return isOnline() ? "online" : "offline";
+	}
+
 	protected void setOnline(boolean status) {
 		dataFile().setValue("Online", Boolean.valueOf(status));
 	}
@@ -165,20 +169,8 @@ public class User extends UserData {
 
 		List<String> loreFormat = guiConfig.getList("Header.info");
 
-		Map<String, String> placeholders = new HashMap<>();
-		placeholders.put("%uuid%", uuid().toString());
-		placeholders.put("%player%", name());
-
-		if (this.isOnline()) {
-			placeholders.put("%health%", player().getHealth() + "");
-			placeholders.put("%food%", player().getFoodLevel() + "");
-			placeholders.put("%gamemode%", player().getGameMode().toString().toLowerCase());
-			placeholders.put("%status-mute%", isMuted() + "");
-			placeholders.put("%status-frozen%", isFrozen() + "");
-			placeholders.put("%status-ban%", isBanned() + "");
-		}
 		for (String line : loreFormat) {
-			lore.add(this.placeholders(line, placeholders));
+			lore.add(this.placeholders(line, commonPlaceholders()));
 		}
 
 		ItemMeta meta = skull.getItemMeta();
@@ -189,6 +181,24 @@ public class User extends UserData {
 		this.addTag(skull, "UUID", id());
 
 		return skull;
+	}
+
+	public Map<String, String> commonPlaceholders() {
+		Map<String, String> placeholders = new HashMap<>();
+		placeholders.put("%uuid%", uuid().toString());
+		placeholders.put("%player%", name());
+		placeholders.put("%status-online%", onlineStatus());
+
+		if (this.isOnline()) {
+			placeholders.put("%health%", player().getHealth() + "");
+			placeholders.put("%food%", player().getFoodLevel() + "");
+			placeholders.put("%gamemode%", player().getGameMode().toString().toLowerCase());
+			placeholders.put("%status-mute%", isMuted() + "");
+			placeholders.put("%status-frozen%", isFrozen() + "");
+			placeholders.put("%status-ban%", isBanned() + "");
+		}
+
+		return placeholders;
 	}
 
 }

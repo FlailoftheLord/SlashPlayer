@@ -7,7 +7,7 @@ package me.flail.slashplayer.tools;
  * 
  * @author FlailoftheLord
  */
-public class Logger extends StringUtils {
+public class Logger extends CommonUtilities {
 
 	public void console(String string) {
 		plugin.server.getConsoleSender().sendMessage(chat("[" + plugin.getDescription().getPrefix() + "] " + string));
