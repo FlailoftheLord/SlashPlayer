@@ -1,10 +1,14 @@
 package me.flail.slashplayer.tools;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import org.bukkit.ChatColor;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 public class StringUtils extends BaseUtilities {
 
@@ -31,6 +35,22 @@ public class StringUtils extends BaseUtilities {
 			message = message.replace(p, placeholders.get(p));
 		}
 		return message;
+	}
+
+	public ItemStack itemPlaceholders(ItemStack item, Map<String, String> placeholders) {
+		ItemMeta meta = item.getItemMeta();
+		List<String> lore = meta.getLore();
+
+		List<String> newLore = new ArrayList<>();
+		for (String line : lore) {
+			newLore.add(this.placeholders(line, placeholders));
+		}
+		meta.setLore(newLore);
+		meta.setDisplayName(this.placeholders(meta.getDisplayName(), placeholders));
+
+		item.setItemMeta(meta);
+
+		return item;
 	}
 
 }

@@ -41,7 +41,7 @@ public class User extends UserData {
 	 * @return This user's {@link Player} object if online. null otherwise.
 	 */
 	public Player player() {
-		return Bukkit.getPlayer(name());
+		return offlinePlayer().isOnline() ? plugin.server.getPlayer(uuid()) : null;
 	}
 
 	public OfflinePlayer offlinePlayer() {
@@ -185,6 +185,8 @@ public class User extends UserData {
 		meta.setDisplayName(chat(guiConfig.getValue("Header.NameColor") + name()));
 		meta.setLore(lore);
 		skull.setItemMeta(meta);
+
+		this.addTag(skull, "UUID", id());
 
 		return skull;
 	}

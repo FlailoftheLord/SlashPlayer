@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -199,15 +201,7 @@ public class GuiGenerator extends Logger {
 			for (int i = 0; i < 54; i++) {
 				String itemKey = "Format." + (i + 1) + "";
 				if (file.hasValue(itemKey)) {
-					String itemType = file.getValue(itemKey + ".Item").toUpperCase().replaceAll("[0-9]", "");
-					String itemName = chat(file.getValue(itemKey + ".Name"));
-					List<String> itemLore = file.getList(itemKey + ".Lore");
-					Exe exe = Exe.get(file.getValue(itemKey + ".Execute"));
-					boolean glowing = file.getBoolean(itemKey + ".Glowing");
-					boolean unbreakable = file.getBoolean(itemKey + ".Unbreakable");
-					boolean closeAfterClick = file.getBoolean(itemKey + ".CloseInventory");
-					int durability = file.getNumber(itemKey + ".Durability");
-
+					items.put(Integer.valueOf(i), this.createItem(file, itemKey));
 					continue;
 				}
 
@@ -217,39 +211,42 @@ public class GuiGenerator extends Logger {
 			new GeneratedGui(file, items).create(file.name());
 		}
 
+		private ItemStack createItem(DataFile file, String itemKey) {
+			String itemType = file.getValue(itemKey + ".Item").toUpperCase().replaceAll("[0-9]", "");
+			String itemName = chat(file.getValue(itemKey + ".Name"));
+			List<String> itemLore = file.getList(itemKey + ".Lore");
+			Exe exe = Exe.get(file.getValue(itemKey + ".Execute"));
+			boolean glowing = file.getBoolean(itemKey + ".Glowing");
+			boolean unbreakable = file.getBoolean(itemKey + ".Unbreakable");
+			boolean closeAfterClick = file.getBoolean(itemKey + ".CloseInventory");
+			int durability = file.getNumber(itemKey + ".Durability");
 
-
-		/**
-		 * Grabs the color code which modifies the substring {@linkplain before} in the string
-		 * {@linkplain string}
-		 * 
-		 * @param string
-		 * @param before
-		 */
-		private String getColor(String string, String before) {
-			String first = string.split(before)[0];
-			char c = first.charAt(first.lastIndexOf("&") + 1);
-			return "&" + c;
-		}
-
-		private ItemStack fillerItem(DataFile file) {
 			ItemStack item = new ItemStack(Material.AIR);
-			String filler = new DataFile("GuiConfig.yml").getValue("FillerItem").replaceAll("[0-9]", "").toUpperCase();
+			ItemMeta meta = item.getItemMeta();
 
-			if (file.hasValue("Format.FillerItem")) {
-				filler = file.getValue("Format.FillerItem").replaceAll("[0-9]", "").toUpperCase();
+			List<String> lore = new ArrayList<>();
+
+			for (String line : itemLore) {
+				lore.add(chat(line));
+			}
+			meta.setLore(lore);
+
+			meta.setDisplayName(itemName);
+			meta.setUnbreakable(unbreakable);
+			meta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
+			if (glowing) {
+				meta.addEnchant(Enchantment.MENDING, 69, glowing);
+				meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
 			}
 
-			if (Material.matchMaterial(filler) != null) {
-				item.setType(Material.matchMaterial(filler));
-				ItemMeta meta = item.getItemMeta();
-				meta.setDisplayName(" ");
-				item.setItemMeta(meta);
-			}
-
+			item.setItemMeta(meta);
 			return item;
 		}
 
+
+
 	}
+
+
 
 }

@@ -83,7 +83,7 @@ public class DataFile extends Logger {
 	 * @return null if the object could not be found.
 	 */
 	public Object getObj(String key) {
-		return config.get(key);
+		return config.get(key, null);
 	}
 
 	/**
@@ -91,11 +91,11 @@ public class DataFile extends Logger {
 	 * @return null if the value couldn't be found.
 	 */
 	public String getValue(String key) {
-		return getObj(key).toString();
+		return getObj(key) != null ? getObj(key).toString() : "null";
 	}
 
 	public int getNumber(String key) {
-		return getValue(key) != null ? Integer.parseInt(getValue(key).replaceAll("[a-zA-Z]", "")) : -1;
+		return getValue(key) != "null" ? Integer.parseInt(getValue(key).replaceAll("[a-zA-Z]", "")) : -1;
 	}
 
 	/**
