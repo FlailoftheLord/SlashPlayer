@@ -5,7 +5,7 @@ Type: "Plain"
 HeaderSlot: 5
 
 Format:
-  # FillerItem: "lime_stained_glass_pAne"
+  FillerItem: "lime_stained_glass_pAne"
   
   11:
     Item: "Compass"

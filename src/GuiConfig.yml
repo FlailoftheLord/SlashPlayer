@@ -68,7 +68,7 @@
 #   https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
 # = = = = = = = = = = #
 
-FillerItem: "Gray_stained_glass_pane"
+FillerItem: "Light_gray_stained_glass_pane"
 
 Editor:
   title: '&2SlashPlayer Gui editor'
