@@ -60,8 +60,10 @@ public class CommonUtilities extends BaseUtilities {
 	}
 
 	public Inventory updateItemPlaceholders(Inventory inv, Map<String, String> placeholders) {
-		for (ItemStack item : inv.getContents()) {
-			item = this.itemPlaceholders(item, placeholders);
+		if (inv != null) {
+			for (ItemStack item : inv.getContents()) {
+				item = this.itemPlaceholders(item, placeholders);
+			}
 		}
 
 		return inv;

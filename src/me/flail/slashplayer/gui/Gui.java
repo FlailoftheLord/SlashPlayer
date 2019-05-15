@@ -25,7 +25,7 @@ public class Gui extends Logger {
 	}
 
 	public void setItem(int slot, ItemStack item) {
-		inv.setItem(slot - 1, item);
+		inv.setItem(slot, item);
 	}
 
 	public Gui setHeader(User subject) {
