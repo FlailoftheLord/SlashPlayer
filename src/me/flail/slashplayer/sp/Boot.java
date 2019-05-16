@@ -4,6 +4,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 
 import me.flail.slashplayer.SlashPlayer;
+import me.flail.slashplayer.listeners.GuiListener;
 import me.flail.slashplayer.listeners.PlayerListener;
 import me.flail.slashplayer.tools.DataFile;
 import me.flail.slashplayer.tools.Logger;
@@ -52,7 +53,7 @@ public class Boot extends Logger {
 
 	protected void loadEvents() {
 		pm.registerEvents(new PlayerListener(), plugin);
-
+		pm.registerEvents(new GuiListener(), plugin);
 	}
 
 	protected boolean loadCommands() {

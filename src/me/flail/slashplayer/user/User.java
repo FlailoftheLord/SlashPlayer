@@ -158,6 +158,9 @@ public class User extends UserData {
 		SkullMeta meta = (SkullMeta) item.getItemMeta();
 		meta.setOwningPlayer(offlinePlayer());
 		item.setItemMeta(meta);
+
+		item = this.addTag(item, "user", id());
+
 		return item;
 	}
 
@@ -178,7 +181,7 @@ public class User extends UserData {
 		meta.setLore(lore);
 		skull.setItemMeta(meta);
 
-		this.addTag(skull, "UUID", id());
+		this.addTag(skull, "uuid", id());
 
 		return skull;
 	}

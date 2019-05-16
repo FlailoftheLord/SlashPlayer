@@ -1,7 +1,10 @@
 package me.flail.slashplayer.sp.gui;
 
+import org.bukkit.inventory.ItemStack;
+
 import me.flail.slashplayer.tools.DataFile;
 import me.flail.slashplayer.tools.Logger;
+import me.flail.slashplayer.user.User;
 
 /**
  * Use this to load Gui files
@@ -39,6 +42,10 @@ public class GuiControl extends Logger {
 
 	public DataFile file() {
 		return file;
+	}
+
+	public void processClick(User clicker, ItemStack clickedItem) {
+
 	}
 
 }

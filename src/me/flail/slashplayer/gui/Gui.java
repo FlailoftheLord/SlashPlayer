@@ -36,11 +36,12 @@ public class Gui extends Logger {
 	public void open(User operator, User subject) {
 		if (subject != null) {
 			setHeader(subject);
+			inv = this.updateItemPlaceholders(inv, subject.commonPlaceholders());
 		}
-		Inventory inventory = this.updateItemPlaceholders(inv, subject.commonPlaceholders());
 
-		operator.player().openInventory(inventory);
-		plugin.openGuis.put(operator, this);
+
+		operator.player().openInventory(inv);
+		plugin.openGuis.put(operator.uuid(), this);
 	}
 
 }

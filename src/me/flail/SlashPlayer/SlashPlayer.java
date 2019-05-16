@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.bukkit.Server;
 import org.bukkit.command.Command;
@@ -28,7 +29,7 @@ public class SlashPlayer extends JavaPlugin {
 	public DataFile messages;
 
 	public Map<String, GeneratedGui> loadedGuis = new HashMap<>(4);
-	public Map<User, Gui> openGuis = new HashMap<>();
+	public Map<UUID, Gui> openGuis = new HashMap<>();
 	public List<User> players = new ArrayList<>(8);
 
 	public String[] guiFiles = { "GamemodeGui.yml", "PlayerListGui.yml", "PlayerGui.yml", "ReportGui.yml" };
