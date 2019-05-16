@@ -9,6 +9,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 
 import me.flail.slashplayer.SlashPlayer;
+import me.flail.slashplayer.gui.Gui;
 import me.flail.slashplayer.sp.gui.GuiControl;
 import me.flail.slashplayer.tools.Logger;
 import me.flail.slashplayer.user.User;
@@ -24,8 +25,9 @@ public class GuiListener extends Logger implements Listener {
 			User user = new User(player.getUniqueId());
 			if (plugin.openGuis.containsKey(user.uuid())) {
 				event.setResult(Result.DENY);
+				Gui gui = plugin.openGuis.get(user.uuid());
 
-				new GuiControl().processClick(user, event.getCurrentItem());
+				new GuiControl().processClick(user, gui, event.getCurrentItem());
 			}
 
 		}

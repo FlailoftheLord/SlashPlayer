@@ -14,6 +14,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 
 import me.flail.slashplayer.SlashPlayer;
+import me.flail.slashplayer.sp.gui.GuiControl;
 import me.flail.slashplayer.user.User;
 
 public class PlayerListener implements Listener {
@@ -55,13 +56,11 @@ public class PlayerListener implements Listener {
 		User operator = new User(event.getPlayer().getUniqueId());
 		if (event.getRightClicked() instanceof Player) {
 			ItemStack item = operator.player().getInventory().getItemInMainHand();
-			if ((item == null) || (item.getType() == Material.AIR)) {
+			if ((item == null) || (item.getType() == Material.AIR) || (item.getType() == Material.GOLDEN_AXE)) {
 				Player player = (Player) event.getRightClicked();
-				if (operator.player().hasPermission("slashplayer.command")) {
-					User subject = new User(player.getUniqueId());
+				User subject = new User(player.getUniqueId());
 
-				}
-
+				new GuiControl().openModerationGui(operator, subject);
 			}
 
 		}

@@ -15,7 +15,8 @@ import me.flail.slashplayer.user.User;
 public class GeneratedGui extends Logger {
 
 	private DataFile file;
-	private Map<Integer, ItemStack> guiSet = new HashMap<>();
+	protected String title;
+	protected Map<Integer, ItemStack> guiSet = new HashMap<>();
 
 	public GeneratedGui(DataFile gui, Map<Integer, ItemStack> itemSet) {
 		file = gui;
@@ -23,8 +24,22 @@ public class GeneratedGui extends Logger {
 		guiSet.putAll(itemSet);
 	}
 
+	public DataFile dataFile() {
+		return file;
+	}
+
+	/**
+	 * The name of the source file for this GUI's configuration.
+	 */
 	public String name() {
 		return file.name();
+	}
+
+	/**
+	 * @return The title shown for this GUI
+	 */
+	public String title() {
+		return title;
 	}
 
 	public Set<Integer> slots() {
@@ -40,16 +55,19 @@ public class GeneratedGui extends Logger {
 	}
 
 	public Inventory generatedInv() {
-		Inventory inv = Bukkit.createInventory(null, guiSet.size(), chat(file.getValue("Title")));
+		title = file.getValue("Title");
+		Inventory inv = Bukkit.createInventory(null, guiSet.size(), chat(title));
 		for (Integer i : slots()) {
-			inv.setItem(i.intValue(), get(Integer.valueOf(i.intValue())));
+			inv.setItem(i.intValue(), get(i));
 		}
 
 		return inv;
 	}
 
+
+
 	public GeneratedGui setHeader(User user) {
-		guiSet.put(Integer.valueOf(file.getNumber("HeaderSlot")), user.headerItem());
+		guiSet.put(Integer.valueOf(file.getNumber("HeaderSlot") - 1), user.headerItem());
 
 		return this;
 	}

@@ -29,8 +29,26 @@ public class User extends UserData {
 		super(uuid);
 	}
 
+	/**
+	 * TBH i don't even know why i put this here... lol
+	 * 
+	 * @return myself.
+	 */
+	public User me() {
+		return this;
+	}
+
 	public UUID uuid() {
 		return playerUuid;
+	}
+
+	public int rank() {
+		for (int r = 0; r < 101; r++) {
+			if (hasPermission("slashplayer.rank." + r)) {
+				return r;
+			}
+		}
+		return 0;
 	}
 
 	public String id() {
@@ -67,7 +85,7 @@ public class User extends UserData {
 	public void logout() {
 		setOnline(false);
 		plugin.players.remove(this);
-		plugin.openGuis.remove(this);
+		plugin.openGuis.remove(this.uuid());
 	}
 
 	public String name() {
@@ -96,6 +114,10 @@ public class User extends UserData {
 
 	public boolean isDead() {
 		return player().isDead() ? true : false;
+	}
+
+	public boolean hasPermission(String permission) {
+		return player().hasPermission(permission);
 	}
 
 	public boolean command(String command) {

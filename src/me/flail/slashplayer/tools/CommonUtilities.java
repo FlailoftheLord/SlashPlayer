@@ -40,21 +40,23 @@ public class CommonUtilities extends BaseUtilities {
 		for (String p : placeholders.keySet()) {
 			message = message.replace(p, placeholders.get(p));
 		}
-		return message;
+		return chat(message);
 	}
 
 	public ItemStack itemPlaceholders(ItemStack item, Map<String, String> placeholders) {
 		ItemMeta meta = item.getItemMeta();
-		List<String> lore = meta.getLore();
+		if (meta.hasLore()) {
+			List<String> lore = meta.getLore();
 
-		List<String> newLore = new ArrayList<>();
-		for (String line : lore) {
-			newLore.add(this.placeholders(line, placeholders));
+			List<String> newLore = new ArrayList<>();
+			for (String line : lore) {
+				newLore.add(this.placeholders(line, placeholders));
+			}
+			meta.setLore(newLore);
+			meta.setDisplayName(this.placeholders(meta.getDisplayName(), placeholders));
+
+			item.setItemMeta(meta);
 		}
-		meta.setLore(newLore);
-		meta.setDisplayName(this.placeholders(meta.getDisplayName(), placeholders));
-
-		item.setItemMeta(meta);
 
 		return item;
 	}
