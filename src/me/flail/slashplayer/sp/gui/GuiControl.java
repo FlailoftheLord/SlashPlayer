@@ -7,6 +7,7 @@ import org.bukkit.inventory.ItemStack;
 import me.flail.slashplayer.executables.Executables.Exe;
 import me.flail.slashplayer.gui.GeneratedGui;
 import me.flail.slashplayer.gui.Gui;
+import me.flail.slashplayer.sp.Message;
 import me.flail.slashplayer.tools.DataFile;
 import me.flail.slashplayer.tools.Logger;
 import me.flail.slashplayer.user.User;
@@ -59,7 +60,7 @@ public class GuiControl extends Logger {
 		return file;
 	}
 
-	public void processClick(User clicker, Gui gui, ItemStack clickedItem) {
+	public void processClick(User operator, Gui gui, ItemStack clickedItem) {
 		ItemStack header = gui.getHeader();
 
 		if (header != null) {
@@ -68,7 +69,7 @@ public class GuiControl extends Logger {
 			boolean equalsCanExecute = plugin.config.getBoolean("EqualsCanExecute");
 
 			if (this.hasTag(clickedItem, "execute")) {
-				if ((equalsCanExecute && (subject.rank() <= clicker.rank())) || (subject.rank() < clicker.rank())) {
+				if ((equalsCanExecute && (subject.rank() <= operator.rank())) || (subject.rank() < operator.rank())) {
 
 					switch (Exe.get(this.getTag(clickedItem, "execute"))) {
 					case ADVENTURE:
@@ -144,7 +145,7 @@ public class GuiControl extends Logger {
 					return;
 				}
 
-				clicker.player().sendMessage("");
+				new Message("RankTooLow").send(subject, operator);
 			}
 
 			return;

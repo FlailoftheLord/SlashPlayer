@@ -147,7 +147,7 @@ public class User extends UserData {
 			player().kickPlayer(this.getBanMessage());
 			break;
 		case MUTED:
-			player().kickPlayer(new Message("Muted").get());
+			player().kickPlayer(new Message("Muted").stringValue());
 			break;
 		case WARNING:
 
