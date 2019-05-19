@@ -58,6 +58,10 @@ permissions:
   slashplayer.rank.0:
     description: default rank
     default: true
+  slashplayer.rank.100:
+    description: operator rank
+    default: op
+      
       
   # This makes the permisison holder exempt from all kills, mutes, bans and inventory clears.
   slashplayer.exempt:

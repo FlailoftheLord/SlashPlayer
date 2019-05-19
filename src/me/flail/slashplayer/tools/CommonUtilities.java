@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -112,6 +113,24 @@ public class CommonUtilities extends BaseUtilities {
 		item = this.addTag(item, "execute", exe.toString());
 
 		return item;
+	}
+
+	public boolean msgCheck(String message, String text, String type) {
+		switch (type.toLowerCase()) {
+		case "starts":
+			return message.startsWith(Pattern.compile("(?i)") + text);
+		case "ends":
+			return message.endsWith(Pattern.compile("(?i)") + text);
+		case "contains":
+			return message.contains(Pattern.compile("(?i)") + text);
+		default:
+			return false;
+
+		}
+	}
+
+	public String replaceText(String message, String text, String replacement) {
+		return message.replaceAll(Pattern.compile("(?i)") + text, replacement);
 	}
 
 }

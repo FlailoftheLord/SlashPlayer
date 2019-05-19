@@ -49,7 +49,7 @@ public class DataFile extends Logger {
 		plugin.saveResource(fileName, overwrite);
 	}
 
-	public DataFile save(FileConfiguration config) {
+	protected DataFile save(FileConfiguration config) {
 		try {
 			config.save(file);
 		} catch (Throwable t) {

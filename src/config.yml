@@ -35,11 +35,12 @@ Prefix: "&8(&3&lSP&8)"
 # Used for the %website% placeholder.
 Website: "www.myserver.com/ban-apppeals"
 
+# Ban & Mute times (in seconds)
 # 1 hour = 3600 seconds
 # 1 day = 24 hours = 86400 seconds
 # 1 week = 7 days = 604800 seconds
 # 1 month = 30 days = 2592000 seconds
-BanTime: 3600
+BanTime: 86400
 MuteTime: 300
  
 # Settings for frozen players.

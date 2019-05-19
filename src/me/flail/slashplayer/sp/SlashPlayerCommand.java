@@ -9,45 +9,55 @@ import me.flail.slashplayer.tools.Logger;
 import me.flail.slashplayer.user.User;
 
 public class SlashPlayerCommand extends Logger {
-	private CommandSender operator;
+	private CommandSender sender;
 	private Command command;
-	private String label;
 	private String[] args;
 
 
-	public SlashPlayerCommand(CommandSender operator, Command command, String label, String[] args) {
-		this.operator = operator;
+	public SlashPlayerCommand(CommandSender sender, Command command, String[] args) {
+		this.sender = sender;
 		this.command = command;
-		this.label = label;
 		this.args = args;
 	}
 
 	public boolean run() {
 		if (command.getName().equalsIgnoreCase("slashplayer")) {
-			switch (label) {
+			if (!(sender instanceof Player)) {
+				console("&cYou must use SlashPlayer commands in-game!");
+				return true;
+			}
+			User operator = new User(((Player) sender).getUniqueId());
+
+			if ((args.length > 0) && args[0].equalsIgnoreCase("test")) {
+				if (operator.hasPermission("slashplayer.op")) {
+					new Gui(plugin.loadedGuis.get("PlayerListGui.yml")).open(operator, null);
+				}
+
+			}
+
+			switch (args.length) {
+
+			case 0:
+
+			case 1:
+
+			case 2:
 
 			default:
-				if ((args.length > 0) && args[0].equalsIgnoreCase("test")) {
-					if (operator instanceof Player) {
-						Player player = (Player) operator;
-						User user = new User(player.getUniqueId());
-						new Gui(plugin.loadedGuis.get("PlayerListGui.yml")).open(user, null);
-					}
 
-				}
 			}
 
 			return true;
 		}
 		if (command.getName().equals("ouch")) {
-			if (operator instanceof Player) {
-				Player player = (Player) operator;
-				User user = new User(player.getUniqueId());
+			if (sender instanceof Player) {
+				User user = new User(((Player) sender).getUniqueId());
 				user.ouch();
+				return true;
 			}
 		}
 
-		return operator != null;
+		return sender != null;
 	}
 
 }
