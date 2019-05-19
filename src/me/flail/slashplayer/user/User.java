@@ -221,6 +221,7 @@ public class User extends UserData {
 			placeholders.put("%status-mute%", isMuted() + "");
 			placeholders.put("%status-frozen%", isFrozen() + "");
 			placeholders.put("%status-ban%", isBanned() + "");
+			placeholders.put("%rank%", rank() + "");
 		}
 
 		return placeholders;

@@ -128,4 +128,8 @@ public class DataFile extends Logger {
 		return config.contains(key);
 	}
 
+	public boolean hasList(String key) {
+		return !(getList(key).isEmpty());
+	}
+
 }

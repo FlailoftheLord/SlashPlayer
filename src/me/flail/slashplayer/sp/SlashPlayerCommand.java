@@ -44,7 +44,18 @@ public class SlashPlayerCommand extends Logger {
 				new Message("NoPermission").send(operator, operator);
 
 			case 1:
+				switch (args[0].toLowerCase()) {
+				case "rank":
+					new Message("RankCheck").send(operator, operator);
+					break;
+				case "help":
+					if (operator.hasPermission("slashplayer.command")) {
+						new Message("HelpMessage").send(operator, operator);
+					}
 
+				}
+
+				break;
 			case 2:
 
 			default:

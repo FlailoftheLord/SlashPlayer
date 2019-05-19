@@ -1,6 +1,7 @@
 package me.flail.slashplayer.sp;
 
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.annotation.Nullable;
 
@@ -9,14 +10,17 @@ import me.flail.slashplayer.tools.Logger;
 import me.flail.slashplayer.user.User;
 
 public class Message extends Logger {
-	private DataFile file;
-	private String prefix;
-	private String message;
+	private DataFile file = plugin.messages;
+	private String prefix = chat(plugin.getConfig().getString("Prefix"));
+	private List<String> message = new ArrayList<>();
 
 	public Message(String key) {
-		file = plugin.messages;
-		message = file.getValue(key);
-		prefix = chat(plugin.getConfig().getString("Prefix"));
+		message.clear();
+		if (file.hasList(key)) {
+			message = file.getList(key);
+			return;
+		}
+		message.add(file.getValue(key));
 	}
 
 	/**
@@ -31,11 +35,14 @@ public class Message extends Logger {
 	 *                     subject. Used for placeholders.
 	 */
 	public void send(User subject, @Nullable User operator) {
-		message = this.placeholders(message, subject.commonPlaceholders());
-		if (operator != null) {
-			message = this.placeholders(message, operator.commonPlaceholders());
+		for (String msg : message) {
+			msg = this.placeholders(msg, subject.commonPlaceholders());
+			if (operator != null) {
+				msg = msg.replace("%operator%", operator.name());
+			}
+
+			subject.player().sendMessage(chat(msg));
 		}
-		subject.player().sendMessage(message);
 	}
 
 	public DataFile getFile() {
@@ -43,15 +50,12 @@ public class Message extends Logger {
 	}
 
 	public String stringValue() {
-		return message.replace("%prefix%", msgPrefix());
+		return message.get(0).replace("%prefix%", msgPrefix());
 	}
 
 	public String msgPrefix() {
 		return prefix;
 	}
 
-	public String placeholders(Map<String, String> placeholders) {
-		return this.placeholders(message, placeholders);
-	}
 }
 
