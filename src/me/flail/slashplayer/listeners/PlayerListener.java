@@ -54,7 +54,7 @@ public class PlayerListener implements Listener {
 	@EventHandler
 	public void playerInteract(PlayerInteractAtEntityEvent event) {
 		User operator = new User(event.getPlayer().getUniqueId());
-		if (event.getRightClicked() instanceof Player) {
+		if ((event.getRightClicked() instanceof Player) && operator.hasPermission("slashplayer.interactopen")) {
 			ItemStack item = operator.player().getInventory().getItemInMainHand();
 			if ((item == null) || (item.getType() == Material.AIR) || (item.getType() == Material.GOLDEN_AXE)) {
 				Player player = (Player) event.getRightClicked();

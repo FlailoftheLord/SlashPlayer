@@ -36,8 +36,12 @@ public class SlashPlayerCommand extends Logger {
 			}
 
 			switch (args.length) {
-
 			case 0:
+				if (operator.hasPermission("slashplayer.command")) {
+					new Gui(plugin.loadedGuis.get("PlayerListGui.yml")).open(operator, null);
+					break;
+				}
+				new Message("NoPermission").send(operator, operator);
 
 			case 1:
 
