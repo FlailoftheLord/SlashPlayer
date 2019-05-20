@@ -26,9 +26,8 @@
 ReloadMesage: "%prefix% &aSuccessfully reloaded plugin files!"
 AccessDenied: "%prefix% &4YOU'RE NOT ALLOWED TO USE %executable%"
 PlayerExempt: "%prefix% &c%player% is exempt from &7%executable%"
-RankTooLow: "%prefix% &cYour rank is not high enough to use &7%executable% on &a%player%!"
 NoPermission: "%prefix% &cYou don't have permission to use this!" 
-CommandUsage: "%prefix% &cProper usage: &7/%command% [player-name:unban:reload]"
+CommandUsage: "%prefix% &cProper usage: &7/%command% [player-name:report:rank:reload]"
 InvalidPlayer: "%prefix% &4Invalid player! &4%arg% is not a valid player or has never joined this server."
 
 # = = = # Help Messages # = = = #
@@ -39,6 +38,11 @@ HelpMessage:
 - "&cto unban a player, type &e/%command% unban [player-name]"
 - "&7use &e/report [player-name] &7to report a player"
 - "&7and &e/reports &7to view active reports."
+
+# = = = # Rank Messages # = = = #
+RankTooLow: "%prefix% &cYour rank is not high enough to use &7%executable% on &a%player%!"
+RankCheck: "%prefix% &7Your rank is &a%rank%"
+RankCheckOther: "%prefix% &7%player%'s rank is 7a%rank%"
 
 # = = = # Ban Messages # = = = #
 BanPlayer: "%prefix% &abanned player for %ban-duration% minutes."

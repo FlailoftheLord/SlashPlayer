@@ -2,6 +2,7 @@ package me.flail.slashplayer.sp;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Nullable;
 
@@ -55,6 +56,10 @@ public class Message extends Logger {
 
 	public String msgPrefix() {
 		return prefix;
+	}
+
+	public String placeholders(Map<String, String> placeholders) {
+		return this.placeholders(stringValue(), placeholders);
 	}
 
 }
