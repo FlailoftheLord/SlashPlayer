@@ -24,7 +24,7 @@ public class PlayerListener implements Listener {
 	public void playerLogin(PlayerLoginEvent event) {
 		User user = new User(event.getPlayer().getUniqueId());
 		if (user.isBanned()) {
-			String banMsg = user.getBanMessage();
+			String banMsg = user.getBanMessage().toSingleString();
 			event.disallow(Result.KICK_BANNED, banMsg);
 			user.logout();
 			return;

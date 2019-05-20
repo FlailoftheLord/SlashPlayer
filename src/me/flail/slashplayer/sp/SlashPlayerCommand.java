@@ -62,6 +62,8 @@ public class SlashPlayerCommand extends Logger {
 						break;
 					}
 					new Message("NoPermission").send(operator, null);
+					break;
+				default:
 
 				}
 

@@ -144,7 +144,7 @@ public class User extends UserData {
 		setOnline(false);
 		switch (reason) {
 		case BANNED:
-			player().kickPlayer(this.getBanMessage());
+			player().kickPlayer(this.getBanMessage().toSingleString());
 			break;
 		case MUTED:
 			player().kickPlayer(new Message("Muted").stringValue());

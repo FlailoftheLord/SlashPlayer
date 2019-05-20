@@ -58,8 +58,25 @@ public class Message extends Logger {
 		return prefix;
 	}
 
-	public String placeholders(Map<String, String> placeholders) {
-		return this.placeholders(stringValue(), placeholders);
+	public String toSingleString() {
+		String msg = "";
+		for (String line : message) {
+			msg = msg.concat(line + " ");
+		}
+		return msg;
+	}
+
+	public Message placeholders(Map<String, String> placeholders) {
+		List<String> newMsg = new ArrayList<>();
+		for (String line : message) {
+			line = this.placeholders(line, placeholders);
+			newMsg.add(line);
+		}
+
+		message.clear();
+		message.addAll(newMsg);
+
+		return this;
 	}
 
 }

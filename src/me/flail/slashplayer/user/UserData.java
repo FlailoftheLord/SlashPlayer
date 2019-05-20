@@ -94,7 +94,7 @@ public class UserData extends Logger {
 		return Long.valueOf(getDataFile().getValue("BanDuration").replaceAll("[^0-9]", ""));
 	}
 
-	public String getBanMessage() {
+	public Message getBanMessage() {
 		if (file.getBoolean("Banned")) {
 			Map<String, String> placeholders = new HashMap<>();
 			placeholders.put("%ban-duration%", banDuration() + "");
@@ -102,7 +102,7 @@ public class UserData extends Logger {
 			Message banMsg = new Message("Banned");
 			return banMsg.placeholders(placeholders);
 		}
-		return "";
+		return null;
 	}
 
 }
