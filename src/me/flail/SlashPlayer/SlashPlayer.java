@@ -45,7 +45,6 @@ public class SlashPlayer extends JavaPlugin {
 		instance = this;
 		Boot boot = new Boot(this);
 		boot.startup();
-
 	}
 
 	@Override

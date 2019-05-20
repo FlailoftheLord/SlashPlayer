@@ -56,7 +56,9 @@ public class Boot extends Logger {
 		long startTime = System.currentTimeMillis();
 		try {
 			console("&aReloading Slashplayer...");
+			plugin.server.getScheduler().getPendingTasks().clear();
 			plugin.server.getScheduler().cancelTasks(plugin);
+
 			for (User user : plugin.players) {
 				user.player().closeInventory();
 			}
