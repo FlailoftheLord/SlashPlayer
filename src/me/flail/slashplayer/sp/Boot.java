@@ -52,6 +52,42 @@ public class Boot extends Logger {
 		return true;
 	}
 
+	public long reload() {
+		long startTime = System.currentTimeMillis();
+		try {
+			console("&aReloading Slashplayer...");
+			plugin.server.getScheduler().cancelTasks(plugin);
+			for (User user : plugin.players) {
+				user.player().closeInventory();
+			}
+
+			plugin.openGuis.clear();
+			plugin.loadedGuis.clear();
+			plugin.saveDefaultConfig();
+			plugin.verbose = plugin.getConfig().getBoolean("ConsoleVerbose");
+			plugin.messages = new DataFile("Messages.yml");
+
+			new FileManager().setupGuiFiles(plugin.guiFiles);
+			new DataFile("GuiConfig.yml");
+			nl();
+
+			switch (this.loadOnlinePlayers()) {
+			case 1:
+				console("&aLoaded &7one&a player...");
+				break;
+			default:
+				console("&aLoaded &7" + plugin.players.size() + " &aplayers...");
+			}
+
+		} catch (Exception e) {
+			return -1;
+		}
+
+		nl();
+		console("&aReload complete! &8(&7" + (System.currentTimeMillis() - startTime) + "ms&8)");
+		return System.currentTimeMillis() - startTime;
+	}
+
 	protected void loadEvents() {
 		pm.registerEvents(new PlayerListener(), plugin);
 		pm.registerEvents(new GuiListener(), plugin);

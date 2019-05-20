@@ -41,17 +41,27 @@ public class SlashPlayerCommand extends Logger {
 					new Gui(plugin.loadedGuis.get("PlayerListGui.yml")).open(operator, null);
 					break;
 				}
-				new Message("NoPermission").send(operator, operator);
+				new Message("NoPermission").send(operator, null);
 
 			case 1:
 				switch (args[0].toLowerCase()) {
 				case "rank":
-					new Message("RankCheck").send(operator, operator);
+					new Message("RankCheck").send(operator, null);
 					break;
 				case "help":
 					if (operator.hasPermission("slashplayer.command")) {
-						new Message("HelpMessage").send(operator, operator);
+						new Message("HelpMessage").send(operator, null);
+						break;
 					}
+					new Message("NoPermission").send(operator, null);
+					break;
+				case "reload":
+					if (operator.hasPermission("slashplayer.op")) {
+						plugin.reload();
+						new Message("Reloaded").send(operator, null);
+						break;
+					}
+					new Message("NoPermission").send(operator, null);
 
 				}
 
