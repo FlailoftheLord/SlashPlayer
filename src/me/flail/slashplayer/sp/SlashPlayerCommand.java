@@ -49,11 +49,7 @@ public class SlashPlayerCommand extends Logger {
 					new Message("RankCheck").send(operator, null);
 					break;
 				case "help":
-					if (operator.hasPermission("slashplayer.command")) {
-						new Message("HelpMessage").send(operator, null);
-						break;
-					}
-					new Message("NoPermission").send(operator, null);
+					plugin.sendHelp(operator);
 					break;
 				case "reload":
 					if (operator.hasPermission("slashplayer.op")) {
@@ -64,11 +60,41 @@ public class SlashPlayerCommand extends Logger {
 					new Message("NoPermission").send(operator, null);
 					break;
 				default:
-
+					plugin.userGui(operator, args);
 				}
 
 				break;
 			case 2:
+				switch (args[0].toLowerCase()) {
+				case "rank":
+					for (User user : plugin.players) {
+						if (args[1].toLowerCase().startsWith(user.name())) {
+							if (operator.rank() > user.rank()) {
+								Message rankMsg = new Message("RankCheck");
+								rankMsg = rankMsg.placeholders(user.commonPlaceholders());
+
+								rankMsg.send(operator, null);
+								break;
+							}
+
+							new Message("NoPermission").send(operator, null);
+							break;
+						}
+
+					}
+
+					break;
+				case "help":
+					plugin.sendHelp(operator);
+					break;
+				case "whitlist":
+					if (!plugin.server.hasWhitelist()) {
+						new Message("WhitelistNotOn").send(operator, null);
+						break;
+					}
+
+				}
+
 
 			default:
 

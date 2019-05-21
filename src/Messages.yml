@@ -117,7 +117,7 @@ ReportDeny: "%prefix% &cYou're not allowed to report that player!"
 ReportPrompt: "%prefix% &cPlease enter a report reason!"
 
 # = = = # Whitelist Messages # = = = #
-WhitelistNotOn: "%prefix% &cCan't add players to the whitelist if it's not even turned on, silly!"
+WhitelistNotOn: "%prefix% &cCan't add players to the whitelist if it's not even turned on, silly!  &8(&7/whitelist on&8)"
 PlayerWhitelisted: "%prefix% &cAdded %player% to the whitelist!"
 PlayerUnWhitelisted: "%prefix% &aRemoved %player% from the whitelist."
 

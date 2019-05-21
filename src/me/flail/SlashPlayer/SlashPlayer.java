@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -15,7 +17,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 import me.flail.slashplayer.gui.GeneratedGui;
 import me.flail.slashplayer.gui.Gui;
 import me.flail.slashplayer.sp.Boot;
+import me.flail.slashplayer.sp.Message;
 import me.flail.slashplayer.sp.SlashPlayerCommand;
+import me.flail.slashplayer.sp.gui.GuiControl;
 import me.flail.slashplayer.tools.DataFile;
 import me.flail.slashplayer.tools.TabCompleter;
 import me.flail.slashplayer.user.User;
@@ -68,5 +72,34 @@ public class SlashPlayer extends JavaPlugin {
 	}
 
 
+	public void sendHelp(User operator) {
+		if (operator.hasPermission("slashplayer.command")) {
+			new Message("HelpMessage").send(operator, null);
+			return;
+		}
+		new Message("NoPermission").send(operator, null);
+	}
+
+	@SuppressWarnings("deprecation")
+	public void userGui(User operator, String... username) {
+		boolean isOnline = false;
+		for (User user : players) {
+			if (user.name().toLowerCase().startsWith(username[0].toLowerCase())) {
+				new GuiControl().openModerationGui(operator, user);
+
+				isOnline = true;
+				break;
+			}
+		}
+
+
+		if (!isOnline) {
+			OfflinePlayer deprecatedMethodThatIHaveToUse = Bukkit.getOfflinePlayer(username[0]);
+			User offlineUser = new User(deprecatedMethodThatIHaveToUse.getUniqueId());
+			new GuiControl().openModerationGui(operator, offlineUser);
+		}
+
+
+	}
 
 }

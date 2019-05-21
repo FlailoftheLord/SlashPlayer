@@ -20,6 +20,14 @@ public class Executioner {
 	}
 
 	private boolean execute(Exe exe, User subject, User operator) {
+		if (subject.isOnline()) {
+
+			return true;
+		}
+
+		if (exe.equals(Exe.WHITELIST)) {
+
+		}
 
 		return false;
 	}

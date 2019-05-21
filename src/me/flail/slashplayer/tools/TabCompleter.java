@@ -44,6 +44,10 @@ public class TabCompleter extends ArrayList<String> {
 				case "rank":
 					baseArgs.addAll(usernames());
 					break;
+				case "opengui":
+					for (String guiName : plugin.guiFiles) {
+						this.add(guiName);
+					}
 				default:
 					baseArgs.clear();
 					break;
@@ -59,10 +63,14 @@ public class TabCompleter extends ArrayList<String> {
 
 				break;
 			case 3:
-				if (args[0].equalsIgnoreCase("report")) {
+				switch (args[0].toLowerCase()) {
+				case "report":
 					this.add("[<Report-Reason>]");
+					break;
+				case "opengui":
+					this.addAll(usernames());
+					break;
 				}
-				break;
 			}
 
 		}
