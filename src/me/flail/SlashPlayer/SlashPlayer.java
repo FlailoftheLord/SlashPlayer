@@ -81,6 +81,12 @@ public class SlashPlayer extends JavaPlugin {
 	}
 
 	@SuppressWarnings("deprecation")
+	public User offlinePlayer(String name) {
+		OfflinePlayer deprecatedMethodThatIDontWantToUseButIHaveToUseIt = Bukkit.getOfflinePlayer(name);
+		return new User(deprecatedMethodThatIDontWantToUseButIHaveToUseIt.getUniqueId());
+	}
+
+
 	public void userGui(User operator, String... username) {
 		boolean isOnline = false;
 		for (User user : players) {
@@ -94,9 +100,7 @@ public class SlashPlayer extends JavaPlugin {
 
 
 		if (!isOnline) {
-			OfflinePlayer deprecatedMethodThatIHaveToUse = Bukkit.getOfflinePlayer(username[0]);
-			User offlineUser = new User(deprecatedMethodThatIHaveToUse.getUniqueId());
-			new GuiControl().openModerationGui(operator, offlineUser);
+			new GuiControl().openModerationGui(operator, this.offlinePlayer(username[0]));
 		}
 
 

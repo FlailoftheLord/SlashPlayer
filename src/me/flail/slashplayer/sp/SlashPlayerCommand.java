@@ -87,11 +87,13 @@ public class SlashPlayerCommand extends Logger {
 				case "help":
 					plugin.sendHelp(operator);
 					break;
-				case "whitlist":
+				case "whitelist":
 					if (!plugin.server.hasWhitelist()) {
 						new Message("WhitelistNotOn").send(operator, null);
 						break;
 					}
+					User offlineUser = plugin.offlinePlayer(args[1]);
+					offlineUser.offlinePlayer().setWhitelisted(true);
 
 				}
 
