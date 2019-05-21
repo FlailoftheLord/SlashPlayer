@@ -61,7 +61,7 @@ public class GuiControl extends Logger {
 		return file;
 	}
 
-	public void processClick(User operator, Gui gui, ItemStack clickedItem) {
+	public boolean processClick(User operator, Gui gui, ItemStack clickedItem) {
 		ItemStack header = gui.getHeader();
 
 		if (header != null) {
@@ -72,18 +72,15 @@ public class GuiControl extends Logger {
 			if (this.hasTag(clickedItem, "execute")) {
 				if ((equalsCanExecute && (subject.rank() <= operator.rank())) || (subject.rank() < operator.rank())) {
 
-					new Executioner(subject, Exe.get(this.getTag(clickedItem, "execute"))).execute(operator);
-
-					return;
+					return new Executioner(subject, Exe.get(this.getTag(clickedItem, "execute"))).execute(operator);
 				}
 
 				new Message("RankTooLow").send(subject, operator);
 			}
 
-			return;
 		}
 
-
+		return false;
 	}
 
 }
