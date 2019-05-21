@@ -5,6 +5,7 @@ import java.util.UUID;
 import org.bukkit.inventory.ItemStack;
 
 import me.flail.slashplayer.executables.Executables.Exe;
+import me.flail.slashplayer.executables.Executioner;
 import me.flail.slashplayer.gui.GeneratedGui;
 import me.flail.slashplayer.gui.Gui;
 import me.flail.slashplayer.sp.Message;
@@ -71,76 +72,7 @@ public class GuiControl extends Logger {
 			if (this.hasTag(clickedItem, "execute")) {
 				if ((equalsCanExecute && (subject.rank() <= operator.rank())) || (subject.rank() < operator.rank())) {
 
-					switch (Exe.get(this.getTag(clickedItem, "execute"))) {
-					case ADVENTURE:
-						break;
-					case BACKBUTTON:
-
-						break;
-					case BAN:
-						break;
-					case BURN:
-						break;
-					case CLEARINVENTORY:
-						break;
-					case CREATIVE:
-						break;
-					case ENDERCHEST:
-						break;
-					case FEED:
-						break;
-					case FLY:
-						break;
-					case FREEZE:
-						break;
-					case FRIEND:
-						break;
-					case GAMEMODE:
-						break;
-					case GAMEMODEADVENTURE:
-						break;
-					case GAMEMODECREATIVE:
-						break;
-					case GAMEMODESPECTATOR:
-						break;
-					case GAMEMODESURVIVAL:
-						break;
-					case HEAL:
-						break;
-					case KICK:
-						break;
-					case KILL:
-						break;
-					case MUTE:
-						break;
-					case OPENINVENTORY:
-						break;
-					case REPORT:
-						break;
-					case RESTOREINVENTORY:
-						break;
-					case SPECTATOR:
-						break;
-					case SUMMON:
-						break;
-					case SURVIVAL:
-						break;
-					case TELEPORT:
-						break;
-					case TOGGLEFLY:
-						break;
-					case UNBAN:
-						break;
-					case UNFREEZE:
-						break;
-					case UNMUTE:
-						break;
-					case WHITELIST:
-						break;
-					default:
-						break;
-
-					}
+					new Executioner(subject, Exe.get(this.getTag(clickedItem, "execute"))).execute(operator);
 
 					return;
 				}
