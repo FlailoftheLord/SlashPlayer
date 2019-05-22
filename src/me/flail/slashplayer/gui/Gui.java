@@ -31,7 +31,12 @@ public class Gui extends Logger {
 	}
 
 	public ItemStack getHeader() {
-		return inv.getItem(data.dataFile().getNumber("HeaderSlot") - 1);
+		int headerSlot = data.dataFile().getNumber("HeaderSlot") - 1;
+		if (headerSlot > -1) {
+
+			return inv.getItem(headerSlot);
+		}
+		return null;
 	}
 
 	public Gui setHeader(User subject) {

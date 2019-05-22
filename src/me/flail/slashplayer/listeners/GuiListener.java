@@ -18,17 +18,23 @@ public class GuiListener extends Logger implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGH)
 	public void invClick(InventoryClickEvent event) {
-		if (event.getWhoClicked() instanceof Player) {
-			Player player = (Player) event.getWhoClicked();
+		try {
 
-			User user = new User(player.getUniqueId());
-			if (plugin.openGuis.containsKey(user.uuid())) {
-				event.setCancelled(true);
-				Gui gui = plugin.openGuis.get(user.uuid());
+			if (event.getWhoClicked() instanceof Player) {
+				Player player = (Player) event.getWhoClicked();
 
-				new GuiControl().processClick(user, gui, event.getCurrentItem());
+				User user = new User(player.getUniqueId());
+				if (plugin.openGuis.containsKey(user.uuid())) {
+					event.setCancelled(true);
+					Gui gui = plugin.openGuis.get(user.uuid());
+
+					new GuiControl().processClick(user, gui, event.getCurrentItem());
+				}
+
 			}
 
+		} catch (Throwable t) {
+			t.printStackTrace();
 		}
 
 	}

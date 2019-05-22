@@ -42,14 +42,19 @@ public class LegacyUtils {
 	}
 
 	protected boolean hasLegacyTag(ItemStack item, String key) {
-		ItemMeta meta = item.getItemMeta();
-		NamespacedKey nkey = new NamespacedKey(plugin, "SlashPlayer-" + key);
+		if (item.hasItemMeta()) {
 
-		try {
-			return meta.getCustomTagContainer().hasCustomTag(nkey, ItemTagType.STRING);
-		} catch (Throwable t) {
-			return false;
+			ItemMeta meta = item.getItemMeta();
+			NamespacedKey nkey = new NamespacedKey(plugin, "SlashPlayer-" + key);
+
+			try {
+				return meta.getCustomTagContainer().hasCustomTag(nkey, ItemTagType.STRING) ? true : false;
+			} catch (Throwable t) {
+				return false;
+			}
+
 		}
+		return false;
 	}
 
 }

@@ -65,7 +65,7 @@ public class GuiControl extends Logger {
 		ItemStack header = gui.getHeader();
 
 		if (header != null) {
-			User subject = new User(UUID.fromString(this.getTag(header, "uuid")));
+			User subject = new User(UUID.fromString(this.getTag(header, "user")));
 
 			boolean equalsCanExecute = plugin.config.getBoolean("EqualsCanExecute");
 
@@ -88,7 +88,15 @@ public class GuiControl extends Logger {
 			return true;
 		}
 
-		return false;
+		if (hasTag(clickedItem, "user")) {
+			UUID uuid = UUID.fromString(this.getTag(clickedItem, "user"));
+			User subject = new User(uuid);
+			if (operator.hasPermission("slashplayer.command")) {
+				openModerationGui(operator, subject);
+			}
+		}
+
+		return true;
 	}
 
 }

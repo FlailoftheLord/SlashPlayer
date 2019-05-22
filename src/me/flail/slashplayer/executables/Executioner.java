@@ -1,5 +1,6 @@
 package me.flail.slashplayer.executables;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,6 +40,8 @@ public class Executioner extends Logger {
 	}
 
 	private boolean execute(Exe exe, User subject, User operator) {
+		String logMsg = " User: " + operator.name() + " ran executable: " + exe.toString() + " on " + subject.name();
+
 		Map<String, String> exePlaceholders = new HashMap<>();
 		exePlaceholders.put("%executable%", exe.toString());
 
@@ -141,7 +144,12 @@ public class Executioner extends Logger {
 				break;
 			}
 
-			this.log(" User: " + operator.name() + " ran executable: " + exe.toString() + " on " + subject.name());
+			try {
+
+				this.console(logMsg);
+				this.log(logMsg);
+			} catch (IOException e) {
+			}
 
 			return true;
 		}
