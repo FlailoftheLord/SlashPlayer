@@ -42,14 +42,14 @@ public class SlashPlayerCommand extends Logger {
 					break;
 				}
 				new Message("NoPermission").send(operator, null);
-
+				break;
 			case 1:
 				switch (args[0].toLowerCase()) {
 				case "rank":
 					new Message("RankCheck").send(operator, null);
 					break;
 				case "help":
-					plugin.sendHelp(operator);
+					plugin.sendHelp(operator, command.getName());
 					break;
 				case "reload":
 					if (operator.hasPermission("slashplayer.op")) {
@@ -85,7 +85,7 @@ public class SlashPlayerCommand extends Logger {
 
 					break;
 				case "help":
-					plugin.sendHelp(operator);
+					plugin.sendHelp(operator, command.getName());
 					break;
 				case "whitelist":
 					if (!plugin.server.hasWhitelist()) {

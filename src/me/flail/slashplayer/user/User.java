@@ -43,7 +43,7 @@ public class User extends UserData {
 	}
 
 	public int rank() {
-		for (int r = 0; r < 101; r++) {
+		for (int r = 100; r > -1; r--) {
 			if (hasPermission("slashplayer.rank." + r)) {
 				return r;
 			}

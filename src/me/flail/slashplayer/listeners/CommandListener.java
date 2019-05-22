@@ -1,5 +1,8 @@
 package me.flail.slashplayer.listeners;
 
+import java.util.Locale;
+import java.util.regex.Pattern;
+
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -39,7 +42,35 @@ public class CommandListener extends Logger implements Listener {
 			}
 		}
 
+		console(message);
+
 		event.setMessage(message);
+	}
+
+	@EventHandler
+	private void handleAliases(PlayerCommandPreprocessEvent event) {
+		String message = event.getMessage().toLowerCase(Locale.ENGLISH);
+
+		if (message.equals("/sp") || message.equals("/player") || message.startsWith("/sp ") || message.startsWith("/player ")) {
+			message = message.replaceAll("/sp", "/slashplayer").replaceAll("/player", "/slashplayer");
+			event.setMessage(message);
+		}
+
+		for (User user : plugin.players) {
+			String pName = user.name().toLowerCase();
+
+			if (message.startsWith("/" + pName)) {
+				event.setMessage(message.replaceAll("(?i)" + Pattern.quote("/" + pName), "/slashplayer " + pName));
+				break;
+			}
+
+			if (message.startsWith("/report ")) {
+				event.setMessage(message.replace("/report ", "/slashplayer report "));
+				break;
+			}
+
+		}
+
 	}
 
 }

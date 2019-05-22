@@ -1,7 +1,6 @@
 package me.flail.slashplayer.listeners;
 
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event.Result;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -24,7 +23,7 @@ public class GuiListener extends Logger implements Listener {
 
 			User user = new User(player.getUniqueId());
 			if (plugin.openGuis.containsKey(user.uuid())) {
-				event.setResult(Result.DENY);
+				event.setCancelled(true);
 				Gui gui = plugin.openGuis.get(user.uuid());
 
 				new GuiControl().processClick(user, gui, event.getCurrentItem());

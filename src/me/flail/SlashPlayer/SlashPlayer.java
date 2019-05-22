@@ -41,6 +41,9 @@ public class SlashPlayer extends JavaPlugin {
 
 	@Override
 	public void onLoad() {
+		saveDefaultConfig();
+		config = this.getConfig();
+
 		server = getServer();
 	}
 
@@ -72,9 +75,13 @@ public class SlashPlayer extends JavaPlugin {
 	}
 
 
-	public void sendHelp(User operator) {
+	public void sendHelp(User operator, String cmd) {
 		if (operator.hasPermission("slashplayer.command")) {
-			new Message("HelpMessage").send(operator, null);
+			Map<String, String> cmdPl = new HashMap<>();
+			cmdPl.put("%command%", cmd);
+			cmdPl.put("%cmd%", cmd);
+
+			new Message("HelpMessage").placeholders(cmdPl).send(operator, null);
 			return;
 		}
 		new Message("NoPermission").send(operator, null);

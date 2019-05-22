@@ -20,6 +20,8 @@ import me.flail.slashplayer.executables.Executables.Exe;
 public class CommonUtilities extends BaseUtilities {
 
 	protected String chat(String message) {
+		message = message.replace("%prefix%", plugin.config.get("Prefix", "").toString());
+
 		return ChatColor.translateAlternateColorCodes('&', message);
 	}
 
@@ -130,7 +132,7 @@ public class CommonUtilities extends BaseUtilities {
 	}
 
 	public String replaceText(String message, String text, String replacement) {
-		return message.replaceAll(Pattern.compile("(?i)") + text, replacement);
+		return message = message.replaceAll("(?i)" + Pattern.quote(text), replacement);
 	}
 
 }
