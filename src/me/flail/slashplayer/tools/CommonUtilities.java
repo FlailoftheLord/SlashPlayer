@@ -118,11 +118,11 @@ public class CommonUtilities extends BaseUtilities {
 	public boolean msgCheck(String message, String text, String type) {
 		switch (type.toLowerCase()) {
 		case "starts":
-			return message.startsWith(Pattern.compile("(?i)") + text);
+			return message.startsWith(text.toLowerCase());
 		case "ends":
-			return message.endsWith(Pattern.compile("(?i)") + text);
+			return message.endsWith(text.toLowerCase());
 		case "contains":
-			return message.contains(Pattern.compile("(?i)") + text);
+			return message.contains(text.toLowerCase());
 		default:
 			return false;
 

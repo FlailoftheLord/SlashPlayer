@@ -51,6 +51,9 @@ public class Executioner extends Logger {
 			case BAN:
 				if (operator.hasPermission("slashplayer.ban")) {
 					subject.ban(plugin.config.getLong("BanTime"));
+					if (plugin.config.getBoolean("Broadcast.Ban")) {
+
+					}
 				}
 
 				break;
@@ -138,6 +141,7 @@ public class Executioner extends Logger {
 				break;
 			}
 
+			this.log(" User: " + operator.name() + " ran executable: " + exe.toString() + " on " + subject.name());
 
 			return true;
 		}

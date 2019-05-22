@@ -235,6 +235,8 @@ public class User extends UserData {
 			placeholders.put("%status-frozen%", isFrozen() + "");
 			placeholders.put("%status-ban%", isBanned() + "");
 			placeholders.put("%rank%", rank() + "");
+			placeholders.put("%ban-duration%", this.banDuration() + " seconds");
+			placeholders.put("%unban-time%", this.banExpiry());
 		}
 
 		return placeholders;
