@@ -61,8 +61,10 @@ public class SlashPlayer extends JavaPlugin {
 
 		openGuis.clear();
 		loadedGuis.clear();
-		for (User user : players) {
-			user.player().closeInventory();
+		if (!players.isEmpty()) {
+			for (User user : players) {
+				user.player().closeInventory();
+			}
 		}
 
 	}
