@@ -175,6 +175,19 @@ public class User extends UserData {
 		player().sendMessage(chat("&4&l<3"));
 	}
 
+	public void heal(boolean removePotionEffects) {
+		player().setHealth(20);
+		feed(22);
+
+		if (removePotionEffects) {
+			player().getActivePotionEffects().clear();
+		}
+	}
+
+	public void feed(int level) {
+		player().setFoodLevel(level);
+	}
+
 	public ItemStack getSkull() {
 		ItemStack item = new ItemStack(Material.PLAYER_HEAD);
 		SkullMeta meta = (SkullMeta) item.getItemMeta();

@@ -72,12 +72,21 @@ public class GuiControl extends Logger {
 			if (this.hasTag(clickedItem, "execute")) {
 				if ((equalsCanExecute && (subject.rank() <= operator.rank())) || (subject.rank() < operator.rank())) {
 
-					return new Executioner(subject, Exe.get(this.getTag(clickedItem, "execute"))).execute(operator);
+					new Executioner(subject, Exe.get(this.getTag(clickedItem, "execute"))).execute(operator);
 				}
 
 				new Message("RankTooLow").send(subject, operator);
 			}
 
+			if (this.hasTag(clickedItem, "close-after-click")) {
+				boolean closeAfterClick = Boolean.valueOf(getTag(clickedItem, "close-after-click")).booleanValue();
+
+				if (closeAfterClick) {
+					operator.player().closeInventory();
+				}
+			}
+
+			return true;
 		}
 
 		return false;

@@ -34,10 +34,6 @@ public class Executables extends Logger {
 		GAMEMODECREATIVE,
 		GAMEMODESPECTATOR,
 		GAMEMODEADVENTURE,
-		SURVIVAL,
-		CREATIVE,
-		SPECTATOR,
-		ADVENTURE,
 		BACKBUTTON;
 
 		@Override

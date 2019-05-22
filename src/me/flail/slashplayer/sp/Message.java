@@ -25,24 +25,24 @@ public class Message extends Logger {
 	}
 
 	/**
-	 * Sends this message to the specified <code>subject</code>
+	 * Sends this message to the specified <code>recipient</code>
 	 * Will automatically translate all basic placeholders for this user, (including the
 	 * <code>operator</code> user if, not null.
 	 * 
-	 * @param subject
-	 *                     the user to send this message to.
+	 * @param recipient
+	 *                      the user to send this message to.
 	 * @param operator
-	 *                     (optional) the operator, usually the one executing a command towards the
-	 *                     subject. Used for placeholders.
+	 *                      (optional) the operator, usually the one executing a command towards the
+	 *                      subject. Used for placeholders.
 	 */
-	public void send(User subject, @Nullable User operator) {
+	public void send(User recipient, @Nullable User operator) {
 		for (String msg : message) {
-			msg = this.placeholders(msg, subject.commonPlaceholders());
+			msg = this.placeholders(msg, recipient.commonPlaceholders());
 			if (operator != null) {
 				msg = msg.replace("%operator%", operator.name());
 			}
 
-			subject.player().sendMessage(chat(msg));
+			recipient.player().sendMessage(chat(msg));
 		}
 	}
 
