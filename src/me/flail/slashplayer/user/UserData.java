@@ -87,11 +87,17 @@ public class UserData extends Logger {
 
 	public String banExpiry() {
 		Instant instant = (Instant) getDataFile().getObj("UnbanTime");
-		return new SimpleDateFormat("MM/dd/yyyy 'at' HH:mm.ss").format(Date.from(instant));
+		if (instant != null) {
+			return new SimpleDateFormat("MM/dd/yyyy 'at' HH:mm.ss").format(Date.from(instant));
+		}
+		return "";
 	}
 
 	public Long banDuration() {
-		return Long.valueOf(getDataFile().getValue("BanDuration").replaceAll("[^0-9]", ""));
+		if (getDataFile().hasValue("BanDuration")) {
+			return Long.valueOf(getDataFile().getNumber("BanDuration"));
+		}
+		return Long.valueOf(-1L);
 	}
 
 	public Message getBanMessage() {

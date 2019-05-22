@@ -51,7 +51,7 @@ public class Gui extends Logger {
 
 	public void open(User operator, User subject) {
 		if (subject != null) {
-			setHeader(subject);
+			this.setHeader(subject);
 			inv = this.updateItemPlaceholders(inv, subject.commonPlaceholders());
 		}
 

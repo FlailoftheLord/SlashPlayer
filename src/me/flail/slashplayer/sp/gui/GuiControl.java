@@ -41,7 +41,7 @@ public class GuiControl extends Logger {
 	}
 
 	public GuiControl loadGui(String path) {
-		file = new DataFile("/GuiConfigurations/" + path);
+		file = new DataFile("GuiConfigurations/" + path);
 		new GuiGenerator(file).run();
 		console("loaded Gui file: " + path);
 		return this;
@@ -71,11 +71,10 @@ public class GuiControl extends Logger {
 
 			if (this.hasTag(clickedItem, "execute")) {
 				if ((equalsCanExecute && (subject.rank() <= operator.rank())) || (subject.rank() < operator.rank())) {
-
 					new Executioner(subject, Exe.get(this.getTag(clickedItem, "execute"))).execute(operator);
+				} else {
+					new Message("RankTooLow").send(subject, operator);
 				}
-
-				new Message("RankTooLow").send(subject, operator);
 			}
 
 			if (this.hasTag(clickedItem, "close-after-click")) {

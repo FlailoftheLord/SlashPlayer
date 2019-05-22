@@ -137,7 +137,7 @@ public class Executioner extends Logger {
 			case UNMUTE:
 				break;
 			case WHITELIST:
-				whitelist(subject, operator);
+				whitelist(subject, operator, accessDenied);
 				break;
 			}
 
@@ -147,18 +147,26 @@ public class Executioner extends Logger {
 		}
 
 		if (exe.equals(Exe.WHITELIST)) {
-			whitelist(subject, operator);
+			whitelist(subject, operator, accessDenied);
 		}
 
 		return false;
 	}
 
-	private void whitelist(User subject, User operator) {
+	private void whitelist(User subject, User operator, Message denyMsg) {
 		if (operator.hasPermission("slashplayer.whitelist")) {
 			if (plugin.server.hasWhitelist()) {
-
+				subject.offlinePlayer().setWhitelisted(!plugin.server.getWhitelistedPlayers().contains(subject.offlinePlayer()));
 			}
+			return;
 		}
+
+		if (denyMsg != null) {
+			denyMsg.send(operator, null);
+			return;
+		}
+
+		new Message("NoPermission").send(operator, null);
 	}
 
 	private void gamemode(User subject, User operator, String mode) {

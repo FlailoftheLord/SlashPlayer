@@ -129,7 +129,7 @@ public class User extends UserData {
 	}
 
 	public boolean isOnline() {
-		return player().isOnline();
+		return offlinePlayer().isOnline();
 	}
 
 	public String onlineStatus() {

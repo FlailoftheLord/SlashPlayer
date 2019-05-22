@@ -1,7 +1,7 @@
 #-----------------------------------------------------------------
 #==================================================================#
 #                                                                  #
-#                 Plugin by FlailoftheLord.                        #
+#               SlashPlayer by FlailoftheLord.                     #
 #         -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-                  #
 #       For questions please join my discord server:               #
 #                https://discord.gg/wuxW5PS                        #
@@ -21,9 +21,6 @@
 
 # Wether players of the same ranking can execute on each other.
 EqualsCanExecute: true
-
-# Kick the player if they've been un-whitelisted?
-KickOnUnWhitelist: true
 
 # Fill empty space in GUI's?
 # You can set the filler item type in the 'GuiConfig.yml' file.

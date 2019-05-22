@@ -1,61 +1,28 @@
 package me.flail.slashplayer.tools;
 
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataType;
 
 import me.flail.slashplayer.SlashPlayer;
 
-public class BaseUtilities {
+public class BaseUtilities extends LegacyUtils {
 	protected SlashPlayer plugin = SlashPlayer.getPlugin(SlashPlayer.class);
 
 	protected ItemStack addTag(ItemStack item, String key, String tag) {
-		ItemMeta meta = item.getItemMeta();
-		NamespacedKey nkey = new NamespacedKey(plugin, "SlashPlayer-" + key);
-
-		PersistentDataType<String, String> data = PersistentDataType.STRING;
-
-		meta.getPersistentDataContainer().set(nkey, data, tag);
-
-		item.setItemMeta(meta);
-		return item;
+		return addLegacyTag(item, key, tag);
 	}
 
 	protected ItemStack removeTag(ItemStack item, String key, String tag) {
-		ItemMeta meta = item.getItemMeta();
-		NamespacedKey nkey = new NamespacedKey(plugin, "SlashPlayer-" + key);
-
-		meta.getPersistentDataContainer().remove(nkey);
-
-		item.setItemMeta(meta);
-		return item;
+		return removeLegacyTag(item, key, tag);
 	}
 
 	protected String getTag(ItemStack item, String key) {
-		ItemMeta meta = item.getItemMeta();
-		NamespacedKey nkey = new NamespacedKey(plugin, "SlashPlayer-" + key);
-
-		PersistentDataType<String, String> data = PersistentDataType.STRING;
-		if (hasTag(item, key)) {
-			return meta.getPersistentDataContainer().get(nkey, data);
-		}
-
-		return "null";
+		return getLegacyTag(item, key);
 	}
 
 	protected boolean hasTag(ItemStack item, String key) {
-		ItemMeta meta = item.getItemMeta();
-		NamespacedKey nkey = new NamespacedKey(plugin, "SlashPlayer-" + key);
-
-		PersistentDataType<String, String> data = PersistentDataType.STRING;
-
-		try {
-			return meta.getPersistentDataContainer().has(nkey, data);
-		} catch (Throwable t) {
-			return false;
-		}
+		return hasLegacyTag(item, key);
 	}
 
 	/**
