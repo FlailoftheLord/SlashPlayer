@@ -40,7 +40,8 @@ public class Gui extends Logger {
 	}
 
 	public Gui setHeader(User subject) {
-		data = data.setHeader(subject);
+		int headerSlot = data.dataFile().getNumber("HeaderSlot") - 1;
+		inv.setItem(headerSlot, subject.headerItem());
 		return this;
 	}
 
@@ -55,13 +56,14 @@ public class Gui extends Logger {
 	}
 
 	public void open(User operator, User subject) {
+		operator.player().closeInventory();
 		if (subject != null) {
 			this.setHeader(subject);
 			inv = this.updateItemPlaceholders(inv, subject.commonPlaceholders());
 		}
 
-
 		operator.player().openInventory(inv);
+		operator.player().updateInventory();
 		plugin.openGuis.put(operator.uuid(), this);
 	}
 

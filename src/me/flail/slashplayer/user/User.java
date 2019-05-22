@@ -43,9 +43,11 @@ public class User extends UserData {
 	}
 
 	public int rank() {
-		for (int r = 100; r > -1; r--) {
-			if (hasPermission("slashplayer.rank." + r)) {
-				return r;
+		if (isOnline()) {
+			for (int r = 100; r > -1; r--) {
+				if (hasPermission("slashplayer.rank." + r)) {
+					return r;
+				}
 			}
 		}
 		return 0;
@@ -86,6 +88,15 @@ public class User extends UserData {
 		setOnline(false);
 		plugin.players.remove(this);
 		plugin.openGuis.remove(this.uuid());
+	}
+
+	/**
+	 * Closes this user's active GUI if they have one open.
+	 */
+	public void closeGui() {
+		if (isOnline()) {
+			player().closeInventory();
+		}
 	}
 
 	public String name() {

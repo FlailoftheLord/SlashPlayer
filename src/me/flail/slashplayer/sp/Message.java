@@ -14,8 +14,10 @@ public class Message extends Logger {
 	private DataFile file = plugin.messages;
 	private String prefix = chat(plugin.getConfig().getString("Prefix"));
 	private List<String> message = new ArrayList<>();
+	String key;
 
 	public Message(String key) {
+		this.key = key;
 		message.clear();
 		if (file.hasList(key)) {
 			message = file.getList(key);
@@ -36,14 +38,22 @@ public class Message extends Logger {
 	 *                      subject. Used for placeholders.
 	 */
 	public void send(User recipient, @Nullable User operator) {
-		for (String msg : message) {
-			msg = this.placeholders(msg, recipient.commonPlaceholders());
-			if (operator != null) {
-				msg = msg.replace("%operator%", operator.name());
-			}
 
-			recipient.player().sendMessage(chat(msg));
+		if (!message.isEmpty() && (message.get(0) != null)) {
+			for (String msg : message) {
+				msg = this.placeholders(msg, recipient.commonPlaceholders());
+				if (operator != null) {
+					msg = msg.replace("%operator%", operator.name());
+				}
+
+				recipient.player().sendMessage(chat(msg));
+			}
+			return;
 		}
+
+		console("&cThe following message doesn't exist in your &7Messages.yml &cfile.  &f" + key);
+		console("&cPlease be sure to add it to your Messages.yml file!");
+		console("&cYou can use this format:  &7" + key + ": \"put whatever text you want here inside these quotes\"");
 	}
 
 	public DataFile getFile() {
@@ -67,15 +77,18 @@ public class Message extends Logger {
 	}
 
 	public Message placeholders(Map<String, String> placeholders) {
-		List<String> newMsg = new ArrayList<>();
-		for (String line : message) {
-			line = this.placeholders(line, placeholders);
-			newMsg.add(line);
+		if (!message.isEmpty() && (message.get(0) != null)) {
+
+			List<String> newMsg = new ArrayList<>();
+			for (String line : message) {
+				line = this.placeholders(line, placeholders);
+				newMsg.add(line);
+			}
+
+			message.clear();
+			message.addAll(newMsg);
+
 		}
-
-		message.clear();
-		message.addAll(newMsg);
-
 		return this;
 	}
 

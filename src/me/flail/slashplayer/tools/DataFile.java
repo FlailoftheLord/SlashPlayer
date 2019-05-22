@@ -91,7 +91,7 @@ public class DataFile extends Logger {
 	 * @return null if the value couldn't be found.
 	 */
 	public String getValue(String key) {
-		return getObj(key) != null ? getObj(key).toString() : "null";
+		return getObj(key) != null ? getObj(key).toString() : null;
 	}
 
 	public int getNumber(String key) {

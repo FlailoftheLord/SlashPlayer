@@ -42,7 +42,7 @@ public class LegacyUtils {
 	}
 
 	protected boolean hasLegacyTag(ItemStack item, String key) {
-		if (item.hasItemMeta()) {
+		if ((item != null) && item.hasItemMeta()) {
 
 			ItemMeta meta = item.getItemMeta();
 			NamespacedKey nkey = new NamespacedKey(plugin, "SlashPlayer-" + key);

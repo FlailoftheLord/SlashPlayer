@@ -16,6 +16,7 @@ public class Executioner extends Logger {
 	private User subject;
 	private User operator;
 	private Exe executable;
+	private String logMsg;
 
 	/**
 	 * @param subject
@@ -40,7 +41,7 @@ public class Executioner extends Logger {
 	}
 
 	private boolean execute(Exe exe, User subject, User operator) {
-		String logMsg = " User: " + operator.name() + " ran executable: " + exe.toString() + " on " + subject.name();
+		logMsg = " User: " + operator.name() + " ran executable: " + exe.toString() + " on " + subject.name();
 
 		Map<String, String> exePlaceholders = new HashMap<>();
 		exePlaceholders.put("%executable%", exe.toString());
@@ -57,8 +58,12 @@ public class Executioner extends Logger {
 					if (plugin.config.getBoolean("Broadcast.Ban")) {
 
 					}
+					logAction("a");
+					break;
 				}
 
+				logAction("d");
+				accessDenied.send(operator, null);
 				break;
 			case BURN:
 				break;
@@ -71,9 +76,12 @@ public class Executioner extends Logger {
 					subject.feed(22);
 					new Message("Fed").send(subject, operator);
 					new Message("FedPlayer").placeholders(subject.commonPlaceholders()).send(operator, null);
+
+					logAction("a");
 					break;
 				}
 
+				logAction("d");
 				accessDenied.send(operator, null);
 				break;
 			case FLY:
@@ -87,32 +95,36 @@ public class Executioner extends Logger {
 					Gui gmGui = new Gui(plugin.loadedGuis.get("GamemodeGui.yml")).setHeader(subject);
 
 					gmGui.open(operator, subject);
+					logAction("a");
 					return true;
 				}
 
+				logAction("d");
 				accessDenied.send(operator, null);
-
 				break;
 			case GAMEMODEADVENTURE:
-				this.gamemode(subject, operator, "a");
+				this.gamemode(subject, operator, "Adventure", accessDenied);
 				break;
 			case GAMEMODECREATIVE:
-				this.gamemode(subject, operator, "c");
+				this.gamemode(subject, operator, "Creative", accessDenied);
 				break;
 			case GAMEMODESPECTATOR:
-				this.gamemode(subject, operator, "spectator");
+				this.gamemode(subject, operator, "Spectator", accessDenied);
 				break;
 			case GAMEMODESURVIVAL:
-				this.gamemode(subject, operator, "s");
+				this.gamemode(subject, operator, "Survival", accessDenied);
 				break;
 			case HEAL:
 				if (operator.hasPermission("slashplayer.heal")) {
 					subject.heal(true);
 					new Message("Healed").send(subject, operator);
 					new Message("HealedPlayer").placeholders(subject.commonPlaceholders()).send(operator, null);
+
+					logAction("a");
 					break;
 				}
 
+				logAction("d");
 				accessDenied.send(operator, null);
 				break;
 			case KICK:
@@ -144,19 +156,16 @@ public class Executioner extends Logger {
 				break;
 			}
 
-			try {
-
-				this.console(logMsg);
-				this.log(logMsg);
-			} catch (IOException e) {
-			}
-
 			return true;
 		}
 
 		if (exe.equals(Exe.WHITELIST)) {
 			whitelist(subject, operator, accessDenied);
+			return true;
 		}
+
+		operator.closeGui();
+		new Message("InvalidPlayer").placeholders(subject.commonPlaceholders()).send(operator, null);
 
 		return false;
 	}
@@ -165,6 +174,7 @@ public class Executioner extends Logger {
 		if (operator.hasPermission("slashplayer.whitelist")) {
 			if (plugin.server.hasWhitelist()) {
 				subject.offlinePlayer().setWhitelisted(!plugin.server.getWhitelistedPlayers().contains(subject.offlinePlayer()));
+				logAction("a");
 			}
 			return;
 		}
@@ -174,51 +184,38 @@ public class Executioner extends Logger {
 			return;
 		}
 
+		logAction("d");
 		new Message("NoPermission").send(operator, null);
 	}
 
-	private void gamemode(User subject, User operator, String mode) {
-		switch (mode) {
+	private void gamemode(User subject, User operator, String mode, Message denyMsg) {
+		if (operator.hasPermission("slashplayer.gamemode." + mode.toLowerCase())) {
+			subject.player().setGameMode(GameMode.valueOf(mode.toUpperCase()));
+			new Message("GamemodeChanged." + mode).send(subject, operator);
+			new Message("PlayerGamemodeChanged").placeholders(subject.commonPlaceholders()).send(operator, null);
+
+			logAction("a");
+			return;
+		}
+
+		logAction("d");
+		denyMsg.send(operator, null);
+	}
+
+	private void logAction(String result) {
+		switch (result) {
 		case "a":
-			if (operator.hasPermission("slashplayer.gamemode.adventure")) {
-				subject.player().setGameMode(GameMode.ADVENTURE);
-				new Message("GamemodeChanged.Adventure").send(subject, operator);
-				new Message("PlayerGamemodeChanged").placeholders(subject.commonPlaceholders()).send(operator, null);
-				break;
-			}
-
-			new Message("GamemodeAccessDenied").placeholders(subject.commonPlaceholders()).send(operator, null);
+			logMsg = logMsg.concat(" (ALLOWED)");
 			break;
-		case "c":
-			if (operator.hasPermission("slashplayer.gamemode.creative")) {
-				subject.player().setGameMode(GameMode.CREATIVE);
-				new Message("GamemodeChanged.Creative").send(subject, operator);
-				new Message("PlayerGamemodeChanged").placeholders(subject.commonPlaceholders()).send(operator, null);
-				break;
-			}
+		case "d":
+			logMsg = logMsg.concat(" (DENIED)");
+		}
 
-			new Message("GamemodeAccessDenied").placeholders(subject.commonPlaceholders()).send(operator, null);
-			break;
-		case "s":
-			if (operator.hasPermission("slashplayer.gamemode.survival")) {
-				subject.player().setGameMode(GameMode.SURVIVAL);
-				new Message("GamemodeChanged.Survival").send(subject, operator);
-				new Message("PlayerGamemodeChanged").placeholders(subject.commonPlaceholders()).send(operator, null);
-				break;
-			}
+		try {
 
-			new Message("GamemodeAccessDenied").placeholders(subject.commonPlaceholders()).send(operator, null);
-			break;
-		case "spectator":
-			if (operator.hasPermission("slashplayer.gamemode.spectator")) {
-				subject.player().setGameMode(GameMode.SPECTATOR);
-				new Message("GamemodeChanged.Spectator").send(subject, operator);
-				new Message("PlayerGamemodeChanged").placeholders(subject.commonPlaceholders()).send(operator, null);
-				break;
-			}
-
-			new Message("GamemodeAccessDenied").placeholders(subject.commonPlaceholders()).send(operator, null);
-			break;
+			this.console(logMsg);
+			this.log(logMsg);
+		} catch (IOException e) {
 		}
 	}
 

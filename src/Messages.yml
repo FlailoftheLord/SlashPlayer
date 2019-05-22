@@ -89,7 +89,7 @@ Summoned: "%prefix% &ayou have been summoned by staff."
 
 # = = = # Heal Messages # = = = #
 Healed: "%prefix% &ayou were healed by staff."
-HealPlayer: "%prefix% &asuccessfully healed %player%!"
+HealedPlayer: "%prefix% &asuccessfully healed %player%!"
 
 # = = = # Feed Messages # = = = #
 Fed: "%prefix% &ayou were stuffed full of food by %operator%"

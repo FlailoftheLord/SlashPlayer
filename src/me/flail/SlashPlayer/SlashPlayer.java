@@ -58,6 +58,13 @@ public class SlashPlayer extends JavaPlugin {
 	public void onDisable() {
 		server.getScheduler().getPendingTasks().clear();
 		server.getScheduler().cancelTasks(this);
+
+		openGuis.clear();
+		loadedGuis.clear();
+		for (User user : players) {
+			user.player().closeInventory();
+		}
+
 	}
 
 	public long reload() {
