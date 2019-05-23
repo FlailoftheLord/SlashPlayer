@@ -6,6 +6,8 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
+import org.bukkit.Bukkit;
+
 import me.flail.slashplayer.tools.DataFile;
 import me.flail.slashplayer.tools.Logger;
 import me.flail.slashplayer.user.User;
@@ -54,6 +56,21 @@ public class Message extends Logger {
 		console("&cThe following message doesn't exist in your &7Messages.yml &cfile.  &f" + key);
 		console("&cPlease be sure to add it to your Messages.yml file!");
 		console("&cYou can use this format:  &7" + key + ": \"put whatever text you want here inside these quotes\"");
+	}
+
+	public void broadcast(User subject, User operator) {
+		if (!message.isEmpty()) {
+			for (String line : message) {
+				if (subject != null) {
+					line = this.placeholders(line, subject.commonPlaceholders());
+				}
+				if (operator != null) {
+					line = line.replace("%operator%", operator.name());
+				}
+
+				Bukkit.broadcast(chat(line), "slashplayer.notify");
+			}
+		}
 	}
 
 	public DataFile getFile() {

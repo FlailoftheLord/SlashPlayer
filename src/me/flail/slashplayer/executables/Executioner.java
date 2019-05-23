@@ -54,15 +54,21 @@ public class Executioner extends Logger {
 			case BACKBUTTON:
 				if (plugin.openGuis.get(operator.uuid()).data().dataFile().name().equals("GamemodeGui.yml")) {
 					new GuiControl().openModerationGui(operator, subject);
+					break;
 				}
 
+				new GuiControl().playerListGui(operator);
 				break;
 			case BAN:
 				if (operator.hasPermission("slashplayer.ban")) {
 					subject.ban(plugin.config.getLong("BanTime"));
-					if (plugin.config.getBoolean("Broadcast.Ban")) {
 
+					if (plugin.config.getBoolean("Broadcast.Ban")) {
+						new Message("BanBroadcast").broadcast(subject, operator);
+					} else {
+						new Message("BanPlayer").placeholders(subject.commonPlaceholders()).send(operator, null);
 					}
+
 					logAction("a");
 					break;
 				}

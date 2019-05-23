@@ -57,6 +57,10 @@ permissions:
     description: click a player to open their GUI menu
     default: op
     
+  slashplayer.notify:
+    description: get notified of actions via broadcasts.
+    default: true
+    
   slashplayer.rank:
     description: base for rank settings
     default: true

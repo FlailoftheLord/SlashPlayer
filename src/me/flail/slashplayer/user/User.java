@@ -199,6 +199,31 @@ public class User extends UserData {
 		player().setFoodLevel(level);
 	}
 
+	public void burn(int time) {
+
+	}
+
+	public void clearInventory(boolean backup) {
+		DataFile invData = new DataFile("InventoryData.yml");
+		List<ItemStack> storedList = new ArrayList<>();
+
+		ItemStack[] invContents = player().getInventory().getContents();
+		for (ItemStack item : invContents) {
+			if (item != null) {
+				storedList.add(item);
+			}
+		}
+
+		if (!storedList.isEmpty()) {
+			invData.setValue(me().id() + ".InventoryBackup." + Time.currentDate().toString(), storedList);
+		}
+
+	}
+
+	public void restoreInv() {
+
+	}
+
 	public ItemStack getSkull() {
 		ItemStack item = new ItemStack(Material.PLAYER_HEAD);
 		SkullMeta meta = (SkullMeta) item.getItemMeta();

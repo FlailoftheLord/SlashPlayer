@@ -44,20 +44,20 @@ RankCheck: "%prefix% &7Your rank is &a%rank%"
 RankCheckOther: "%prefix% &7%player%'s rank is 7a%rank%"
 
 # = = = # Ban Messages # = = = #
-BanPlayer: "%prefix% &abanned player for %ban-duration% minutes."
+BanPlayer: "%prefix% &abanned player for %ban-duration% seconds."
 UnbanPrompt: "&atype &c/%command% unban %player% &ato unban them :,>"
 UnbanPlayer: "%prefix% &aunbanned %player%. You may need to wait at least a minute for the bans to update."
 PlayerNotBanned: "%prefix% &cthat player is not banned!"
-Banned: "%prefix% &cYou've been banned for %ban-duration% minutes. If you believe this is wrong, or want to make an appeal, please contact staff at %website%"
-BanBroadcast: "%prefix% &c%player% has been banned by &e%operator% &cfor %ban-duration% minutes"
+Banned: "%prefix% &cYou've been banned for %ban-duration% seconds. If you believe this is wrong, or want to make an appeal, please contact staff at %website%"
+BanBroadcast: "%prefix% &c%player% has been banned by &e%operator% &cfor %ban-duration% seconds"
 
 # = = = # Mute Messages # = = = #
-MutePlayer: "%prefix% &amuted %player% for %mute-duration% minutes."
+MutePlayer: "%prefix% &amuted %player% for %mute-duration% seconds."
 UnmutePlayer: "%prefix% &aunmuted %player%."
 PlayerNotMuted: "%prefix% &cplayer is not muted!"
-Muted: "%prefix% &cyou may not speak for another %mute-duration% minutes, you've been muted."
+Muted: "%prefix% &cyou may not speak for another %mute-duration% seconds, you've been muted."
 Unmuted: "%prefix% &ayou may now speak again, you've been unmuted!"
-MuteBroadcast: "%prefix% &c%player% has been muted for %mute-duration% minutes."
+MuteBroadcast: "%prefix% &c%player% has been muted for %mute-duration% seconds."
 
 # = = = # Freeze Messages # = = = #
 FreezePlayer: "%prefix% &bSuccessfully frozen %player%!"
