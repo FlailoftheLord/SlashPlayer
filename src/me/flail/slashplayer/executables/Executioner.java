@@ -9,6 +9,7 @@ import org.bukkit.GameMode;
 import me.flail.slashplayer.executables.Executables.Exe;
 import me.flail.slashplayer.gui.Gui;
 import me.flail.slashplayer.sp.Message;
+import me.flail.slashplayer.sp.gui.GuiControl;
 import me.flail.slashplayer.tools.Logger;
 import me.flail.slashplayer.user.User;
 
@@ -51,6 +52,10 @@ public class Executioner extends Logger {
 		if (subject.isOnline() && operator.isOnline()) {
 			switch (exe) {
 			case BACKBUTTON:
+				if (plugin.openGuis.get(operator.uuid()).data().dataFile().name().equals("GamemodeGui.yml")) {
+					new GuiControl().openModerationGui(operator, subject);
+				}
+
 				break;
 			case BAN:
 				if (operator.hasPermission("slashplayer.ban")) {

@@ -24,22 +24,6 @@ public class GuiControl extends Logger {
 	public GuiControl() {
 	}
 
-	public GuiControl playerList() {
-		return loadGui("PlayerListGui.yml");
-	}
-
-	public GuiControl playerGui() {
-		return loadGui("PlayerGui.yml");
-	}
-
-	public GuiControl reportGui() {
-		return loadGui("ReportGui.yml");
-	}
-
-	public GuiControl gamemodeGui() {
-		return loadGui("GamemodeGui.yml");
-	}
-
 	public GuiControl loadGui(String path) {
 		file = new DataFile("GuiConfigurations/" + path);
 		new GuiGenerator(file).run();
@@ -54,6 +38,32 @@ public class GuiControl extends Logger {
 			gui = gui.setTitle(guiData.title().replace("%player%", subject.name()));
 
 			gui.open(operator, subject);
+		}
+	}
+
+	public void openGamemodeGui(User operator, User subject) {
+		if (operator.player().hasPermission("slashplayer.gamemode")) {
+			GeneratedGui guiData = plugin.loadedGuis.get("GamemodeGui.yml");
+			Gui gui = new Gui(guiData);
+			gui = gui.setTitle(guiData.title().replace("%player%", subject.name()));
+
+			gui.open(operator, subject);
+		}
+	}
+
+	public void playerListGui(User operator) {
+		if (operator.hasPermission("slashplayer.command")) {
+			GeneratedGui guiData = plugin.loadedGuis.get("PlayerListGui.yml");
+			Gui gui = new Gui(guiData);
+			gui.open(operator, null);
+		}
+	}
+
+	public void reportListGui(User operator) {
+		if (operator.hasPermission("slashplayer.command")) {
+			GeneratedGui guiData = plugin.loadedGuis.get("ReportGui.yml");
+			Gui gui = new Gui(guiData);
+			gui.open(operator, null);
 		}
 	}
 
