@@ -6,6 +6,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryType.SlotType;
 
 import me.flail.slashplayer.SlashPlayer;
 import me.flail.slashplayer.gui.Gui;
@@ -26,6 +27,12 @@ public class GuiListener extends Logger implements Listener {
 				User user = new User(player.getUniqueId());
 				if (plugin.openGuis.containsKey(user.uuid())) {
 					event.setCancelled(true);
+
+					if (event.getSlotType().equals(SlotType.OUTSIDE)) {
+						user.closeGui();
+						return;
+					}
+
 					Gui gui = plugin.openGuis.get(user.uuid());
 
 					new GuiControl().processClick(user, gui, event.getCurrentItem());

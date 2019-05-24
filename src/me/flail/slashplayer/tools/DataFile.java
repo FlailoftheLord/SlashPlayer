@@ -95,7 +95,7 @@ public class DataFile extends Logger {
 	}
 
 	public int getNumber(String key) {
-		return getValue(key) != "null" ? Integer.parseInt(getValue(key).replaceAll("[a-zA-Z]", "")) : -1;
+		return getValue(key) != null ? Integer.parseInt(getValue(key).replaceAll("[a-zA-Z]", "")) : -69;
 	}
 
 	/**

@@ -7,7 +7,6 @@ import java.util.Map;
 import org.bukkit.GameMode;
 
 import me.flail.slashplayer.executables.Executables.Exe;
-import me.flail.slashplayer.gui.Gui;
 import me.flail.slashplayer.sp.Message;
 import me.flail.slashplayer.sp.gui.GuiControl;
 import me.flail.slashplayer.tools.Logger;
@@ -100,12 +99,12 @@ public class Executioner extends Logger {
 			case FREEZE:
 				break;
 			case FRIEND:
+				subject.spawnNewFriend();
+
 				break;
 			case GAMEMODE:
 				if (operator.hasPermission("slashplayer.gamemode")) {
-					Gui gmGui = new Gui(plugin.loadedGuis.get("GamemodeGui.yml")).setHeader(subject);
-
-					gmGui.open(operator, subject);
+					new GuiControl().openGamemodeGui(operator, subject);
 					logAction("a");
 					return true;
 				}
@@ -204,6 +203,8 @@ public class Executioner extends Logger {
 			subject.player().setGameMode(GameMode.valueOf(mode.toUpperCase()));
 			new Message("GamemodeChanged." + mode).send(subject, operator);
 			new Message("PlayerGamemodeChanged").placeholders(subject.commonPlaceholders()).send(operator, null);
+
+			new GuiControl().openModerationGui(operator, subject);
 
 			logAction("a");
 			return;

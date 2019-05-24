@@ -5,15 +5,23 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeInstance;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.metadata.FixedMetadataValue;
 
 import me.flail.slashplayer.sp.Message;
 import me.flail.slashplayer.tools.DataFile;
@@ -148,7 +156,7 @@ public class User extends UserData {
 	}
 
 	protected void setOnline(boolean status) {
-		dataFile().setValue("Online", Boolean.valueOf(status));
+		dataFile().setValue("Online", status);
 	}
 
 	public void kick(KickReason reason) {
@@ -171,7 +179,7 @@ public class User extends UserData {
 
 	public boolean ban(long duration) {
 		Instant instant = Time.currentInstant();
-		dataFile().setValue("Banned", Boolean.valueOf(true));
+		dataFile().setValue("Banned", true);
 		dataFile().setValue("BanDuration", duration + "");
 		dataFile().setValue("UnbanTime", Time.finalBan(instant, duration));
 		if (isOnline()) {
@@ -276,6 +284,47 @@ public class User extends UserData {
 		}
 
 		return placeholders;
+	}
+
+	public boolean spawnNewFriend() {
+		if (isOnline()) {
+			List<EntityType> entities = this.validMobs("both");
+			int rInt = new Random().nextInt(entities.size());
+
+			Location location = player().getLocation();
+			Entity frend = location.getWorld().spawnEntity(location, entities.get(rInt));
+			if (frend instanceof LivingEntity) {
+				LivingEntity liveFrend = (LivingEntity) frend;
+
+				liveFrend.setAI(true);
+				liveFrend.setCustomName(chat("&cYour Friend."));
+				liveFrend.setCustomNameVisible(true);
+				liveFrend.setRemoveWhenFarAway(false);
+				liveFrend.setCanPickupItems(false);
+				liveFrend.setCollidable(false);
+
+				liveFrend.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(1);
+				liveFrend.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(0);
+				liveFrend.getAttribute(Attribute.GENERIC_ARMOR).setBaseValue(0);
+
+
+				AttributeInstance atkDmg = liveFrend.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE);
+				if (atkDmg != null) {
+					liveFrend.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE).setBaseValue(0);
+				}
+				AttributeInstance flySpd = liveFrend.getAttribute(Attribute.GENERIC_FLYING_SPEED);
+				if (flySpd != null) {
+					liveFrend.getAttribute(Attribute.GENERIC_FLYING_SPEED).setBaseValue(0);
+				}
+
+				liveFrend.setMetadata("SlashPlayerFrend",
+						new FixedMetadataValue(plugin, liveFrend.getType().toString().toLowerCase()));
+
+			}
+
+		}
+
+		return false;
 	}
 
 }

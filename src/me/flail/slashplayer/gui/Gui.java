@@ -56,15 +56,17 @@ public class Gui extends Logger {
 	}
 
 	public void open(User operator, User subject) {
-		operator.player().closeInventory();
 		if (subject != null) {
 			this.setHeader(subject);
 			inv = this.updateItemPlaceholders(inv, subject.commonPlaceholders());
 		}
 
-		operator.player().openInventory(inv);
-		operator.player().updateInventory();
-		plugin.openGuis.put(operator.uuid(), this);
+		plugin.server.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+			operator.player().openInventory(inv);
+			plugin.openGuis.put(operator.uuid(), this);
+		}, 2L);
+
+
 	}
 
 }

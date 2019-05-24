@@ -91,7 +91,7 @@ public class GuiControl extends Logger {
 				boolean closeAfterClick = Boolean.valueOf(getTag(clickedItem, "close-after-click")).booleanValue();
 
 				if (closeAfterClick) {
-					operator.player().closeInventory();
+					operator.closeGui();
 				}
 			}
 

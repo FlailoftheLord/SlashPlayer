@@ -21,7 +21,8 @@ public class CommonUtilities extends BaseUtilities {
 
 	protected String chat(String message) {
 		message = message.toString();
-		message = message.replace("%prefix%", plugin.config.get("Prefix", "").toString());
+		message = message.replace("%prefix%",
+				plugin.config.get("Prefix", "").toString()).replace("%website%", plugin.config.get("Website", "").toString());
 
 		return ChatColor.translateAlternateColorCodes('&', message);
 	}

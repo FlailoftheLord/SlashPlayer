@@ -1,10 +1,15 @@
 package me.flail.slashplayer.listeners;
 
+import java.util.List;
+
 import org.bukkit.Material;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
@@ -15,9 +20,10 @@ import org.bukkit.inventory.ItemStack;
 
 import me.flail.slashplayer.SlashPlayer;
 import me.flail.slashplayer.sp.gui.GuiControl;
+import me.flail.slashplayer.tools.Logger;
 import me.flail.slashplayer.user.User;
 
-public class PlayerListener implements Listener {
+public class PlayerListener extends Logger implements Listener {
 	private SlashPlayer plugin = SlashPlayer.getPlugin(SlashPlayer.class);
 
 	@EventHandler(priority = EventPriority.HIGHEST)
@@ -66,5 +72,39 @@ public class PlayerListener implements Listener {
 		}
 
 	}
+
+	@EventHandler
+	public void playerDamage(EntityDamageByEntityEvent event) {
+		Entity damaged = event.getEntity();
+		Entity damager = event.getDamager();
+
+		if (damaged instanceof Player) {
+			int range = plugin.config.getInt("FrendProtectionRange", 3);
+
+			if ((damager instanceof LivingEntity) && damager.hasMetadata("SlashPlayerFrend")) {
+				event.setCancelled(true);
+				return;
+			}
+
+			if (range > 0) {
+				List<Entity> nearby = damaged.getNearbyEntities(range, range, range);
+				if (!nearby.isEmpty() && (nearby.get(0) != null)) {
+					for (Entity e : nearby) {
+						if ((e instanceof LivingEntity) && e.hasMetadata("SlashPlayerFrend")) {
+							event.setCancelled(true);
+
+							((LivingEntity) damager).setHealth(0);
+							return;
+						}
+
+					}
+
+				}
+			}
+
+		}
+
+	}
+
 
 }
