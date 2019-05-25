@@ -63,7 +63,9 @@ public class SlashPlayer extends JavaPlugin {
 		loadedGuis.clear();
 		if (!players.isEmpty()) {
 			for (User user : players) {
-				user.player().closeInventory();
+				if (user.isOnline()) {
+					user.player().closeInventory();
+				}
 			}
 		}
 

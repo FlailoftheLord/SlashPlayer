@@ -22,7 +22,7 @@ public class DataFile extends Logger {
 			if (!file.exists()) {
 
 				try {
-					plugin.saveResource(path, true);
+					plugin.saveResource(path, false);
 				} catch (Throwable t) {
 					file.createNewFile();
 				}
@@ -102,7 +102,7 @@ public class DataFile extends Logger {
 	 * @return false if value wasn't found.
 	 */
 	public boolean getBoolean(String key) {
-		return config.getBoolean(key);
+		return hasValue(key) ? Boolean.valueOf(getObj(key).toString().replaceAll("[^truefalse]", "")).booleanValue() : false;
 	}
 
 	public List<String> getList(String key) {

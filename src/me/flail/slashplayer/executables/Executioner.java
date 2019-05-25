@@ -60,7 +60,9 @@ public class Executioner extends Logger {
 				break;
 			case BAN:
 				if (operator.hasPermission("slashplayer.ban")) {
-					subject.ban(plugin.config.getLong("BanTime"));
+					if (subject.ban(plugin.config.getLong("BanTime"))) {
+						console("was properly banned");
+					}
 
 					if (plugin.config.getBoolean("Broadcast.Ban")) {
 						new Message("BanBroadcast").broadcast(subject, operator);
@@ -156,6 +158,9 @@ public class Executioner extends Logger {
 			case TOGGLEFLY:
 				break;
 			case UNBAN:
+				subject.unban();
+
+				new Message("UnbanPlayer").placeholders(subject.commonPlaceholders()).send(operator, null);
 				break;
 			case UNFREEZE:
 				break;

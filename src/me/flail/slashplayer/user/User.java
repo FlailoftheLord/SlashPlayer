@@ -156,37 +156,48 @@ public class User extends UserData {
 	}
 
 	protected void setOnline(boolean status) {
-		dataFile().setValue("Online", status);
+		dataFile().setValue("Online", Boolean.valueOf(status));
 	}
 
 	public void kick(KickReason reason) {
-		setOnline(false);
 		switch (reason) {
 		case BANNED:
-			player().kickPlayer(this.getBanMessage().toSingleString());
+			if (this.getBanMessage() != null) {
+				player().kickPlayer(this.getBanMessage().toSingleString());
+				break;
+			}
+			console("&c" + name() + " is not actually banned. And thusly, cannot be kicked for being banned.");
 			break;
 		case MUTED:
 			player().kickPlayer(new Message("Muted").stringValue());
 			break;
 		case WARNING:
-
-			break;
-		case CUSTOM:
-
+			;
+		default:
+			player().kickPlayer(new Message("DefaultKickReason").stringValue().replace("%player%", name()));
 			break;
 		}
+
+		this.logout();
 	}
 
 	public boolean ban(long duration) {
 		Instant instant = Time.currentInstant();
-		dataFile().setValue("Banned", true);
+
 		dataFile().setValue("BanDuration", duration + "");
-		dataFile().setValue("UnbanTime", Time.finalBan(instant, duration));
+		dataFile().setValue("UnbanTime", Time.finalBan(instant, duration).toString());
+		dataFile().setValue("Banned", "true");
 		if (isOnline()) {
 			kick(KickReason.BANNED);
 		}
 
 		return this.isBanned();
+	}
+
+	public void unban() {
+		dataFile().setValue("BanDuration", null);
+		dataFile().setValue("UnbanTime", null);
+		dataFile().setValue("Banned", "false");
 	}
 
 	public void ouch() {
@@ -226,6 +237,7 @@ public class User extends UserData {
 			invData.setValue(me().id() + ".InventoryBackup." + Time.currentDate().toString(), storedList);
 		}
 
+		player().getInventory().clear();
 	}
 
 	public void restoreInv() {

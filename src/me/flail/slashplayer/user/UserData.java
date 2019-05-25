@@ -32,12 +32,12 @@ public class UserData extends Logger {
 		Map<String, Object> values = new HashMap<>();
 		values.put("UUID", user.uuid().toString());
 		values.put("Name", new String[] {user.name()});
-		values.put("Online", Boolean.valueOf(true));
+		values.put("Online", "false");
 		values.put("IP", new String[] {user.ip()});
 		values.put("Gamemode", user.gamemode());
-		values.put("Frozen", Boolean.valueOf(false));
-		values.put("Muted", Boolean.valueOf(false));
-		values.put("Banned", Boolean.valueOf(false));
+		values.put("Frozen", "false");
+		values.put("Muted", "false");
+		values.put("Banned", "false");
 		/************* YOINK, tyvm! ******************/
 		for (String key : values.keySet()) {
 			if (!file.hasValue(key)) {
@@ -86,9 +86,12 @@ public class UserData extends Logger {
 	}
 
 	public String banExpiry() {
-		Instant instant = (Instant) getDataFile().getObj("UnbanTime");
-		if (instant != null) {
-			return new SimpleDateFormat("MM/dd/yyyy 'at' HH:mm.ss").format(Date.from(instant));
+		if (getDataFile().hasValue("UnbanTime")) {
+			Instant instant = Instant.parse(getDataFile().getObj("UnbanTime").toString());
+
+			if (instant != null) {
+				return new SimpleDateFormat("MM/dd/yyyy 'at' HH:mm.ss").format(Date.from(instant));
+			}
 		}
 		return "";
 	}
@@ -104,6 +107,7 @@ public class UserData extends Logger {
 		if (file.getBoolean("Banned")) {
 			Map<String, String> placeholders = new HashMap<>();
 			placeholders.put("%ban-duration%", banDuration() + "");
+			placeholders.put("%unban-time%", banExpiry());
 
 			Message banMsg = new Message("Banned");
 			return banMsg.placeholders(placeholders);

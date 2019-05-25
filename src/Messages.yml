@@ -14,8 +14,8 @@
 # %player% the subject of the command
 # %operator% the player doing the action
 # %reporter% the player typing the /report command 
-# %ban-duration% the ban time in minutes.
-# %mute-duration% the mute time in minutes.
+# %ban-duration% the ban time in seconds. Use %unban-time% for a neatly formatted unban time.
+# %mute-duration% the mute time in seconds.
 # %reason% the reason for the player report.
 # %prefix% the plugin prefix, you can set this in the config.yml file.
 # %command% the name of the command sent.
@@ -48,7 +48,7 @@ BanPlayer: "%prefix% &abanned player for %ban-duration% seconds."
 UnbanPrompt: "&atype &c/%command% unban %player% &ato unban them :,>"
 UnbanPlayer: "%prefix% &aunbanned %player%. You may need to wait at least a minute for the bans to update."
 PlayerNotBanned: "%prefix% &cthat player is not banned!"
-Banned: "%prefix% &cYou've been banned for %ban-duration% seconds. If you believe this is wrong, or want to make an appeal, please contact staff at %website%"
+Banned: "%prefix% &cYou've been banned until %unban-time%. If you believe this is wrong, or want to make an appeal, please contact staff at %website%"
 BanBroadcast: "%prefix% &c%player% has been banned by &e%operator% &cfor %ban-duration% seconds"
 
 # = = = # Mute Messages # = = = #
