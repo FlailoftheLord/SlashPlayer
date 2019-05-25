@@ -23,7 +23,7 @@
 # %gamemode% the current gamemode of %player%
 
 # = = = # General Messages # = = = #
-ReloadMesage: "%prefix% &aSuccessfully reloaded plugin files!"
+ReloadMessage: "%prefix% &aSuccessfully reloaded plugin files!"
 AccessDenied: "%prefix% &cYou can't use &7%executable%"
 NoPermission: "%prefix% &cYou don't have permission to use that!" 
 CommandUsage: "%prefix% &cProper usage: &7/%command% [player-name:report:rank:reload]"

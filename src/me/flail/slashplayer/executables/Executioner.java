@@ -169,6 +169,17 @@ public class Executioner extends Logger {
 			case MUTE:
 				break;
 			case OPENINVENTORY:
+				if (operator.hasPermission("slashplayer.openinventory")) {
+					if (operator.isOnline() && subject.isOnline()) {
+						operator.player().openInventory(subject.player().getInventory());
+
+						logAction("a");
+						break;
+					}
+				}
+
+				logAction("d");
+				accessDenied.send(operator, null);
 				break;
 			case REPORT:
 				break;

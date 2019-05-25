@@ -48,14 +48,16 @@ public class Message extends Logger {
 					msg = msg.replace("%operator%", operator.name());
 				}
 
-				recipient.player().sendMessage(chat(msg));
+				if (recipient.isOnline()) {
+					recipient.player().sendMessage(chat(msg));
+				}
 			}
 			return;
 		}
 
 		console("&cThe following message doesn't exist in your &7Messages.yml &cfile.  &f" + key);
 		console("&cPlease be sure to add it to your Messages.yml file!");
-		console("&cYou can use this format:  &7" + key + ": \"put whatever text you want here inside these quotes\"");
+		console("&cAdd this:  &7" + key + ": \"message goes inside these quotes\"");
 	}
 
 	public void broadcast(User subject, User operator) {
@@ -78,11 +80,11 @@ public class Message extends Logger {
 	}
 
 	public String stringValue() {
-		return message.get(0).replace("%prefix%", msgPrefix());
+		return chat(message.get(0));
 	}
 
 	public String msgPrefix() {
-		return prefix;
+		return new String(prefix);
 	}
 
 	public String toSingleString() {

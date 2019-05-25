@@ -54,7 +54,7 @@ public class SlashPlayerCommand extends Logger {
 				case "reload":
 					if (operator.hasPermission("slashplayer.op")) {
 						plugin.reload();
-						new Message("Reloaded").send(operator, null);
+						new Message("ReloadMessage").send(operator, null);
 						break;
 					}
 					new Message("NoPermission").send(operator, null);
