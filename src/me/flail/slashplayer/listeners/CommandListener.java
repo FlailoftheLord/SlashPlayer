@@ -42,8 +42,6 @@ public class CommandListener extends Logger implements Listener {
 			}
 		}
 
-		console(message);
-
 		event.setMessage(message);
 	}
 

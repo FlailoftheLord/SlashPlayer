@@ -27,7 +27,7 @@ ReloadMessage: "%prefix% &aSuccessfully reloaded plugin files!"
 AccessDenied: "%prefix% &cYou can't use &7%executable%"
 NoPermission: "%prefix% &cYou don't have permission to use that!" 
 CommandUsage: "%prefix% &cProper usage: &7/%command% [player-name:report:rank:reload]"
-InvalidPlayer: "%prefix% &4Invalid player! &4%arg% is not a valid player or has never joined this server."
+InvalidPlayer: "%prefix% &4Invalid player! &7%player% &4is not a valid player or has never joined this server."
 
 # = = = # Help Messages # = = = #
 HelpMessage:

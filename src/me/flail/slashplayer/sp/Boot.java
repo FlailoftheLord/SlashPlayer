@@ -59,6 +59,8 @@ public class Boot extends Logger {
 			plugin.server.getScheduler().getPendingTasks().clear();
 			plugin.server.getScheduler().cancelTasks(plugin);
 
+			plugin.players.clear();
+
 			for (User user : plugin.players) {
 				user.player().closeInventory();
 			}

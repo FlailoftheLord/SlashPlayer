@@ -46,6 +46,7 @@ public class Executioner extends Logger {
 
 		Map<String, String> exePlaceholders = new HashMap<>();
 		exePlaceholders.put("%executable%", exe.toString());
+		exePlaceholders.put("%operator%", operator.name());
 
 		Message accessDenied = new Message("AccessDenied").placeholders(exePlaceholders);
 
@@ -62,7 +63,7 @@ public class Executioner extends Logger {
 			case BAN:
 				if (operator.hasPermission("slashplayer.ban")) {
 					if (subject.ban(plugin.config.getLong("BanTime"))) {
-						console("was properly banned");
+						// console("was properly banned");
 					}
 
 					if (plugin.config.getBoolean("Broadcast.Ban")) {
@@ -79,10 +80,20 @@ public class Executioner extends Logger {
 				accessDenied.send(operator, null);
 				break;
 			case BURN:
+
 				break;
 			case CLEARINVENTORY:
 				break;
 			case ENDERCHEST:
+				if (operator.hasPermission("slashplayer.enderchest")) {
+					operator.player().openInventory(subject.player().getEnderChest());
+
+					logAction("a");
+					break;
+				}
+
+				logAction("d");
+				accessDenied.send(operator, null);
 				break;
 			case FEED:
 				if (operator.hasPermission("slashplayer.feed")) {
@@ -164,18 +175,19 @@ public class Executioner extends Logger {
 				accessDenied.send(operator, null);
 				break;
 			case KILL:
+				if (operator.hasPermission("slashplayer.kill")) {
+
+				}
 
 				break;
 			case MUTE:
 				break;
 			case OPENINVENTORY:
 				if (operator.hasPermission("slashplayer.openinventory")) {
-					if (operator.isOnline() && subject.isOnline()) {
-						operator.player().openInventory(subject.player().getInventory());
+					operator.player().openInventory(subject.player().getInventory());
 
-						logAction("a");
-						break;
-					}
+					logAction("a");
+					break;
 				}
 
 				logAction("d");

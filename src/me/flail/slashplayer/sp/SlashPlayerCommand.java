@@ -21,6 +21,8 @@ public class SlashPlayerCommand extends Logger {
 	}
 
 	public boolean run() {
+		Message noPermission = new Message("NoPermission");
+
 		if (command.getName().equalsIgnoreCase("slashplayer")) {
 			if (!(sender instanceof Player)) {
 				console("&cYou must use SlashPlayer commands in-game!");
@@ -35,13 +37,19 @@ public class SlashPlayerCommand extends Logger {
 
 			}
 
+			if (!operator.hasPermission("slashplayer.command") && !operator.hasPermission("slashplayer.rank")) {
+				noPermission.send(operator, null);
+
+				return true;
+			}
+
 			switch (args.length) {
 			case 0:
 				if (operator.hasPermission("slashplayer.command")) {
 					new Gui(plugin.loadedGuis.get("PlayerListGui.yml")).open(operator, null);
 					break;
 				}
-				new Message("NoPermission").send(operator, null);
+				noPermission.send(operator, null);
 				break;
 			case 1:
 				switch (args[0].toLowerCase()) {
@@ -57,7 +65,7 @@ public class SlashPlayerCommand extends Logger {
 						new Message("ReloadMessage").send(operator, null);
 						break;
 					}
-					new Message("NoPermission").send(operator, null);
+					noPermission.send(operator, null);
 					break;
 				default:
 					plugin.userGui(operator, args);
@@ -77,7 +85,7 @@ public class SlashPlayerCommand extends Logger {
 								break;
 							}
 
-							new Message("NoPermission").send(operator, null);
+							noPermission.send(operator, null);
 							break;
 						}
 
@@ -86,15 +94,33 @@ public class SlashPlayerCommand extends Logger {
 					break;
 				case "help":
 					plugin.sendHelp(operator, command.getName());
+
 					break;
 				case "whitelist":
-					if (!plugin.server.hasWhitelist()) {
-						new Message("WhitelistNotOn").send(operator, null);
+					if (operator.hasPermission("slashplayer.whitelist")) {
+
+						if (!plugin.server.hasWhitelist()) {
+							new Message("WhitelistNotOn").send(operator, null);
+							break;
+						}
+						User offlineUser = plugin.offlinePlayer(args[1]);
+						offlineUser.offlinePlayer().setWhitelisted(true);
 						break;
 					}
-					User offlineUser = plugin.offlinePlayer(args[1]);
-					offlineUser.offlinePlayer().setWhitelisted(true);
 
+					noPermission.send(operator, null);
+					break;
+				case "unban":
+					if (operator.hasPermission("slashplayer.ban")) {
+						User offlineUser = plugin.offlinePlayer(args[1]);
+						offlineUser.unban();
+
+						new Message("UnbanPlayer").placeholders(offlineUser.commonPlaceholders()).send(operator, operator);
+						break;
+					}
+
+					noPermission.send(operator, null);
+					break;
 				}
 
 

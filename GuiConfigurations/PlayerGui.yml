@@ -140,7 +140,7 @@ Format:
     - "&7this player's inventory"
     - "&7was cleared through SlashPlayer"
     Execute: "restoreInventory"
-    CloseInventory: true
+    CloseInventory: false
     
   31:
     Item: "CHEST"
@@ -148,7 +148,7 @@ Format:
     Lore: 
     - "&7click to view this player's inventory"
     Execute: "openinventory"
-    CloseInventory: true
+    CloseInventory: false
     
   32:
     Item: "Ender_chEST"
@@ -157,7 +157,7 @@ Format:
     - "&7click to view "
     - "&7this player's enderchest."
     Execute: "enderchest"
-    CloseInventory: true
+    CloseInventory: false
    
   33:
     Item: "polar_bear_spawn_egg"

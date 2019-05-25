@@ -24,6 +24,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.metadata.FixedMetadataValue;
 
 import me.flail.slashplayer.sp.Message;
+import me.flail.slashplayer.sp.gui.GuiControl;
 import me.flail.slashplayer.tools.DataFile;
 import me.flail.slashplayer.tools.Time;
 
@@ -90,12 +91,17 @@ public class User extends UserData {
 			console("Loaded UserData for &7" + name() + "&8[" + ip() + "]" + "  &8(" + uuid() + ")");
 		}
 
+		plugin.loadedGuis.remove("PlayerListGui.yml");
+		new GuiControl().loadGui("PlayerListGui.yml");
 	}
 
 	public void logout() {
 		setOnline(false);
 		plugin.players.remove(this);
 		plugin.openGuis.remove(this.uuid());
+
+		plugin.loadedGuis.remove("PlayerListGui.yml");
+		new GuiControl().loadGui("PlayerListGui.yml");
 	}
 
 	/**
