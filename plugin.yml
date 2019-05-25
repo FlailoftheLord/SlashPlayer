@@ -13,9 +13,9 @@ softdepend: [MicroCommands]
 
 commands:
   slashplayer:
-    usage: /slashplayer [reload:report:player-name]
+    usage: /slashplayer help
     description: opens the player list menu
-    aliases: [player, sp, report, reports]
+    aliases: [player, players, sp, report, reports]
    
   ouch:
     description: ouch!
