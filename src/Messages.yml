@@ -45,7 +45,6 @@ RankCheckOther: "%prefix% &7%player%'s rank is 7a%rank%"
 
 # = = = # Ban Messages # = = = #
 BanPlayer: "%prefix% &abanned player for %ban-duration% seconds."
-UnbanPrompt: "&atype &c/%command% unban %player% &ato unban them :,>"
 UnbanPlayer: "%prefix% &aunbanned %player%. You may need to wait at least a minute for the bans to update."
 PlayerNotBanned: "%prefix% &cthat player is not banned!"
 Banned: "%prefix% &cYou've been banned until %unban-time%. If you believe this is wrong, or want to make an appeal, please contact staff at %website%"
@@ -79,7 +78,7 @@ GamemodeAccessDenied: "%prefix% &cyou're not allowed to change %player%'s gamemo
 
 # = = = # Kick Messages # = = = #
 PlayerKicked: "%prefix% &cKicked %player%"
-KickMessage: "%prefix% &cKicked by Operator."
+KickMessage: "&cKicked by Operator."
 KickBroadcast: "%prefix% &e%player% &cwas kicked by %operator%"
 
 # = = = # Teleport Messages # = = = #

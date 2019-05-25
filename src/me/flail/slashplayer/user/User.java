@@ -174,7 +174,7 @@ public class User extends UserData {
 		case WARNING:
 			;
 		default:
-			player().kickPlayer(new Message("DefaultKickReason").stringValue().replace("%player%", name()));
+			player().kickPlayer(new Message("KickMessage").stringValue().replace("%player%", name()));
 			break;
 		}
 
@@ -200,6 +200,28 @@ public class User extends UserData {
 		dataFile().setValue("Banned", "false");
 	}
 
+	public void toggleFly(User operator) {
+		if (isOnline()) {
+			if (player().getAllowFlight()) {
+				player().setFlying(false);
+				player().setAllowFlight(false);
+
+				new Message("FlyOff").send(this, operator);
+				new Message("PlayerFlyOff").placeholders(this.commonPlaceholders()).send(operator, operator);
+
+				return;
+			}
+
+			player().setAllowFlight(true);
+			player().setFlying(true);
+
+			new Message("FlyOn").send(this, operator);
+			new Message("PlayerFlyOn").placeholders(this.commonPlaceholders()).send(operator, operator);
+			return;
+		}
+
+	}
+
 	public void ouch() {
 		player().damage(0.1);
 		player().sendMessage(chat("&4&l<3"));
@@ -222,7 +244,7 @@ public class User extends UserData {
 
 	}
 
-	public void clearInventory(boolean backup) {
+	public void backupInventory() {
 		DataFile invData = new DataFile("InventoryData.yml");
 		List<ItemStack> storedList = new ArrayList<>();
 
@@ -235,6 +257,12 @@ public class User extends UserData {
 
 		if (!storedList.isEmpty()) {
 			invData.setValue(me().id() + ".InventoryBackup." + Time.currentDate().toString(), storedList);
+		}
+	}
+
+	public void clearInventory(boolean backup) {
+		if (backup) {
+			this.backupInventory();
 		}
 
 		player().getInventory().clear();

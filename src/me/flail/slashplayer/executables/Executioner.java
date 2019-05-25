@@ -11,6 +11,7 @@ import me.flail.slashplayer.sp.Message;
 import me.flail.slashplayer.sp.gui.GuiControl;
 import me.flail.slashplayer.tools.Logger;
 import me.flail.slashplayer.user.User;
+import me.flail.slashplayer.user.User.KickReason;
 
 public class Executioner extends Logger {
 	private User subject;
@@ -97,6 +98,12 @@ public class Executioner extends Logger {
 				accessDenied.send(operator, null);
 				break;
 			case FLY:
+				if (operator.hasPermission("slashplayer.fly")) {
+					subject.toggleFly(operator);
+					break;
+				}
+
+				accessDenied.send(operator, null);
 				break;
 			case FREEZE:
 				break;
@@ -140,8 +147,24 @@ public class Executioner extends Logger {
 				accessDenied.send(operator, null);
 				break;
 			case KICK:
+				if (operator.hasPermission("slashplayer.kick")) {
+					subject.kick(KickReason.CUSTOM);
+					logAction("a");
+
+					if (plugin.config.getBoolean("Broadcast.Kick")) {
+						new Message("KickBroadcast").broadcast(subject, operator);
+						break;
+					}
+
+					new Message("PlayerKicked").placeholders(subject.commonPlaceholders()).send(operator, operator);
+					break;
+				}
+
+				logAction("d");
+				accessDenied.send(operator, null);
 				break;
 			case KILL:
+
 				break;
 			case MUTE:
 				break;
@@ -156,11 +179,27 @@ public class Executioner extends Logger {
 			case TELEPORT:
 				break;
 			case TOGGLEFLY:
+				if (operator.hasPermission("slashplayer.fly")) {
+					subject.toggleFly(operator);
+
+					logAction("a");
+					break;
+				}
+
+				logAction("d");
+				accessDenied.send(operator, null);
 				break;
 			case UNBAN:
-				subject.unban();
+				if (operator.hasPermission("slashplayer.ban")) {
+					subject.unban();
+					logAction("a");
 
-				new Message("UnbanPlayer").placeholders(subject.commonPlaceholders()).send(operator, null);
+					new Message("UnbanPlayer").placeholders(subject.commonPlaceholders()).send(operator, null);
+					break;
+				}
+
+				logAction("d");
+				accessDenied.send(operator, null);
 				break;
 			case UNFREEZE:
 				break;
@@ -229,7 +268,6 @@ public class Executioner extends Logger {
 		}
 
 		try {
-
 			this.console(logMsg);
 			this.log(logMsg);
 		} catch (IOException e) {
