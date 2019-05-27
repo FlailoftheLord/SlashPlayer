@@ -22,6 +22,7 @@ public class SlashPlayerCommand extends Logger {
 
 	public boolean run() {
 		Message noPermission = new Message("NoPermission");
+		Message defaultUsage = Message.construct("%prefix% &7Use &e/slashplayer help &7for help on commands.");
 
 		if (command.getName().equalsIgnoreCase("slashplayer")) {
 			if (!(sender instanceof Player)) {
@@ -37,7 +38,8 @@ public class SlashPlayerCommand extends Logger {
 
 			}
 
-			if (!operator.hasPermission("slashplayer.command") && !operator.hasPermission("slashplayer.rank")) {
+			if (!operator.hasPermission("slashplayer.command") && !operator.hasPermission("slashplayer.rank")
+					&& !operator.hasPermission("slashplayer.report")) {
 				noPermission.send(operator, null);
 
 				return true;
@@ -49,6 +51,7 @@ public class SlashPlayerCommand extends Logger {
 					new Gui(plugin.loadedGuis.get("PlayerListGui.yml")).open(operator, null);
 					break;
 				}
+
 				noPermission.send(operator, null);
 				break;
 			case 1:
@@ -76,6 +79,23 @@ public class SlashPlayerCommand extends Logger {
 						break;
 					}
 
+					break;
+				case "unban":
+					if (operator.hasPermission("slashplayer.ban")) {
+						Message usage = Message
+								.construct("%prefix% &cProper usage&8: &7/slashplayer unban [player-name]");
+
+						usage.send(operator, null);
+						break;
+					}
+
+					break;
+				case "opengui":
+					Message usage = Message
+					.construct("%prefix% &cProper usage&8: &7/slashplayer opengui <gui-name> [player-name]");
+
+					usage.send(operator, null);
+					break;
 				default:
 					plugin.userGui(operator, args);
 				}
@@ -138,10 +158,39 @@ public class SlashPlayerCommand extends Logger {
 						reportUsage.send(operator, null);
 						break;
 					}
+					break;
+				case "opengui":
+					Message usage = Message
+					.construct("%prefix% &cProper usage&8: &7/slashplayer opengui " + args[1] + " [player-name]");
 
+					usage.send(operator, null);
+					break;
+				default:
+
+					defaultUsage.send(operator, null);
 				}
 
+			case 3:
+				switch (args[0].toLowerCase()) {
+				case "opengui":
+					for (String s : plugin.guiFiles) {
+						if (s.equals(args[1])) {
 
+							break;
+						}
+					}
+
+					break;
+				case "report":
+					Message explainItBoi = Message
+					.construct("%prefix% &cPlease explain the reason why you are reporting this player!"
+									+ " &8(&7use more than one word&8)");
+
+					explainItBoi.send(operator, null);
+					break;
+				}
+
+				break;
 			default:
 
 			}

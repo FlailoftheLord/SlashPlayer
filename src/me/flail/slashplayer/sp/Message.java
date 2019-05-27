@@ -123,8 +123,10 @@ public class Message extends Logger {
 
 			List<String> newMsg = new ArrayList<>();
 			for (String line : message) {
-				line = this.placeholders(line, placeholders);
-				newMsg.add(line);
+				if (line != null) {
+					line = this.placeholders(line, placeholders);
+					newMsg.add(line);
+				}
 			}
 
 			message.clear();

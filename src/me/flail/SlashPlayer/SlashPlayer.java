@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Server;
 import org.bukkit.command.Command;
@@ -35,6 +34,7 @@ public class SlashPlayer extends JavaPlugin {
 	public List<User> players = new LinkedList<>();
 
 	public String[] guiFiles = { "GamemodeGui.yml", "PlayerListGui.yml", "PlayerGui.yml", "ReportGui.yml" };
+	public String[] commandArgs = { "rank", "report", "whitelist", "moderate", "reload", "opengui", "unban" };
 
 	public Server server;
 	public boolean verbose = false;
@@ -100,7 +100,7 @@ public class SlashPlayer extends JavaPlugin {
 
 	@SuppressWarnings("deprecation")
 	public User offlinePlayer(String name) {
-		OfflinePlayer deprecatedMethodThatIDontWantToUseButIHaveToUseIt = Bukkit.getOfflinePlayer(name);
+		OfflinePlayer deprecatedMethodThatIDontWantToUseButIHaveToUseIt = server.getOfflinePlayer(name);
 		return new User(deprecatedMethodThatIDontWantToUseButIHaveToUseIt.getUniqueId());
 	}
 

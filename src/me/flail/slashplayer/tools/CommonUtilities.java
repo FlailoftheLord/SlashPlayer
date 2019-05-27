@@ -44,7 +44,9 @@ public class CommonUtilities extends BaseUtilities {
 	public String placeholders(String message, Map<String, String> placeholders) {
 		if (!placeholders.isEmpty() && (message != null)) {
 			for (String p : placeholders.keySet()) {
-				message = message.replace(p, placeholders.get(p));
+				if (p != null) {
+					message = message.replace(p, placeholders.get(p));
+				}
 			}
 		}
 		return chat(message);

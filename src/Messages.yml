@@ -35,8 +35,9 @@ HelpMessage:
 - "&7type &e/%command% &7to open the player-list GUI"
 - "&7use the command &e/%command% [player-name] &to open a specific players' menu"
 - "&cto unban a player, type &e/%command% unban [player-name]"
-- "&7use &e/report [player-name] &7to report a player"
+- "&7use &e/report [player-name] [<Report-Reason>] &7to report a player"
 - "&7and &e/reports &7to view active reports."
+- "&7to manually open a gui for a user. &e/%command% opengui <gui-name> [player-name]"
 
 # = = = # Rank Messages # = = = #
 RankTooLow: "%prefix% &cYour rank is not high enough to use &7%executable% on &a%player%!"

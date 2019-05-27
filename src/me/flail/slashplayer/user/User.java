@@ -144,8 +144,16 @@ public class User extends UserData {
 		return dataFile().hasValue("ReportReason");
 	}
 
+	public boolean isStaff() {
+		return hasPermission("slashplayer.staff");
+	}
+
 	public boolean hasPermission(String permission) {
-		return player().hasPermission(permission);
+		if (isOnline()) {
+			return player().hasPermission(permission);
+		}
+
+		return false;
 	}
 
 	public boolean command(String command) {

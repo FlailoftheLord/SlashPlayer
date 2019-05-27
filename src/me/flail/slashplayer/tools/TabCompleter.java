@@ -30,6 +30,9 @@ public class TabCompleter extends ArrayList<String> {
 				baseArgs.add("reload");
 				baseArgs.add("report");
 				baseArgs.add("rank");
+				baseArgs.add("whitelist");
+				baseArgs.add("unban");
+				baseArgs.add("opengui");
 				for (String s : baseArgs) {
 					if (s.toLowerCase().startsWith(args[0].toLowerCase())) {
 						this.add(s);
