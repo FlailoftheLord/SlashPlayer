@@ -23,6 +23,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.metadata.FixedMetadataValue;
 
+import me.flail.slashplayer.SlashPlayer;
 import me.flail.slashplayer.sp.Message;
 import me.flail.slashplayer.sp.gui.GuiControl;
 import me.flail.slashplayer.tools.DataFile;
@@ -36,6 +37,10 @@ public class User extends UserData {
 
 	public User(UUID uuid) {
 		super(uuid);
+	}
+
+	public static User fromName(String username) {
+		return SlashPlayer.offlinePlayer(username);
 	}
 
 	/**

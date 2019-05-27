@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Server;
 import org.bukkit.command.Command;
@@ -99,8 +100,8 @@ public class SlashPlayer extends JavaPlugin {
 	}
 
 	@SuppressWarnings("deprecation")
-	public User offlinePlayer(String name) {
-		OfflinePlayer deprecatedMethodThatIDontWantToUseButIHaveToUseIt = server.getOfflinePlayer(name);
+	public static User offlinePlayer(String name) {
+		OfflinePlayer deprecatedMethodThatIDontWantToUseButIHaveToUseIt = Bukkit.getOfflinePlayer(name);
 		return new User(deprecatedMethodThatIDontWantToUseButIHaveToUseIt.getUniqueId());
 	}
 
@@ -118,7 +119,7 @@ public class SlashPlayer extends JavaPlugin {
 
 
 		if (!isOnline) {
-			new GuiControl().openModerationGui(operator, this.offlinePlayer(username[0]));
+			new GuiControl().openModerationGui(operator, SlashPlayer.offlinePlayer(username[0]));
 		}
 
 

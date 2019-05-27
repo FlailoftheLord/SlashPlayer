@@ -141,10 +141,12 @@ public class CommonUtilities extends BaseUtilities {
 		return message = message.replaceAll("(?i)" + Pattern.quote(text), replacement);
 	}
 
-	public String convertArray(String[] values) {
+	public String convertArray(String[] values, int start) {
 		StringBuilder builder = new StringBuilder();
-		for (String s : values) {
-			builder.append(s + " ");
+		while (start < values.length) {
+			builder.append(values[start] + " ");
+
+			start++;
 		}
 
 		return builder.toString();

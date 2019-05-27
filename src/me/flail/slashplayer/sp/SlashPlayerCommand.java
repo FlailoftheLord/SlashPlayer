@@ -4,6 +4,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import me.flail.slashplayer.SlashPlayer;
 import me.flail.slashplayer.gui.Gui;
 import me.flail.slashplayer.tools.Logger;
 import me.flail.slashplayer.user.User;
@@ -132,7 +133,7 @@ public class SlashPlayerCommand extends Logger {
 							new Message("WhitelistNotOn").send(operator, null);
 							break;
 						}
-						User offlineUser = plugin.offlinePlayer(args[1]);
+						User offlineUser = SlashPlayer.offlinePlayer(args[1]);
 						offlineUser.offlinePlayer().setWhitelisted(true);
 						break;
 					}
@@ -141,7 +142,7 @@ public class SlashPlayerCommand extends Logger {
 					break;
 				case "unban":
 					if (operator.hasPermission("slashplayer.ban")) {
-						User offlineUser = plugin.offlinePlayer(args[1]);
+						User offlineUser = SlashPlayer.offlinePlayer(args[1]);
 						offlineUser.unban();
 
 						new Message("UnbanPlayer").placeholders(offlineUser.commonPlaceholders()).send(operator, operator);
@@ -175,6 +176,12 @@ public class SlashPlayerCommand extends Logger {
 				case "opengui":
 					for (String s : plugin.guiFiles) {
 						if (s.equals(args[1])) {
+							if (plugin.loadedGuis.containsKey(args[1])) {
+								Gui gui = new Gui(plugin.loadedGuis.get(args[1]));
+								User subject = User.fromName(args[2]);
+
+								gui.open(operator, subject);
+							}
 
 							break;
 						}
@@ -182,9 +189,7 @@ public class SlashPlayerCommand extends Logger {
 
 					break;
 				case "report":
-					Message explainItBoi = Message
-					.construct("%prefix% &cPlease explain the reason why you are reporting this player!"
-									+ " &8(&7use more than one word&8)");
+					Message explainItBoi = new Message("ReportPrompt");
 
 					explainItBoi.send(operator, null);
 					break;
@@ -192,6 +197,47 @@ public class SlashPlayerCommand extends Logger {
 
 				break;
 			default:
+				switch (args[0].toLowerCase()) {
+				case "report":
+					if (operator.hasPermission("slashplayer.report")) {
+
+						if (args.length > 3) {
+							User subject = User.fromName(args[1]);
+							if ((operator.rank() <= subject.rank())
+									|| ((operator.rank() < subject.rank())
+											&& plugin.config.getBoolean("EqualsCanExecute", false))) {
+
+								new Message("ReportDeny").placeholders(subject.commonPlaceholders()).send(operator, operator);
+								break;
+							}
+
+							String reportReason = this.convertArray(args, 2);
+
+							subject.report(operator, reportReason);
+
+							Message reportedMsg = new Message("PlayerReported").placeholders(subject.commonPlaceholders());
+
+							new Message("ReportSuccess").placeholders(subject.commonPlaceholders()).send(operator, operator);
+
+							for (User user : plugin.players) {
+								if (user.isStaff()) {
+									reportedMsg.send(user, operator);
+								}
+							}
+
+							this.log(reportedMsg.stringValue());
+							this.console(reportedMsg.stringValue());
+
+						}
+
+						break;
+					}
+
+					noPermission.send(operator, operator);
+					break;
+				default:
+
+				}
 
 			}
 

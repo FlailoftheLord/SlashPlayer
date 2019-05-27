@@ -27,7 +27,7 @@ public class Logger extends CommonUtilities {
 		return this;
 	}
 
-	public void log(String msg) throws IOException {
+	public void log(String msg) {
 		BufferedWriter logWriter = null;
 
 		Time time = new Time();
@@ -38,7 +38,10 @@ public class Logger extends CommonUtilities {
 
 		File logFile = new File(plugin.getDataFolder() + "/logs/" + timeLog + ".txt");
 		if (!logFile.exists()) {
-			logFile.createNewFile();
+			try {
+				logFile.createNewFile();
+			} catch (IOException e) {
+			}
 		}
 
 		try {

@@ -117,7 +117,7 @@ CantKillPlayer: "%prefix% &cyou can't kill this player!"
 PlayerReported: "%prefix% &e%player% &ahas been reported by &e%reporter% &afor &c%reason%"
 ReportSuccess: "%prefix% &athanks for reporting %player%, your report will be processed by staff."
 ReportDeny: "%prefix% &cYou're not allowed to report that player!"
-ReportPrompt: "%prefix% &cPlease enter a report reason!"
+ReportPrompt: "%prefix% &cPlease explain the reason for which you are reporting this player! &8(&7more than one word&8)"
 
 # = = = # Whitelist Messages # = = = #
 WhitelistNotOn: "%prefix% &cCan't add players to the whitelist if it's not even turned on, silly!  &8(&7/whitelist on&8)"
