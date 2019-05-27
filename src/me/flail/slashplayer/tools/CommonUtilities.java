@@ -139,4 +139,13 @@ public class CommonUtilities extends BaseUtilities {
 		return message = message.replaceAll("(?i)" + Pattern.quote(text), replacement);
 	}
 
+	public String convertArray(String[] values) {
+		StringBuilder builder = new StringBuilder();
+		for (String s : values) {
+			builder.append(s + " ");
+		}
+
+		return builder.toString();
+	}
+
 }

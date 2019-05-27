@@ -115,4 +115,12 @@ public class UserData extends Logger {
 		return null;
 	}
 
+	public Message getReportReason() {
+		if (file.hasValue("ReportReason")) {
+			return Message.construct(file.getValue("ReportReason"));
+		}
+
+		return null;
+	}
+
 }

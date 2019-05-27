@@ -13,19 +13,43 @@ import me.flail.slashplayer.tools.Logger;
 import me.flail.slashplayer.user.User;
 
 public class Message extends Logger {
+	private static Message instance;
+
 	private DataFile file = plugin.messages;
 	private String prefix = chat(plugin.getConfig().getString("Prefix"));
-	private List<String> message = new ArrayList<>();
+	private static List<String> message = new ArrayList<>();
 	String key;
 
 	public Message(String key) {
 		this.key = key;
-		message.clear();
-		if (file.hasList(key)) {
-			message = file.getList(key);
+
+	}
+
+	public Message(boolean fromFile, String... key) {
+		if ((key == null) || key.equals(null)) {
 			return;
 		}
-		message.add(file.getValue(key));
+		message.clear();
+
+		if (fromFile) {
+			this.key = key[0];
+			if (file.hasList(this.key)) {
+				message = file.getList(this.key);
+				return;
+			}
+			message.add(file.getValue(this.key));
+			return;
+		}
+
+		for (String s : key) {
+			message.add(s);
+		}
+
+	}
+
+
+	public static Message construct(String... value) {
+		return new Message(false, value);
 	}
 
 	/**

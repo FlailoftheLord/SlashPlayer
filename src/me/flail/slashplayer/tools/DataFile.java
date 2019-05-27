@@ -10,6 +10,11 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import me.flail.slashplayer.SlashPlayer;
 
+/**
+ * A super-inflated, insanely overrated data handler for YAML files.
+ * 
+ * @author FlailoftheLord
+ */
 public class DataFile extends Logger {
 	protected static SlashPlayer plugin;
 	private File file;

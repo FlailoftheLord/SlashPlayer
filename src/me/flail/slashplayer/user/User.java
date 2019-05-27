@@ -97,7 +97,6 @@ public class User extends UserData {
 
 	public void logout() {
 		setOnline(false);
-		plugin.players.remove(this);
 		plugin.openGuis.remove(this.uuid());
 
 		plugin.loadedGuis.remove("PlayerListGui.yml");
@@ -141,6 +140,10 @@ public class User extends UserData {
 		return player().isDead() ? true : false;
 	}
 
+	public boolean isReported() {
+		return dataFile().hasValue("ReportReason");
+	}
+
 	public boolean hasPermission(String permission) {
 		return player().hasPermission(permission);
 	}
@@ -163,6 +166,27 @@ public class User extends UserData {
 
 	protected void setOnline(boolean status) {
 		dataFile().setValue("Online", Boolean.valueOf(status));
+		if (!status) {
+			plugin.players.remove(this);
+			return;
+		}
+
+		plugin.players.add(this);
+	}
+
+	public boolean report(User reporter, String reason) {
+		DataFile reports = new DataFile("ReportedPlayers.yml");
+		List<String> players = new ArrayList<>();
+
+		if (reports.hasValue("ReportedPlayers")) {
+			players.addAll(reports.getList("ReportedPlayers"));
+		}
+		players.add(this.id());
+		reports.setValue("ReportedPlayers", players);
+
+		dataFile().setValue("ReportReason", reason);
+
+		return !reason.isBlank();
 	}
 
 	public void kick(KickReason reason) {

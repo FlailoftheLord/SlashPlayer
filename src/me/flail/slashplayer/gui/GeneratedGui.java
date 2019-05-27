@@ -51,6 +51,7 @@ public class GeneratedGui extends Logger {
 	}
 
 	public boolean create(String name) {
+		plugin.loadedGuis.remove(name, this);
 		return plugin.loadedGuis.put(name, this) != null;
 	}
 

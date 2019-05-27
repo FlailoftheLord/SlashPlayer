@@ -1,7 +1,7 @@
 package me.flail.slashplayer;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -32,7 +32,7 @@ public class SlashPlayer extends JavaPlugin {
 
 	public Map<String, GeneratedGui> loadedGuis = new HashMap<>(4);
 	public Map<UUID, Gui> openGuis = new HashMap<>();
-	public List<User> players = new ArrayList<>(8);
+	public List<User> players = new LinkedList<>();
 
 	public String[] guiFiles = { "GamemodeGui.yml", "PlayerListGui.yml", "PlayerGui.yml", "ReportGui.yml" };
 

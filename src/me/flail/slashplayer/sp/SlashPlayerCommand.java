@@ -67,6 +67,13 @@ public class SlashPlayerCommand extends Logger {
 					}
 					noPermission.send(operator, null);
 					break;
+				case "report":
+					if (operator.hasPermission("slashplayer.report")) {
+
+						break;
+					}
+
+					break;
 				default:
 					plugin.userGui(operator, args);
 				}
