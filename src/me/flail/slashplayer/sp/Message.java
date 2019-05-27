@@ -13,7 +13,6 @@ import me.flail.slashplayer.tools.Logger;
 import me.flail.slashplayer.user.User;
 
 public class Message extends Logger {
-	private static Message instance;
 
 	private DataFile file = plugin.messages;
 	private String prefix = chat(plugin.getConfig().getString("Prefix"));
@@ -22,7 +21,7 @@ public class Message extends Logger {
 
 	public Message(String key) {
 		this.key = key;
-
+		new Message(true, key);
 	}
 
 	public Message(boolean fromFile, String... key) {

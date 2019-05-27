@@ -44,6 +44,9 @@ public class TabCompleter extends ArrayList<String> {
 				case "rank":
 					baseArgs.addAll(usernames());
 					break;
+				case "unban":
+					baseArgs.addAll(usernames());
+					break;
 				case "opengui":
 					for (String guiName : plugin.guiFiles) {
 						this.add(guiName);

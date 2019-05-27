@@ -69,11 +69,13 @@ public class SlashPlayerCommand extends Logger {
 					break;
 				case "report":
 					if (operator.hasPermission("slashplayer.report")) {
+						Message reportUsage = Message
+								.construct("%prefix% &cProper usage&8: &7/slashplayer report <player> [<reason>]");
 
+						reportUsage.send(operator, null);
 						break;
 					}
 
-					break;
 				default:
 					plugin.userGui(operator, args);
 				}
@@ -128,6 +130,15 @@ public class SlashPlayerCommand extends Logger {
 
 					noPermission.send(operator, null);
 					break;
+				case "report":
+					if (operator.hasPermission("slashplayer.report")) {
+						Message reportUsage = Message
+								.construct("%prefix% &cProper usage&8: &7/slashplayer report " + args[1] + " [<reason>]");
+
+						reportUsage.send(operator, null);
+						break;
+					}
+
 				}
 
 

@@ -69,7 +69,7 @@ public class Executioner extends Logger {
 					if (plugin.config.getBoolean("Broadcast.Ban")) {
 						new Message("BanBroadcast").broadcast(subject, operator);
 					} else {
-						new Message("BanPlayer").placeholders(subject.commonPlaceholders()).send(operator, null);
+						new Message("BanPlayer").placeholders(subject.commonPlaceholders()).send(operator, operator);
 					}
 
 					logAction("a");
@@ -77,10 +77,20 @@ public class Executioner extends Logger {
 				}
 
 				logAction("d");
-				accessDenied.send(operator, null);
+				accessDenied.send(operator, operator);
 				break;
 			case BURN:
+				if (operator.hasPermission("slashplayer.burn")) {
+					subject.burn(true, Integer.MAX_VALUE);
+					logAction("a");
 
+					new Message("Burning").send(subject, operator);
+					new Message("BurntPlayer").placeholders(subject.commonPlaceholders()).send(operator, operator);
+					break;
+				}
+
+				logAction("d");
+				accessDenied.send(operator, operator);
 				break;
 			case CLEARINVENTORY:
 				break;
@@ -93,20 +103,20 @@ public class Executioner extends Logger {
 				}
 
 				logAction("d");
-				accessDenied.send(operator, null);
+				accessDenied.send(operator, operator);
 				break;
 			case FEED:
 				if (operator.hasPermission("slashplayer.feed")) {
 					subject.feed(22);
 					new Message("Fed").send(subject, operator);
-					new Message("FedPlayer").placeholders(subject.commonPlaceholders()).send(operator, null);
+					new Message("FedPlayer").placeholders(subject.commonPlaceholders()).send(operator, operator);
 
 					logAction("a");
 					break;
 				}
 
 				logAction("d");
-				accessDenied.send(operator, null);
+				accessDenied.send(operator, operator);
 				break;
 			case FLY:
 				if (operator.hasPermission("slashplayer.fly")) {
@@ -114,7 +124,7 @@ public class Executioner extends Logger {
 					break;
 				}
 
-				accessDenied.send(operator, null);
+				accessDenied.send(operator, operator);
 				break;
 			case FREEZE:
 				break;
@@ -130,7 +140,7 @@ public class Executioner extends Logger {
 				}
 
 				logAction("d");
-				accessDenied.send(operator, null);
+				accessDenied.send(operator, operator);
 				break;
 			case GAMEMODEADVENTURE:
 				this.gamemode(subject, operator, "Adventure", accessDenied);
@@ -148,14 +158,14 @@ public class Executioner extends Logger {
 				if (operator.hasPermission("slashplayer.heal")) {
 					subject.heal(true);
 					new Message("Healed").send(subject, operator);
-					new Message("HealedPlayer").placeholders(subject.commonPlaceholders()).send(operator, null);
+					new Message("HealedPlayer").placeholders(subject.commonPlaceholders()).send(operator, operator);
 
 					logAction("a");
 					break;
 				}
 
 				logAction("d");
-				accessDenied.send(operator, null);
+				accessDenied.send(operator, operator);
 				break;
 			case KICK:
 				if (operator.hasPermission("slashplayer.kick")) {
@@ -172,7 +182,7 @@ public class Executioner extends Logger {
 				}
 
 				logAction("d");
-				accessDenied.send(operator, null);
+				accessDenied.send(operator, operator);
 				break;
 			case KILL:
 				if (operator.hasPermission("slashplayer.kill")) {
@@ -191,7 +201,7 @@ public class Executioner extends Logger {
 				}
 
 				logAction("d");
-				accessDenied.send(operator, null);
+				accessDenied.send(operator, operator);
 				break;
 			case REPORT:
 				break;
@@ -210,19 +220,19 @@ public class Executioner extends Logger {
 				}
 
 				logAction("d");
-				accessDenied.send(operator, null);
+				accessDenied.send(operator, operator);
 				break;
 			case UNBAN:
 				if (operator.hasPermission("slashplayer.ban")) {
 					subject.unban();
 					logAction("a");
 
-					new Message("UnbanPlayer").placeholders(subject.commonPlaceholders()).send(operator, null);
+					new Message("UnbanPlayer").placeholders(subject.commonPlaceholders()).send(operator, operator);
 					break;
 				}
 
 				logAction("d");
-				accessDenied.send(operator, null);
+				accessDenied.send(operator, operator);
 				break;
 			case UNFREEZE:
 				break;
@@ -242,7 +252,7 @@ public class Executioner extends Logger {
 		}
 
 		operator.closeGui();
-		new Message("InvalidPlayer").placeholders(subject.commonPlaceholders()).send(operator, null);
+		new Message("InvalidPlayer").placeholders(subject.commonPlaceholders()).send(operator, operator);
 
 		return false;
 	}
@@ -257,19 +267,19 @@ public class Executioner extends Logger {
 		}
 
 		if (denyMsg != null) {
-			denyMsg.send(operator, null);
+			denyMsg.send(operator, operator);
 			return;
 		}
 
 		logAction("d");
-		new Message("NoPermission").send(operator, null);
+		new Message("NoPermission").send(operator, operator);
 	}
 
 	private void gamemode(User subject, User operator, String mode, Message denyMsg) {
 		if (operator.hasPermission("slashplayer.gamemode." + mode.toLowerCase())) {
 			subject.player().setGameMode(GameMode.valueOf(mode.toUpperCase()));
 			new Message("GamemodeChanged." + mode).send(subject, operator);
-			new Message("PlayerGamemodeChanged").placeholders(subject.commonPlaceholders()).send(operator, null);
+			new Message("PlayerGamemodeChanged").placeholders(subject.commonPlaceholders()).send(operator, operator);
 
 			new GuiControl().openModerationGui(operator, subject);
 
@@ -278,7 +288,7 @@ public class Executioner extends Logger {
 		}
 
 		logAction("d");
-		denyMsg.send(operator, null);
+		denyMsg.send(operator, operator);
 	}
 
 	private void logAction(String result) {

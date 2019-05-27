@@ -123,3 +123,8 @@ WhitelistNotOn: "%prefix% &cCan't add players to the whitelist if it's not even 
 PlayerWhitelisted: "%prefix% &cAdded %player% to the whitelist!"
 PlayerUnWhitelisted: "%prefix% &aRemoved %player% from the whitelist."
 
+# = = = # Burn Message # = = = #
+Burning: "%prefix% &6You have been set on fire!"
+BurntPlayer: "%prefix% &aYou lit %player% on fire."
+
+

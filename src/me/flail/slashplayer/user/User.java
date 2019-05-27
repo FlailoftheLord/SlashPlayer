@@ -270,8 +270,12 @@ public class User extends UserData {
 		player().setFoodLevel(level);
 	}
 
-	public void burn(int time) {
-
+	public void burn(boolean toggle, int time) {
+		if (toggle) {
+			player().setFireTicks(time);
+			return;
+		}
+		player().setFireTicks(0);
 	}
 
 	public void backupInventory() {
