@@ -275,6 +275,13 @@ public class User extends UserData {
 		player().sendMessage(chat("&4&l<3"));
 	}
 
+	public void kill(Message message) {
+		if (isOnline()) {
+			player().setHealth(0);
+			message.send(this, null);
+		}
+	}
+
 	public void heal(boolean removePotionEffects) {
 		player().setHealth(20);
 		feed(22);

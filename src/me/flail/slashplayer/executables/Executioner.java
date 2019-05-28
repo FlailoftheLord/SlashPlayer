@@ -120,16 +120,27 @@ public class Executioner extends Logger {
 			case FLY:
 				if (operator.hasPermission("slashplayer.fly")) {
 					subject.toggleFly(operator);
+
+					logAction("a");
 					break;
 				}
 
+				logAction("d");
 				accessDenied.send(operator, operator);
 				break;
 			case FREEZE:
 				break;
 			case FRIEND:
-				subject.spawnNewFriend();
+				if (operator.hasPermission("slashplayer.friend")) {
+					subject.spawnNewFriend();
 
+					logAction("a");
+					new Message("SpawnedMob").placeholders(subject.commonPlaceholders()).send(operator, operator);
+					break;
+				}
+
+				logAction("d");
+				accessDenied.send(operator, operator);
 				break;
 			case GAMEMODE:
 				if (operator.hasPermission("slashplayer.gamemode")) {
@@ -185,9 +196,22 @@ public class Executioner extends Logger {
 				break;
 			case KILL:
 				if (operator.hasPermission("slashplayer.kill")) {
+					if (subject.hasPermission("slashplayer.exempt")) {
+						new Message("CantKillPlayer").placeholders(subject.commonPlaceholders()).send(operator, operator);
 
+						logAction("d");
+						break;
+					}
+
+					Message killMsg = new Message("Killed").placeholders(subject.commonPlaceholders());
+					subject.kill(killMsg);
+
+					new Message("KilledPlayer").placeholders(subject.commonPlaceholders()).send(operator, operator);
+					logAction("a");
 				}
 
+				logAction("d");
+				accessDenied.send(operator, operator);
 				break;
 			case MUTE:
 				break;
@@ -203,6 +227,9 @@ public class Executioner extends Logger {
 				accessDenied.send(operator, operator);
 				break;
 			case REPORT:
+				Message useCmdToReport = Message.construct("%prefix% &cYou must use the &7/report &ccommand to report players!");
+
+				useCmdToReport.send(operator, null);
 				break;
 			case RESTOREINVENTORY:
 				break;

@@ -139,7 +139,7 @@ Format:
     - "&7Undoes the last time"
     - "&7this player's inventory"
     - "&7was cleared through SlashPlayer"
-    Execute: "restoreInventory"
+    Execute: "RestoreInventory"
     CloseInventory: false
     
   31:
@@ -147,7 +147,7 @@ Format:
     Name: "&eView Inventory"
     Lore: 
     - "&7click to view this player's inventory"
-    Execute: "openinventory"
+    Execute: "OpenInventory"
     CloseInventory: false
     
   32:
@@ -156,7 +156,7 @@ Format:
     Lore: 
     - "&7click to view "
     - "&7this player's enderchest."
-    Execute: "enderchest"
+    Execute: "Enderchest"
     CloseInventory: false
    
   33:
@@ -165,7 +165,34 @@ Format:
     Lore:
     - "&7Is %player% lonely?"
     - "&7give them a fluffy new friend!"
-    Execute: "friend"
+    Execute: "Friend"
     CloseInventory: true
+    
+  34:
+    Item: "Fling_and_steel"
+    Name: "&6Burn %player%"
+    Lore:
+    - "&7toggle whether %player%"
+    - "&7is on fire."
+    - ""
+    - "&8make it hawt bb!"
+    Execute: "Burn"
+    CloseInventory: true
+    
+  35:
+    Item: "Paper"
+    Name: "&eWhitelist"
+    Lore:
+    - "&7change %player%'s"
+    - "&7whitelist status"
+    - ""
+    - "&8only applies if the server"
+    - "&8has whitelist enabled."
+    Execute: "Whitelist"
+    CloseInventory: true
+    
+    
+    
+    
     
     
