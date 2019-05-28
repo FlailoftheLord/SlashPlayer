@@ -23,70 +23,90 @@ public class TabCompleter extends ArrayList<String> {
 	public TabCompleter construct(String label, String[] args) {
 		if (command.getName().equalsIgnoreCase("slashplayer")) {
 			List<String> baseArgs = new ArrayList<>();
+			boolean completed = false;
 
-			switch (args.length) {
-			case 1:
-				baseArgs.addAll(usernames());
-				baseArgs.add("reload");
-				baseArgs.add("report");
-				baseArgs.add("rank");
-				baseArgs.add("whitelist");
-				baseArgs.add("unban");
-				baseArgs.add("opengui");
-				for (String s : baseArgs) {
-					if (s.toLowerCase().startsWith(args[0].toLowerCase())) {
-						this.add(s);
-					}
-				}
-				break;
-			case 2:
-				switch (args[0].toLowerCase()) {
-				case "report":
+			if (label.equalsIgnoreCase("report")) {
+				switch (args.length) {
+				case 1:
 					baseArgs.addAll(usernames());
 					break;
-				case "rank":
-					baseArgs.addAll(usernames());
-					break;
-				case "unban":
-					baseArgs.addAll(usernames());
-					break;
-				case "opengui":
-					for (String guiName : plugin.guiFiles) {
-						this.add(guiName);
-					}
 				default:
-					baseArgs.clear();
-					break;
-
+					baseArgs.add("[<Report-Reason>]");
 				}
+				completed = true;
+			} else if (label.equalsIgnoreCase("reports")) {
+				completed = true;
+			}
 
-				for (String s : baseArgs) {
-					if (s.toLowerCase().startsWith(args[1].toLowerCase())) {
-						this.add(s);
+			if (!completed) {
+				switch (args.length) {
+				case 1:
+					baseArgs.addAll(usernames());
+					baseArgs.add("reload");
+					baseArgs.add("report");
+					baseArgs.add("rank");
+					baseArgs.add("whitelist");
+					baseArgs.add("unban");
+					baseArgs.add("opengui");
+
+					break;
+				case 2:
+					switch (args[0].toLowerCase()) {
+					case "report":
+						baseArgs.addAll(usernames());
+						break;
+					case "rank":
+						baseArgs.addAll(usernames());
+						break;
+					case "unban":
+						baseArgs.addAll(usernames());
+						break;
+					case "opengui":
+						for (String guiName : plugin.guiFiles) {
+							this.add(guiName);
+						}
+					default:
+						baseArgs.clear();
+						break;
+
+					}
+
+					for (String s : baseArgs) {
+						if (s.toLowerCase().startsWith(args[1].toLowerCase())) {
+							this.add(s);
+						}
+					}
+
+
+					break;
+				case 3:
+					switch (args[0].toLowerCase()) {
+					case "report":
+						this.add("[<Report-Reason>]");
+						break;
+					case "opengui":
+						this.addAll(usernames());
+						break;
 					}
 				}
 
+			}
 
-				break;
-			case 3:
-				switch (args[0].toLowerCase()) {
-				case "report":
-					this.add("[<Report-Reason>]");
-					break;
-				case "opengui":
-					this.addAll(usernames());
-					break;
+			for (String s : baseArgs) {
+				if (s.toLowerCase().startsWith(args[0].toLowerCase())) {
+					this.add(s);
 				}
 			}
 
 		}
+
 
 		return this;
 	}
 
 	private List<String> usernames() {
 		List<String> names = new ArrayList<>();
-		for (User user : plugin.players) {
+		for (User user : plugin.players.values()) {
 			names.add(user.name());
 		}
 		return names;

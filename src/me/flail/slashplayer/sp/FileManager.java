@@ -10,7 +10,7 @@ public class FileManager extends Logger {
 			if (!fileName.endsWith(".yml")) {
 				fileName = fileName.concat(".yml");
 			}
-			new GuiControl().loadGui(fileName);
+			new GuiControl().loadGui(fileName, true);
 		}
 
 	}

@@ -105,7 +105,7 @@ public class SlashPlayerCommand extends Logger {
 			case 2:
 				switch (args[0].toLowerCase()) {
 				case "rank":
-					for (User user : plugin.players) {
+					for (User user : plugin.players.values()) {
 						if (args[1].toLowerCase().startsWith(user.name())) {
 							if (operator.rank() > user.rank()) {
 								Message rankMsg = new Message("RankCheck");
@@ -215,18 +215,17 @@ public class SlashPlayerCommand extends Logger {
 
 							subject.report(operator, reportReason);
 
-							Message reportedMsg = new Message("PlayerReported").placeholders(subject.commonPlaceholders());
-
 							new Message("ReportSuccess").placeholders(subject.commonPlaceholders()).send(operator, operator);
 
-							for (User user : plugin.players) {
+							Message reportedMsg = new Message("PlayerReported").placeholders(subject.commonPlaceholders());
+							for (User user : plugin.players.values()) {
 								if (user.isStaff()) {
 									reportedMsg.send(user, operator);
 								}
 							}
 
-							this.log(reportedMsg.stringValue());
-							this.console(reportedMsg.stringValue());
+							reportedMsg.log(subject, operator);
+							reportedMsg.console(subject, operator);
 
 						}
 

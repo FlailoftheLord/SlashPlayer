@@ -1,6 +1,5 @@
 package me.flail.slashplayer.executables;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -300,11 +299,8 @@ public class Executioner extends Logger {
 			logMsg = logMsg.concat(" (DENIED)");
 		}
 
-		try {
-			this.console(logMsg);
-			this.log(logMsg);
-		} catch (IOException e) {
-		}
+		this.console(logMsg);
+		this.log(logMsg);
 	}
 
 }

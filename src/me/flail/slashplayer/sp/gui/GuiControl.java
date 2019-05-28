@@ -24,10 +24,12 @@ public class GuiControl extends Logger {
 	public GuiControl() {
 	}
 
-	public GuiControl loadGui(String path) {
+	public GuiControl loadGui(String path, boolean verbose) {
 		file = new DataFile("GuiConfigurations/" + path);
 		new GuiGenerator(file).run();
-		console("loaded Gui file: " + path);
+		if (verbose) {
+			console("loaded Gui file: " + path);
+		}
 		return this;
 	}
 

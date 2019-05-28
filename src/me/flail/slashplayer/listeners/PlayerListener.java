@@ -42,7 +42,7 @@ public class PlayerListener extends Logger implements Listener {
 	public void playerJoin(PlayerJoinEvent event) {
 		User user = new User(event.getPlayer().getUniqueId());
 		user.setup(plugin.verbose);
-		plugin.players.add(user);
+		plugin.players.put(user.uuid(), user);
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)
@@ -93,7 +93,12 @@ public class PlayerListener extends Logger implements Listener {
 						if ((e instanceof LivingEntity) && e.hasMetadata("SlashPlayerFrend")) {
 							event.setCancelled(true);
 
-							((LivingEntity) damager).setHealth(0);
+							if (damager instanceof LivingEntity) {
+								((LivingEntity) damager).setHealth(0);
+								return;
+							}
+
+							damager.remove();
 							return;
 						}
 

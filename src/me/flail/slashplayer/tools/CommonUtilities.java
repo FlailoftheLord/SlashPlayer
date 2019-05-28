@@ -53,18 +53,20 @@ public class CommonUtilities extends BaseUtilities {
 	}
 
 	public ItemStack itemPlaceholders(ItemStack item, Map<String, String> placeholders) {
-		ItemMeta meta = item.getItemMeta();
-		if (meta.hasLore()) {
-			List<String> lore = meta.getLore();
+		if ((item != null) && item.hasItemMeta()) {
+			ItemMeta meta = item.getItemMeta();
+			if (meta.hasLore()) {
+				List<String> lore = meta.getLore();
 
-			List<String> newLore = new ArrayList<>();
-			for (String line : lore) {
-				newLore.add(this.placeholders(line, placeholders));
+				List<String> newLore = new ArrayList<>();
+				for (String line : lore) {
+					newLore.add(this.placeholders(line, placeholders));
+				}
+				meta.setLore(newLore);
+				meta.setDisplayName(this.placeholders(meta.getDisplayName(), placeholders));
+
+				item.setItemMeta(meta);
 			}
-			meta.setLore(newLore);
-			meta.setDisplayName(this.placeholders(meta.getDisplayName(), placeholders));
-
-			item.setItemMeta(meta);
 		}
 
 		return item;

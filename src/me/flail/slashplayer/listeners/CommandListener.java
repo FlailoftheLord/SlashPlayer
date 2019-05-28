@@ -34,7 +34,7 @@ public class CommandListener extends Logger implements Listener {
 			}
 		}
 
-		for (User user : plugin.players) {
+		for (User user : plugin.players.values()) {
 			String name = user.name();
 			if (this.msgCheck(message, "/" + name + " ", "starts")) {
 				message = this.replaceText(message, "/" + name + " ", "/slashplayer " + name + " ");
@@ -54,7 +54,7 @@ public class CommandListener extends Logger implements Listener {
 			event.setMessage(message);
 		}
 
-		for (User user : plugin.players) {
+		for (User user : plugin.players.values()) {
 			String pName = user.name().toLowerCase();
 
 			if (message.startsWith("/" + pName)) {

@@ -96,16 +96,14 @@ public class User extends UserData {
 			console("Loaded UserData for &7" + name() + "&8[" + ip() + "]" + "  &8(" + uuid() + ")");
 		}
 
-		plugin.loadedGuis.remove("PlayerListGui.yml");
-		new GuiControl().loadGui("PlayerListGui.yml");
+		new GuiControl().loadGui("PlayerListGui.yml", false);
 	}
 
 	public void logout() {
 		setOnline(false);
 		plugin.openGuis.remove(this.uuid());
 
-		plugin.loadedGuis.remove("PlayerListGui.yml");
-		new GuiControl().loadGui("PlayerListGui.yml");
+		new GuiControl().loadGui("PlayerListGui.yml", false);
 	}
 
 	/**
@@ -146,7 +144,7 @@ public class User extends UserData {
 	}
 
 	public boolean isReported() {
-		return dataFile().hasValue("ReportReason");
+		return dataFile().getBoolean("Reported");
 	}
 
 	public boolean isStaff() {
@@ -180,11 +178,15 @@ public class User extends UserData {
 	protected void setOnline(boolean status) {
 		dataFile().setValue("Online", Boolean.valueOf(status));
 		if (!status) {
-			plugin.players.remove(this);
+			plugin.players.remove(uuid());
 			return;
 		}
 
-		plugin.players.add(this);
+		plugin.players.put(uuid(), this);
+	}
+
+	public DataFile reportedPlayerList() {
+		return new DataFile("ReportedPlayers.yml");
 	}
 
 	public boolean report(User reporter, String reason) {
@@ -195,11 +197,14 @@ public class User extends UserData {
 			players.addAll(reports.getList("ReportedPlayers"));
 		}
 		players.add(this.id());
-		reports.setValue("ReportedPlayers", players);
+		for (String id : players) {
+			reports.setValue(id + ".Reason", reason);
+			reports.setValue(id + ".Reporter", reporter.id());
+		}
 
-		dataFile().setValue("ReportReason", reason);
+		dataFile().setValue("Reported", "true");
 
-		return !reason.isBlank();
+		return !reason.isEmpty();
 	}
 
 	public void kick(KickReason reason) {
@@ -368,6 +373,11 @@ public class User extends UserData {
 			placeholders.put("%rank%", rank() + "");
 			placeholders.put("%ban-duration%", this.banDuration() + " seconds");
 			placeholders.put("%unban-time%", this.banExpiry());
+		}
+
+		if (this.isReported()) {
+			String reason = this.reportedPlayerList().getValue(id() + ".Reason");
+			placeholders.put("%reason%", reason);
 		}
 
 		return placeholders;

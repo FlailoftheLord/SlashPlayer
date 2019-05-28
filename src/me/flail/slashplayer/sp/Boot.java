@@ -61,7 +61,7 @@ public class Boot extends Logger {
 
 			plugin.players.clear();
 
-			for (User user : plugin.players) {
+			for (User user : plugin.players.values()) {
 				user.player().closeInventory();
 			}
 
@@ -113,7 +113,7 @@ public class Boot extends Logger {
 		int onlinePlayers = 0;
 		for (Player p : plugin.server.getOnlinePlayers()) {
 			User user = new User(p.getUniqueId());
-			plugin.players.add(user);
+			plugin.players.put(user.uuid(), user);
 
 			user.setup(false);
 			onlinePlayers++;

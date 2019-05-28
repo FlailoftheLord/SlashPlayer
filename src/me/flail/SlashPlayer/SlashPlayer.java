@@ -1,7 +1,7 @@
 package me.flail.slashplayer;
 
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -32,8 +32,7 @@ public class SlashPlayer extends JavaPlugin {
 
 	public Map<String, GeneratedGui> loadedGuis = new HashMap<>(4);
 	public Map<UUID, Gui> openGuis = new HashMap<>();
-	public List<User> players = new LinkedList<>();
-
+	public Map<UUID, User> players = Collections.synchronizedMap(new HashMap<>());
 	public String[] guiFiles = { "GamemodeGui.yml", "PlayerListGui.yml", "PlayerGui.yml", "ReportGui.yml" };
 	public String[] commandArgs = { "rank", "report", "whitelist", "moderate", "reload", "opengui", "unban" };
 
@@ -63,7 +62,7 @@ public class SlashPlayer extends JavaPlugin {
 		openGuis.clear();
 		loadedGuis.clear();
 		if (!players.isEmpty()) {
-			for (User user : players) {
+			for (User user : players.values()) {
 				if (user.isOnline()) {
 					user.player().closeInventory();
 				}
@@ -108,7 +107,7 @@ public class SlashPlayer extends JavaPlugin {
 
 	public void userGui(User operator, String... username) {
 		boolean isOnline = false;
-		for (User user : players) {
+		for (User user : players.values()) {
 			if (user.name().toLowerCase().startsWith(username[0].toLowerCase())) {
 				new GuiControl().openModerationGui(operator, user);
 

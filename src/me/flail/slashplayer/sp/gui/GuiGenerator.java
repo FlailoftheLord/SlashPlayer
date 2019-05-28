@@ -86,7 +86,8 @@ public class GuiGenerator extends Logger {
 
 			DataFile userListFile = null;
 			if (source.contains("%") || source.contains("online-players")) {
-				userList.addAll(plugin.players);
+				userList.clear();
+				userList.addAll(plugin.players.values());
 			} else {
 				if (!source.endsWith(".yml")) {
 					source = source.concat(".yml");
@@ -113,11 +114,11 @@ public class GuiGenerator extends Logger {
 
 
 					if (source.equals("ReportedPlayers.yml")) {
-						for (String line : lore) {
+						for (String line : lore.toArray(new String[] {})) {
 							if (line.contains("%information%")) {
 
 								lore.add(chat(line.replace("%information%", "")));
-								String info = userListFile.getValue("Information");
+								String info = userListFile.getValue(user.id() + ".Reason");
 								String color = getColor(info, "%information%");
 
 								/** BEGIN lore oranization **/
@@ -145,7 +146,7 @@ public class GuiGenerator extends Logger {
 							}
 
 							actualLore.add(chat(line.replace("%reporter%",
-									userListFile.getValue("Reporter").replace("%player%", user.name()))));
+									userListFile.getValue(user.id() + ".Reporter").replace("%player%", user.name()))));
 						}
 
 						actualLore.add(chat("&8Shift Click to remove."));
