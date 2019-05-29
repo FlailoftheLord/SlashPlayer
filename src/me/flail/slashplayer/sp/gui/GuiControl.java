@@ -82,10 +82,13 @@ public class GuiControl extends Logger {
 			boolean equalsCanExecute = plugin.config.getBoolean("EqualsCanExecute");
 
 			if (this.hasTag(clickedItem, "execute")) {
+				Exe exe = Exe.get(this.getTag(clickedItem, "execute"));
+
 				if ((equalsCanExecute && (subject.rank() <= operator.rank())) || (subject.rank() < operator.rank())) {
-					new Executioner(subject, Exe.get(this.getTag(clickedItem, "execute"))).execute(operator);
+					new Executioner(subject, exe).execute(operator);
 				} else {
-					new Message("RankTooLow").send(subject, operator);
+					new Message("RankTooLow").placeholders(subject.commonPlaceholders()).replace("%executable%", exe.toString())
+							.send(operator, operator);
 				}
 			}
 

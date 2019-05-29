@@ -1,6 +1,7 @@
 package me.flail.slashplayer.sp;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -43,7 +44,6 @@ public class Message extends Logger {
 		}
 
 	}
-
 
 	public static Message construct(String... value) {
 		return new Message(false, value);
@@ -125,6 +125,13 @@ public class Message extends Logger {
 			return;
 		}
 
+	}
+
+	public Message replace(String value, String replacement) {
+		Map<String, String> pl = new HashMap<>();
+		pl.put(value, replacement);
+
+		return this.placeholders(pl);
 	}
 
 	public DataFile getFile() {

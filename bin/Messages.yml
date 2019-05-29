@@ -110,7 +110,7 @@ InventoryRestored: "%prefix% &aYour inventory was restored to another backup by 
 
 # = = = # Kill Messages # = = = #
 Killed: "%prefix% &cyou were slain by staff."
-KillPlayer: "%prefix% &ckilled %player%"
+KilledPlayer: "%prefix% &ckilled %player%"
 CantKillPlayer: "%prefix% &cyou can't kill this player!"
 
 # = = = # Report Messages # = = = #
@@ -127,5 +127,8 @@ PlayerUnWhitelisted: "%prefix% &aRemoved %player% from the whitelist."
 # = = = # Burn Message # = = = #
 Burning: "%prefix% &6You have been set on fire!"
 BurntPlayer: "%prefix% &aYou lit %player% on fire."
+
+# = = = # Frend Messages # = = = #
+SpawnedMob: "%prefix% &aSpawned a random mob as %player%'s friend!"
 
 

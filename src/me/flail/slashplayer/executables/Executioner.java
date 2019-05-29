@@ -129,6 +129,23 @@ public class Executioner extends Logger {
 				accessDenied.send(operator, operator);
 				break;
 			case FREEZE:
+				if (operator.hasPermission("slashplayer.freeze")) {
+					logAction("a");
+
+					if (subject.freeze()) {
+
+						new Message("Frozen").send(subject, operator);
+						new Message("FreezePlayer").placeholders(subject.commonPlaceholders()).send(operator, operator);
+						break;
+					}
+
+					new Message("Unfrozen").send(subject, operator);
+					new Message("UnfreezePlayer").placeholders(subject.commonPlaceholders()).send(operator, operator);
+					break;
+				}
+
+				logAction("d");
+				accessDenied.send(operator, operator);
 				break;
 			case FRIEND:
 				if (operator.hasPermission("slashplayer.friend")) {
@@ -145,11 +162,9 @@ public class Executioner extends Logger {
 			case GAMEMODE:
 				if (operator.hasPermission("slashplayer.gamemode")) {
 					new GuiControl().openGamemodeGui(operator, subject);
-					logAction("a");
 					return true;
 				}
 
-				logAction("d");
 				accessDenied.send(operator, operator);
 				break;
 			case GAMEMODEADVENTURE:
@@ -208,6 +223,7 @@ public class Executioner extends Logger {
 
 					new Message("KilledPlayer").placeholders(subject.commonPlaceholders()).send(operator, operator);
 					logAction("a");
+					break;
 				}
 
 				logAction("d");
@@ -249,18 +265,25 @@ public class Executioner extends Logger {
 				accessDenied.send(operator, operator);
 				break;
 			case UNBAN:
-				if (operator.hasPermission("slashplayer.ban")) {
-					subject.unban();
+				;
+			case UNFREEZE:
+				if (operator.hasPermission("slashplayer.freeze")) {
 					logAction("a");
 
-					new Message("UnbanPlayer").placeholders(subject.commonPlaceholders()).send(operator, operator);
+					if (subject.freeze()) {
+
+						new Message("Frozen").send(subject, operator);
+						new Message("FreezePlayer").placeholders(subject.commonPlaceholders()).send(operator, operator);
+						break;
+					}
+
+					new Message("Unfrozen").send(subject, operator);
+					new Message("UnfreezePlayer").placeholders(subject.commonPlaceholders()).send(operator, operator);
 					break;
 				}
 
 				logAction("d");
 				accessDenied.send(operator, operator);
-				break;
-			case UNFREEZE:
 				break;
 			case UNMUTE:
 				break;
@@ -277,6 +300,20 @@ public class Executioner extends Logger {
 			return true;
 		}
 
+		if (exe.equals(Exe.UNBAN)) {
+			if (operator.hasPermission("slashplayer.ban")) {
+				subject.unban();
+				logAction("a");
+
+				new Message("UnbanPlayer").placeholders(subject.commonPlaceholders()).send(operator, operator);
+				return true;
+			}
+
+			logAction("d");
+			accessDenied.send(operator, operator);
+			return true;
+		}
+
 		operator.closeGui();
 		new Message("InvalidPlayer").placeholders(subject.commonPlaceholders()).send(operator, operator);
 
@@ -288,7 +325,16 @@ public class Executioner extends Logger {
 			if (plugin.server.hasWhitelist()) {
 				subject.offlinePlayer().setWhitelisted(!plugin.server.getWhitelistedPlayers().contains(subject.offlinePlayer()));
 				logAction("a");
+
+				if (subject.offlinePlayer().isWhitelisted()) {
+					new Message("PlayerWhitelisted").placeholders(subject.commonPlaceholders()).send(operator, operator);
+					return;
+				}
+				new Message("PlayerUnWhitelisted").placeholders(subject.commonPlaceholders()).send(operator, operator);
+				return;
 			}
+
+			new Message("WhitelistNotOn").send(operator, operator);
 			return;
 		}
 

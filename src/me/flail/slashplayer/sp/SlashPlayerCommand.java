@@ -34,7 +34,9 @@ public class SlashPlayerCommand extends Logger {
 
 			if ((args.length > 0) && args[0].equalsIgnoreCase("test")) {
 				if (operator.hasPermission("slashplayer.op")) {
-					new Gui(plugin.loadedGuis.get("PlayerListGui.yml")).open(operator, null);
+					String s = operator.player().getLocation().getBlockY() + "";
+					operator.player().sendMessage(s);
+
 				}
 
 			}

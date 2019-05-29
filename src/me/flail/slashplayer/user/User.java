@@ -270,6 +270,19 @@ public class User extends UserData {
 
 	}
 
+	/**
+	 * @return true if the user was frozen, false otherwise.
+	 */
+	public boolean freeze() {
+		if (!isFrozen()) {
+			dataFile().setValue("IsFrozen", "true");
+			return true;
+		}
+
+		dataFile().setValue("IsFrozen", "false");
+		return false;
+	}
+
 	public void ouch() {
 		player().damage(0.1);
 		player().sendMessage(chat("&4&l<3"));
