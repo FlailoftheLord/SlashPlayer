@@ -68,7 +68,7 @@ public class DataFile extends Logger {
 	 *         file is empty.
 	 */
 	public Set<String> keySet() {
-		return keySet(config.getCurrentPath());
+		return config.getKeys(false);
 	}
 
 	public Set<String> keySet(String path) {
