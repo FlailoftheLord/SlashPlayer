@@ -169,7 +169,7 @@ Format:
     CloseInventory: true
     
   34:
-    Item: "Fling_and_steel"
+    Item: "Flint_and_steel"
     Name: "&6Burn %player%"
     Lore:
     - "&7toggle whether %player%"

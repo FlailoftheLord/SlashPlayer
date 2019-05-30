@@ -45,7 +45,7 @@ MuteTime: 300
 Frozen:
   BlockInteract: deny
   Interact: deny
-  Chat: deny
+  Chat: allow
   
 # Broadcast options, enable or disable for each one.
 Broadcast: 

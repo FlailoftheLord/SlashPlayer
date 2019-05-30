@@ -39,6 +39,7 @@ public class SlashPlayerCommand extends Logger {
 
 				}
 
+				return true;
 			}
 
 			if (!operator.hasPermission("slashplayer.command") && !operator.hasPermission("slashplayer.rank")
