@@ -91,13 +91,20 @@ public class User extends UserData {
 	 * Loads the user's data file. Always trigger this when they join the server.
 	 */
 	public void setup(boolean verbose) {
-		dataFile().load();
-		loadDefaultValues(this);
-		if (verbose) {
-			console("Loaded UserData for &7" + name() + "&8[" + ip() + "]" + "  &8(" + uuid() + ")");
-		}
+		plugin.server.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
 
-		new GuiControl().loadGui("PlayerListGui.yml", false);
+			dataFile().load();
+			loadDefaultValues(this);
+			if (verbose) {
+				console("Loaded UserData for &7" + name() + "&8[" + ip() + "]" + "  &8(" + uuid() + ")");
+			}
+
+
+			setGamemode(GameMode.valueOf(gamemode().toUpperCase()));
+
+
+			new GuiControl().loadGui("PlayerListGui.yml", false);
+		}, 20L);
 	}
 
 	public void logout() {
@@ -124,8 +131,12 @@ public class User extends UserData {
 		return isOnline() ? player().getAddress().toString().replace("/", "") : "user.not.online";
 	}
 
-	public String gamemode() {
+	public String playerGamemode() {
 		return isOnline() ? player().getGameMode().toString().toLowerCase() : "user not online";
+	}
+
+	public String gamemode() {
+		return dataFile().hasValue("Gamemode") ? dataFile().getValue("Gamemode") : playerGamemode();
 	}
 
 	public boolean isBanned() {
@@ -326,7 +337,7 @@ public class User extends UserData {
 			player().setGameMode(mode);
 		}
 
-		dataFile().setValue("Gamemode", this.gamemode());
+		dataFile().setValue("Gamemode", mode.toString().toLowerCase());
 	}
 
 	public void burn(boolean toggle, int time) {

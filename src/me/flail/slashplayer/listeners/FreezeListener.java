@@ -4,8 +4,10 @@ import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -91,16 +93,21 @@ public class FreezeListener extends Logger implements Listener {
 			String canInteract = plugin.config.get("Frozen.Interact").toString().toLowerCase();
 
 			if (canInteract.equals("deny")) {
-				subject.player().openInventory(event.getInventory());
-				Message freezeOther = new Message("FreezeOther");
+				if (event.getInventory().getType().equals(InventoryType.CHEST)) {
+					subject.player().openInventory(event.getInventory());
 
-				if (!plugin.cooldowns.contains(subject.uuid())) {
-					freezeOther.send(subject, null);
-					plugin.cooldown(subject, 5);
+					Message freezeOther = new Message("FreezeOther");
+
+					if (!plugin.cooldowns.contains(subject.uuid())) {
+						freezeOther.send(subject, null);
+						plugin.cooldown(subject, 5);
+					}
+
+					return;
 				}
 
-				return;
 			}
+
 		}
 
 	}
@@ -150,6 +157,17 @@ public class FreezeListener extends Logger implements Listener {
 			}
 		}
 
+	}
+
+	@EventHandler(priority = EventPriority.LOW)
+	public void blockBreak(BlockBreakEvent event) {
+		User subject = new User(event.getPlayer().getUniqueId());
+		if (subject.isFrozen()) {
+			Location loc = subject.player().getLocation();
+			if (event.getBlock().getLocation().getBlockY() < loc.getBlockY()) {
+				event.setCancelled(true);
+			}
+		}
 	}
 
 }
