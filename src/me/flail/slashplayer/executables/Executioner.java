@@ -349,7 +349,7 @@ public class Executioner extends Logger {
 
 	private void gamemode(User subject, User operator, String mode, Message denyMsg) {
 		if (operator.hasPermission("slashplayer.gamemode." + mode.toLowerCase())) {
-			subject.player().setGameMode(GameMode.valueOf(mode.toUpperCase()));
+			subject.setGamemode(GameMode.valueOf(mode.toUpperCase()));
 			new Message("GamemodeChanged." + mode).send(subject, operator);
 			new Message("PlayerGamemodeChanged").placeholders(subject.commonPlaceholders()).send(operator, operator);
 

@@ -42,9 +42,8 @@ MuteTime: 300
  
 # Settings for frozen players.
 # Use 'deny' or 'allow' to specify.
-# If you set adveture mode to true, it will put the player into adventure gamemode while they are frozen
 Frozen:
-  AdventureMode: true
+  BlockInteract: deny
   Interact: deny
   Chat: deny
   

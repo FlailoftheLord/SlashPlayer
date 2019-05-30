@@ -1,5 +1,6 @@
 package me.flail.slashplayer;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -29,6 +30,8 @@ public class SlashPlayer extends JavaPlugin {
 
 	public FileConfiguration config;
 	public DataFile messages;
+
+	public List<UUID> cooldowns = new ArrayList<>();
 
 	public Map<String, GeneratedGui> loadedGuis = new HashMap<>(4);
 	public Map<UUID, Gui> openGuis = new HashMap<>();
@@ -104,6 +107,13 @@ public class SlashPlayer extends JavaPlugin {
 		return new User(deprecatedMethodThatIDontWantToUseButIHaveToUseIt.getUniqueId());
 	}
 
+	public void cooldown(User user, int delay) {
+		cooldowns.add(user.uuid());
+
+		server.getScheduler().scheduleSyncDelayedTask(this, () -> {
+			cooldowns.remove(user.uuid());
+		}, delay * 20L);
+	}
 
 	public void userGui(User operator, String... username) {
 		boolean isOnline = false;

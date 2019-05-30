@@ -9,6 +9,7 @@ import java.util.Random;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -120,11 +121,11 @@ public class User extends UserData {
 	}
 
 	public String ip() {
-		return player() != null ? player().getAddress().toString().replace("/", "") : "user.not.online";
+		return isOnline() ? player().getAddress().toString().replace("/", "") : "user.not.online";
 	}
 
 	public String gamemode() {
-		return player() != null ? player().getGameMode().toString().toLowerCase() : "user not online";
+		return isOnline() ? player().getGameMode().toString().toLowerCase() : "user not online";
 	}
 
 	public boolean isBanned() {
@@ -274,12 +275,24 @@ public class User extends UserData {
 	 * @return true if the user was frozen, false otherwise.
 	 */
 	public boolean freeze() {
+		String blockInteract = plugin.config.get("Frozen.BlockInteract").toString().toLowerCase();
+		this.closeGui();
+
+
 		if (!isFrozen()) {
-			dataFile().setValue("IsFrozen", "true");
+			dataFile().setValue("Frozen", "true");
+			if (blockInteract.equals("deny")) {
+				setGamemode(GameMode.ADVENTURE);
+			}
+
+
 			return true;
 		}
 
-		dataFile().setValue("IsFrozen", "false");
+		dataFile().setValue("Frozen", "false");
+		if (blockInteract.equals("deny")) {
+			setGamemode(GameMode.SURVIVAL);
+		}
 		return false;
 	}
 
@@ -306,6 +319,14 @@ public class User extends UserData {
 
 	public void feed(int level) {
 		player().setFoodLevel(level);
+	}
+
+	public void setGamemode(GameMode mode) {
+		if (isOnline()) {
+			player().setGameMode(mode);
+		}
+
+		dataFile().setValue("Gamemode", this.gamemode());
 	}
 
 	public void burn(boolean toggle, int time) {

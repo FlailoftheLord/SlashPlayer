@@ -1,8 +1,6 @@
 package me.flail.slashplayer.listeners;
 
 import org.bukkit.Location;
-import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -13,27 +11,15 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 
 import me.flail.slashplayer.sp.Message;
+import me.flail.slashplayer.tools.Logger;
 import me.flail.slashplayer.user.User;
 
-public class FreezeListener implements Listener {
+public class FreezeListener extends Logger implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGHEST)
-	public void freezeListen(PlayerMoveEvent moveEvent, PlayerInteractEvent interactEvent, AsyncPlayerChatEvent chatEvent,
-			InventoryOpenEvent invOpen, InventoryCloseEvent invClose) {
-		User subject;
+	public void moveEvent(PlayerMoveEvent event) {
+		User subject = new User(event.getPlayer().getUniqueId());
 
-		subject = new User(moveEvent.getPlayer().getUniqueId());
-		moveEvent(moveEvent, subject);
-
-		subject = new User(interactEvent.getPlayer().getUniqueId());
-		interactEvent(interactEvent, subject);
-
-		subject = new User(chatEvent.getPlayer().getUniqueId());
-		chatEvent(chatEvent, subject);
-
-	}
-
-	private void moveEvent(PlayerMoveEvent event, User subject) {
 		Message freezeMove = new Message("FreezeMove");
 
 		if (subject.isFrozen()) {
@@ -48,15 +34,94 @@ public class FreezeListener implements Listener {
 			int toZ = to.getBlockZ();
 
 			if (subject.isOnline()) {
-				Player player = subject.player();
 				if ((fromX != toX) || (fromZ != toZ)) {
 					event.setCancelled(true);
-					freezeMove.send(subject, null);
+
+					if (!plugin.cooldowns.contains(subject.uuid())) {
+						freezeMove.send(subject, null);
+						plugin.cooldown(subject, 5);
+					}
 				}
 
 				if (fromY != toY) {
-					Block floor = from.getBlock().getRelative(0, -2, 0);
+					if (!subject.player().isOnGround() && !(fromY > toY)) {
+						event.setCancelled(true);
 
+						if (!plugin.cooldowns.contains(subject.uuid())) {
+							freezeMove.send(subject, null);
+							plugin.cooldown(subject, 5);
+						}
+					}
+				}
+
+				return;
+			}
+
+		}
+
+	}
+
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void invOpen(InventoryOpenEvent event) {
+		User subject = new User(event.getPlayer().getUniqueId());
+
+		if (subject.isFrozen()) {
+			String canInteract = plugin.config.get("Frozen.Interact").toString().toLowerCase();
+
+			if (canInteract.equals("deny")) {
+				event.setCancelled(true);
+				Message freezeOther = new Message("FreezeOther");
+
+				if (!plugin.cooldowns.contains(subject.uuid())) {
+					freezeOther.send(subject, null);
+					plugin.cooldown(subject, 5);
+				}
+
+				return;
+			}
+
+		}
+	}
+
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void invClose(InventoryCloseEvent event) {
+		User subject = new User(event.getPlayer().getUniqueId());
+
+		if (subject.isFrozen()) {
+			String canInteract = plugin.config.get("Frozen.Interact").toString().toLowerCase();
+
+			if (canInteract.equals("deny")) {
+				subject.player().openInventory(event.getInventory());
+				Message freezeOther = new Message("FreezeOther");
+
+				if (!plugin.cooldowns.contains(subject.uuid())) {
+					freezeOther.send(subject, null);
+					plugin.cooldown(subject, 5);
+				}
+
+				return;
+			}
+		}
+
+	}
+
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void interactEvent(PlayerInteractEvent event) {
+		User subject = new User(event.getPlayer().getUniqueId());
+
+		if (!event.isCancelled()) {
+			if (subject.isFrozen()) {
+				String canInteract = plugin.config.get("Frozen.Interact").toString().toLowerCase();
+
+				if (canInteract.equals("deny")) {
+					event.setCancelled(true);
+					Message freezeInteract = new Message("FreezeInteract");
+
+					if (!plugin.cooldowns.contains(subject.uuid())) {
+						freezeInteract.send(subject, null);
+						plugin.cooldown(subject, 5);
+					}
+					return;
 				}
 
 			}
@@ -65,14 +130,25 @@ public class FreezeListener implements Listener {
 
 	}
 
-	private void interactEvent(PlayerInteractEvent event, User subject) {
-		Message freezeInteract = new Message("FreezeInteract");
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void chatEvent(AsyncPlayerChatEvent event) {
+		User subject = new User(event.getPlayer().getUniqueId());
 
-	}
+		if (!event.isCancelled()) {
+			if (subject.isFrozen()) {
+				String canChat = plugin.config.get("Frozen.Chat").toString().toLowerCase();
+				if (canChat.equals("deny")) {
+					event.setCancelled(true);
+					Message freezeOther = new Message("FreezeOther");
 
-	private void chatEvent(AsyncPlayerChatEvent event, User subject) {
-		Message freezeOther = new Message("FreezeOther");
-
+					if (!plugin.cooldowns.contains(subject.uuid())) {
+						freezeOther.send(subject, null);
+						plugin.cooldown(subject, 5);
+					}
+					return;
+				}
+			}
+		}
 
 	}
 
