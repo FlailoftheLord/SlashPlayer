@@ -68,13 +68,13 @@ public class FreezeListener extends Logger implements Listener {
 		User subject = new User(event.getPlayer().getUniqueId());
 
 		if (subject.isFrozen()) {
+			if (subject.hasPermission("slashplayer.exempt")) {
+				return;
+			}
+
 			String canInteract = plugin.config.get("Frozen.Interact").toString().toLowerCase();
 
 			if (canInteract.equals("deny")) {
-				if (subject.hasPermission("slashplayer.command") && plugin.openGuis.containsKey(subject.uuid())) {
-					return;
-				}
-
 				event.setCancelled(true);
 				Message freezeOther = new Message("FreezeOther");
 
@@ -87,6 +87,7 @@ public class FreezeListener extends Logger implements Listener {
 			}
 
 		}
+
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
@@ -94,15 +95,15 @@ public class FreezeListener extends Logger implements Listener {
 		User subject = new User(event.getPlayer().getUniqueId());
 
 		if (subject.isFrozen()) {
+			if (subject.hasPermission("slashplayer.exempt")) {
+				return;
+			}
+
 			String canInteract = plugin.config.get("Frozen.Interact").toString().toLowerCase();
 
 			if (canInteract.equals("deny")) {
 
 				if (event.getInventory().getType().equals(InventoryType.CHEST)) {
-					if (subject.hasPermission("slashplayer.command") && plugin.openGuis.containsKey(subject.uuid())) {
-						return;
-					}
-
 					subject.player().openInventory(event.getInventory());
 
 					Message freezeOther = new Message("FreezeOther");

@@ -27,7 +27,7 @@ permissions:
     default: false
     children:
       slashplayer.command: true
-      slashpalyer.interactopen: true
+      slashplayer.interactopen: true
       slashplayer.rank: true
       slashplayer.exempt.all: true
       slashpalyer.notify: true
@@ -47,6 +47,7 @@ permissions:
       slashplayer.heal: true
       slashplayer.feed: true
       slashplayer.burn: true
+      slashplayer.friend: true
       slashplayer.enderchest: true
       slashplayer.openinventory: true
 
@@ -73,26 +74,10 @@ permissions:
     default: op
       
       
-  # This makes the permisison holder exempt from all kills, mutes, bans and inventory clears.
-  slashplayer.exempt.all:
-    description: exempt from bans, mutes and freezes
-    default: op
-    children:
-      slashplayer.exempt.kill: true
-      slashplayer.exempt.kick: true
-      slashpalyer.exempt.mute: true
-      slashplayer.exempt.freeze: true
-      slashplayer.exempt.ban: true
-      slashplayer.exempt.feed: true
-      slashplayer.exempt.heal: true
-      slashplayer.exempt.clearinventory: true
-      slashplayer.exempt.enderchest: true
-      slashplayer.exempt.teleport: true
-      slashplayer.exempt.summon: true
-      slashplayer.exempt.burn: true
-      slashplayer.exempt.fly: true
-      slashplayer.exempt.gamemode: true
-    
+  # This makes the permisison holder exempt from all kills, mutes, bans and inventory clears... ect.
+  slashplayer.exempt:
+    description: exempt from actions which hinders your fun
+    default: op    
     
   slashplayer.notify:
     description: notifies these players of unbans and unmutes

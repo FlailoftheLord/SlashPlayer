@@ -23,6 +23,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.potion.PotionEffect;
 
 import me.flail.slashplayer.SlashPlayer;
 import me.flail.slashplayer.sp.Message;
@@ -92,6 +93,7 @@ public class User extends UserData {
 	 */
 	public void setup(boolean verbose) {
 		plugin.server.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+			setOnline(true);
 
 			dataFile().load();
 			loadDefaultValues(this);
@@ -324,7 +326,9 @@ public class User extends UserData {
 		feed(22);
 
 		if (removePotionEffects) {
-			player().getActivePotionEffects().clear();
+			for (PotionEffect effect : player().getActivePotionEffects()) {
+				player().removePotionEffect(effect.getType());
+			}
 		}
 	}
 
@@ -446,7 +450,7 @@ public class User extends UserData {
 				LivingEntity liveFrend = (LivingEntity) frend;
 
 				liveFrend.setAI(true);
-				liveFrend.setCustomName(chat("&cYour Friend."));
+				liveFrend.setCustomName(chat("&c" + name() + "'s Friend."));
 				liveFrend.setCustomNameVisible(true);
 				liveFrend.setRemoveWhenFarAway(false);
 				liveFrend.setCanPickupItems(false);
@@ -465,8 +469,16 @@ public class User extends UserData {
 				if (flySpd != null) {
 					liveFrend.getAttribute(Attribute.GENERIC_FLYING_SPEED).setBaseValue(0);
 				}
+				AttributeInstance spawnZomboid = liveFrend.getAttribute(Attribute.ZOMBIE_SPAWN_REINFORCEMENTS);
+				if (spawnZomboid != null) {
+					liveFrend.getAttribute(Attribute.ZOMBIE_SPAWN_REINFORCEMENTS).setBaseValue(0);
+				}
+				AttributeInstance followRange = liveFrend.getAttribute(Attribute.GENERIC_FOLLOW_RANGE);
+				if (followRange != null) {
+					liveFrend.getAttribute(Attribute.GENERIC_FOLLOW_RANGE).setBaseValue(0);
+				}
 
-				liveFrend.setMetadata("SlashPlayerFrend",
+				liveFrend.setMetadata("SlashPlayerFrend-" + name(),
 						new FixedMetadataValue(plugin, liveFrend.getType().toString().toLowerCase()));
 
 			}

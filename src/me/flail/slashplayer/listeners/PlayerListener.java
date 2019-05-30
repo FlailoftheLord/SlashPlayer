@@ -15,6 +15,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerLoginEvent.Result;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -79,7 +80,7 @@ public class PlayerListener extends Logger implements Listener {
 		Entity damager = event.getDamager();
 
 		if (damaged instanceof Player) {
-			int range = plugin.config.getInt("FrendProtectionRange", 3);
+			int range = plugin.config.getInt("FriendProtectionRange", 3);
 
 			if ((damager instanceof LivingEntity) && damager.hasMetadata("SlashPlayerFrend")) {
 				event.setCancelled(true);
@@ -90,13 +91,9 @@ public class PlayerListener extends Logger implements Listener {
 				List<Entity> nearby = damaged.getNearbyEntities(range, range, range);
 				if (!nearby.isEmpty() && (nearby.get(0) != null)) {
 					for (Entity e : nearby) {
-						if ((e instanceof LivingEntity) && e.hasMetadata("SlashPlayerFrend")) {
+						if ((e instanceof LivingEntity) && e.hasMetadata("SlashPlayerFrend-" + damaged.getName())) {
 							event.setCancelled(true);
-
-							if (damager instanceof LivingEntity) {
-								((LivingEntity) damager).setHealth(0);
-								return;
-							}
+							damaged.setInvulnerable(true);
 
 							damager.remove();
 							return;
@@ -109,6 +106,22 @@ public class PlayerListener extends Logger implements Listener {
 
 		}
 
+	}
+
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void playerMove(PlayerMoveEvent event) {
+		Player player = event.getPlayer();
+		int range = plugin.config.getInt("FriendProtectionRange", 3);
+		List<Entity> nearby = player.getNearbyEntities(range, range, range);
+		for (Entity e : nearby) {
+			if ((e instanceof LivingEntity) && e.hasMetadata("SlashPlayerFrend-" + player.getName())) {
+				player.setInvulnerable(true);
+				return;
+			}
+
+		}
+
+		player.setInvulnerable(false);
 	}
 
 

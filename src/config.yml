@@ -54,7 +54,7 @@ Broadcast:
   Ban: true
   
 # How close to stay to your frend, to be invincible
-FrendProtectionRange: 5
+FrendProtectionRange: 3
 
 # More console output?
 # Note: All actions are logged in the logs files located under /logs/[Date]
