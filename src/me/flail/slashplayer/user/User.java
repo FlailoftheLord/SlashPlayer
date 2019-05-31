@@ -300,6 +300,12 @@ public class User extends UserData {
 
 	}
 
+	public void teleport(User target) {
+		if (isOnline() && target.isOnline()) {
+			player().teleport(target.player());
+		}
+	}
+
 	/**
 	 * @return true if the user was frozen, false otherwise.
 	 */

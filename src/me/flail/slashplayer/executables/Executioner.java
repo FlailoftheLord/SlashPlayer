@@ -1,6 +1,5 @@
 package me.flail.slashplayer.executables;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import org.bukkit.GameMode;
@@ -43,11 +42,11 @@ public class Executioner extends Logger {
 	private boolean execute(Exe exe, User subject, User operator) {
 		logMsg = " User: " + operator.name() + " ran executable: " + exe.toString() + " on " + subject.name();
 
-		Map<String, String> exePlaceholders = new HashMap<>();
-		exePlaceholders.put("%executable%", exe.toString());
-		exePlaceholders.put("%operator%", operator.name());
+		Map<String, String> placeholders = subject.commonPlaceholders();
+		placeholders.put("%executable%", exe.toString());
+		placeholders.put("%operator%", operator.name());
 
-		Message accessDenied = new Message("AccessDenied").placeholders(exePlaceholders);
+		Message accessDenied = new Message("AccessDenied").placeholders(placeholders);
 
 		if (subject.isOnline() && operator.isOnline()) {
 			switch (exe) {
@@ -68,7 +67,7 @@ public class Executioner extends Logger {
 					if (plugin.config.getBoolean("Broadcast.Ban")) {
 						new Message("BanBroadcast").broadcast(subject, operator);
 					} else {
-						new Message("BanPlayer").placeholders(subject.commonPlaceholders()).send(operator, operator);
+						new Message("BanPlayer").placeholders(placeholders).send(operator, operator);
 					}
 
 					logAction("a");
@@ -84,7 +83,7 @@ public class Executioner extends Logger {
 					logAction("a");
 
 					new Message("Burning").send(subject, operator);
-					new Message("BurntPlayer").placeholders(subject.commonPlaceholders()).send(operator, operator);
+					new Message("BurntPlayer").placeholders(placeholders).send(operator, operator);
 					break;
 				}
 
@@ -92,6 +91,22 @@ public class Executioner extends Logger {
 				accessDenied.send(operator, operator);
 				break;
 			case CLEARINVENTORY:
+				if (operator.hasPermission("slashplayer.clearinventory")) {
+					if (subject.hasPermission("slashplayer.exempt")) {
+						new Message("CantClearInv").placeholders(placeholders).send(operator, operator);
+						break;
+					}
+
+					subject.clearInventory(true);
+					logAction("a");
+
+					new Message("PlayerInventoryCleared").placeholders(placeholders).send(operator, operator);
+					new Message("InventoryCleared").send(subject, operator);
+					break;
+				}
+
+				logAction("d");
+				accessDenied.send(operator, operator);
 				break;
 			case ENDERCHEST:
 				if (operator.hasPermission("slashplayer.enderchest")) {
@@ -108,7 +123,7 @@ public class Executioner extends Logger {
 				if (operator.hasPermission("slashplayer.feed")) {
 					subject.feed(22);
 					new Message("Fed").send(subject, operator);
-					new Message("FedPlayer").placeholders(subject.commonPlaceholders()).send(operator, operator);
+					new Message("FedPlayer").placeholders(placeholders).send(operator, operator);
 
 					logAction("a");
 					break;
@@ -135,12 +150,12 @@ public class Executioner extends Logger {
 					if (subject.freeze()) {
 
 						new Message("Frozen").send(subject, operator);
-						new Message("FreezePlayer").placeholders(subject.commonPlaceholders()).send(operator, operator);
+						new Message("FreezePlayer").placeholders(placeholders).send(operator, operator);
 						break;
 					}
 
 					new Message("Unfrozen").send(subject, operator);
-					new Message("UnfreezePlayer").placeholders(subject.commonPlaceholders()).send(operator, operator);
+					new Message("UnfreezePlayer").placeholders(placeholders).send(operator, operator);
 					break;
 				}
 
@@ -152,7 +167,7 @@ public class Executioner extends Logger {
 					subject.spawnNewFriend();
 
 					logAction("a");
-					new Message("SpawnedMob").placeholders(subject.commonPlaceholders()).send(operator, operator);
+					new Message("SpawnedMob").placeholders(placeholders).send(operator, operator);
 					break;
 				}
 
@@ -183,7 +198,7 @@ public class Executioner extends Logger {
 				if (operator.hasPermission("slashplayer.heal")) {
 					subject.heal(true);
 					new Message("Healed").send(subject, operator);
-					new Message("HealedPlayer").placeholders(subject.commonPlaceholders()).send(operator, operator);
+					new Message("HealedPlayer").placeholders(placeholders).send(operator, operator);
 
 					logAction("a");
 					break;
@@ -202,7 +217,7 @@ public class Executioner extends Logger {
 						break;
 					}
 
-					new Message("PlayerKicked").placeholders(subject.commonPlaceholders()).send(operator, operator);
+					new Message("PlayerKicked").placeholders(placeholders).send(operator, operator);
 					break;
 				}
 
@@ -212,16 +227,16 @@ public class Executioner extends Logger {
 			case KILL:
 				if (operator.hasPermission("slashplayer.kill")) {
 					if (subject.hasPermission("slashplayer.exempt")) {
-						new Message("CantKillPlayer").placeholders(subject.commonPlaceholders()).send(operator, operator);
+						new Message("CantKillPlayer").placeholders(placeholders).send(operator, operator);
 
 						logAction("d");
 						break;
 					}
 
-					Message killMsg = new Message("Killed").placeholders(subject.commonPlaceholders());
+					Message killMsg = new Message("Killed").placeholders(placeholders);
 					subject.kill(killMsg);
 
-					new Message("KilledPlayer").placeholders(subject.commonPlaceholders()).send(operator, operator);
+					new Message("KilledPlayer").placeholders(placeholders).send(operator, operator);
 					logAction("a");
 					break;
 				}
@@ -241,7 +256,7 @@ public class Executioner extends Logger {
 						break;
 					}
 
-					new Message("PlayerMuted").placeholders(subject.commonPlaceholders()).send(operator, operator);
+					new Message("PlayerMuted").placeholders(placeholders).send(operator, operator);
 					break;
 				}
 
@@ -265,10 +280,32 @@ public class Executioner extends Logger {
 				useCmdToReport.send(operator, null);
 				break;
 			case RESTOREINVENTORY:
+				// TODO: finish this last method
 				break;
 			case SUMMON:
+				if (operator.hasPermission("slashplayer.summon")) {
+					subject.teleport(operator);
+					logAction("a");
+
+					new Message("Summoned").send(subject, operator);
+					new Message("SummonPlayer").placeholders(placeholders).send(operator, operator);
+					break;
+				}
+
+				logAction("d");
+				accessDenied.send(operator, operator);
 				break;
 			case TELEPORT:
+				if (operator.hasPermission("slashplayer.teleport")) {
+					operator.teleport(subject);
+					logAction("a");
+
+					new Message("TeleportPlayer").placeholders(placeholders).send(operator, operator);
+					break;
+				}
+
+				logAction("d");
+				accessDenied.send(operator, operator);
 				break;
 			case TOGGLEFLY:
 				if (operator.hasPermission("slashplayer.fly")) {
@@ -290,12 +327,12 @@ public class Executioner extends Logger {
 					if (subject.freeze()) {
 
 						new Message("Frozen").send(subject, operator);
-						new Message("FreezePlayer").placeholders(subject.commonPlaceholders()).send(operator, operator);
+						new Message("FreezePlayer").placeholders(placeholders).send(operator, operator);
 						break;
 					}
 
 					new Message("Unfrozen").send(subject, operator);
-					new Message("UnfreezePlayer").placeholders(subject.commonPlaceholders()).send(operator, operator);
+					new Message("UnfreezePlayer").placeholders(placeholders).send(operator, operator);
 					break;
 				}
 
@@ -309,11 +346,11 @@ public class Executioner extends Logger {
 						subject.unmute();
 						new Message("Unmuted").send(subject, operator);
 
-						new Message("PlayerUnmuted").placeholders(subject.commonPlaceholders()).send(operator, operator);
+						new Message("PlayerUnmuted").placeholders(placeholders).send(operator, operator);
 						break;
 					}
 
-					new Message("PlayerNotMuted").placeholders(subject.commonPlaceholders()).send(operator, operator);
+					new Message("PlayerNotMuted").placeholders(placeholders).send(operator, operator);
 					break;
 				}
 
@@ -338,7 +375,7 @@ public class Executioner extends Logger {
 				subject.unban();
 				logAction("a");
 
-				new Message("UnbanPlayer").placeholders(subject.commonPlaceholders()).send(operator, operator);
+				new Message("UnbanPlayer").placeholders(placeholders).send(operator, operator);
 				return true;
 			}
 
@@ -348,7 +385,7 @@ public class Executioner extends Logger {
 		}
 
 		operator.closeGui();
-		new Message("InvalidPlayer").placeholders(subject.commonPlaceholders()).send(operator, operator);
+		new Message("InvalidPlayer").placeholders(placeholders).send(operator, operator);
 
 		return false;
 	}
