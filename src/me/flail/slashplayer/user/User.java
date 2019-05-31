@@ -60,7 +60,7 @@ public class User extends UserData {
 
 	public int rank() {
 		if (isOnline()) {
-			for (int r = 100; r > -1; r--) {
+			for (int r = 100; r > -1; --r) {
 				if (hasPermission("slashplayer.rank." + r)) {
 					return r;
 				}
@@ -445,6 +445,8 @@ public class User extends UserData {
 			placeholders.put("%rank%", rank() + "");
 			placeholders.put("%ban-duration%", this.banDuration() + " seconds");
 			placeholders.put("%unban-time%", this.banExpiry());
+			placeholders.put("%mute-duration%", dataFile().getValue("MuteDuration"));
+			placeholders.put("%unmute-time%", Time.formatInstant(Instant.parse(dataFile().getValue("UnmuteTime"))));
 		}
 
 		if (this.isReported()) {

@@ -21,6 +21,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 
 import me.flail.slashplayer.SlashPlayer;
+import me.flail.slashplayer.sp.Message;
 import me.flail.slashplayer.sp.gui.GuiControl;
 import me.flail.slashplayer.tools.Logger;
 import me.flail.slashplayer.user.User;
@@ -125,7 +126,7 @@ public class PlayerListener extends Logger implements Listener {
 		player.setInvulnerable(false);
 	}
 
-	@EventHandler
+	@EventHandler(priority = EventPriority.HIGH)
 	public void playerChat(AsyncPlayerChatEvent event) {
 		User subject = new User(event.getPlayer().getUniqueId());
 		if (subject.isMuted()) {
@@ -133,6 +134,10 @@ public class PlayerListener extends Logger implements Listener {
 				return;
 			}
 			event.setCancelled(true);
+			if (!plugin.cooldowns.contains(subject.uuid())) {
+				new Message("Muted").send(subject, null);
+				plugin.cooldown(subject, 5);
+			}
 
 		}
 

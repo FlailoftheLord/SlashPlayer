@@ -230,6 +230,23 @@ public class Executioner extends Logger {
 				accessDenied.send(operator, operator);
 				break;
 			case MUTE:
+				if (operator.hasPermission("slashplayer.mute")) {
+					subject.mute(plugin.config.getLong("MuteTime", 300L));
+					logAction("a");
+
+					new Message("Muted").send(subject, operator);
+
+					if (plugin.config.getBoolean("Broadcast.Mute")) {
+						new Message("MuteBroadcast").broadcast(subject, operator);
+						break;
+					}
+
+					new Message("PlayerMuted").placeholders(subject.commonPlaceholders()).send(operator, operator);
+					break;
+				}
+
+				logAction("d");
+				accessDenied.send(operator, operator);
 				break;
 			case OPENINVENTORY:
 				if (operator.hasPermission("slashplayer.openinventory")) {
@@ -286,6 +303,22 @@ public class Executioner extends Logger {
 				accessDenied.send(operator, operator);
 				break;
 			case UNMUTE:
+				if (operator.hasPermission("slashplayer.mute")) {
+					logAction("a");
+					if (subject.isMuted()) {
+						subject.unmute();
+						new Message("Unmuted").send(subject, operator);
+
+						new Message("PlayerUnmuted").placeholders(subject.commonPlaceholders()).send(operator, operator);
+						break;
+					}
+
+					new Message("PlayerNotMuted").placeholders(subject.commonPlaceholders()).send(operator, operator);
+					break;
+				}
+
+				logAction("d");
+				accessDenied.send(operator, operator);
 				break;
 			case WHITELIST:
 				whitelist(subject, operator, accessDenied);
