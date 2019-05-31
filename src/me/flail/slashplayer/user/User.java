@@ -248,7 +248,7 @@ public class User extends UserData {
 
 		dataFile().setValue("MuteDuration", duration + "");
 		dataFile().setValue("UnmuteTime", Time.finalTime(instant, duration).toString());
-		dataFile().setValue("Mutened", "true");
+		dataFile().setValue("Muted", "true");
 
 		return this.isMuted();
 	}
@@ -449,10 +449,14 @@ public class User extends UserData {
 			placeholders.put("%status-frozen%", isFrozen() + "");
 			placeholders.put("%status-ban%", isBanned() + "");
 			placeholders.put("%rank%", rank() + "");
-			placeholders.put("%ban-duration%", this.banDuration() + " seconds");
-			placeholders.put("%unban-time%", this.banExpiry());
-			placeholders.put("%mute-duration%", dataFile().getValue("MuteDuration"));
-			placeholders.put("%unmute-time%", Time.formatInstant(Instant.parse(dataFile().getValue("UnmuteTime"))));
+			if (isBanned()) {
+				placeholders.put("%ban-duration%", this.banDuration() + " seconds");
+				placeholders.put("%unban-time%", this.banExpiry());
+			}
+			if (isMuted()) {
+				placeholders.put("%mute-duration%", dataFile().getValue("MuteDuration"));
+				placeholders.put("%unmute-time%", Time.formatInstant(Instant.parse(dataFile().getValue("UnmuteTime"))));
+			}
 		}
 
 		if (this.isReported()) {

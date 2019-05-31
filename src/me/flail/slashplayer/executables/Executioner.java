@@ -1,5 +1,6 @@
 package me.flail.slashplayer.executables;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.bukkit.GameMode;
@@ -42,13 +43,15 @@ public class Executioner extends Logger {
 	private boolean execute(Exe exe, User subject, User operator) {
 		logMsg = " User: " + operator.name() + " ran executable: " + exe.toString() + " on " + subject.name();
 
-		Map<String, String> placeholders = subject.commonPlaceholders();
+		Map<String, String> placeholders = new HashMap<>();
 		placeholders.put("%executable%", exe.toString());
 		placeholders.put("%operator%", operator.name());
 
 		Message accessDenied = new Message("AccessDenied").placeholders(placeholders);
 
 		if (subject.isOnline() && operator.isOnline()) {
+			placeholders.putAll(subject.commonPlaceholders());
+
 			switch (exe) {
 			case BACKBUTTON:
 				if (plugin.openGuis.get(operator.uuid()).data().dataFile().name().equals("GamemodeGui.yml")) {
@@ -256,7 +259,7 @@ public class Executioner extends Logger {
 						break;
 					}
 
-					new Message("PlayerMuted").placeholders(placeholders).send(operator, operator);
+					new Message("MutePlayer").placeholders(placeholders).send(operator, operator);
 					break;
 				}
 
@@ -346,7 +349,7 @@ public class Executioner extends Logger {
 						subject.unmute();
 						new Message("Unmuted").send(subject, operator);
 
-						new Message("PlayerUnmuted").placeholders(placeholders).send(operator, operator);
+						new Message("UnmutePlayer").placeholders(placeholders).send(operator, operator);
 						break;
 					}
 

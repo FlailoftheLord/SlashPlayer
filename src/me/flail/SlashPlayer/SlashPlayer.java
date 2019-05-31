@@ -80,7 +80,7 @@ public class SlashPlayer extends JavaPlugin {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		return new SlashPlayerCommand(sender, command, args).run();
+		return new SlashPlayerCommand(sender, command, label, args).run();
 	}
 
 	@Override

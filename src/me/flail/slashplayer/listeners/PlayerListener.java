@@ -1,5 +1,7 @@
 package me.flail.slashplayer.listeners;
 
+import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 
 import org.bukkit.Material;
@@ -24,6 +26,7 @@ import me.flail.slashplayer.SlashPlayer;
 import me.flail.slashplayer.sp.Message;
 import me.flail.slashplayer.sp.gui.GuiControl;
 import me.flail.slashplayer.tools.Logger;
+import me.flail.slashplayer.tools.Time;
 import me.flail.slashplayer.user.User;
 
 public class PlayerListener extends Logger implements Listener {
@@ -33,6 +36,11 @@ public class PlayerListener extends Logger implements Listener {
 	public void playerLogin(PlayerLoginEvent event) {
 		User user = new User(event.getPlayer().getUniqueId());
 		if (user.isBanned()) {
+			if (user.isBanExpired()) {
+				user.unban();
+				return;
+			}
+
 			String banMsg = user.getBanMessage().toSingleString();
 			event.disallow(Result.KICK_BANNED, banMsg);
 			user.logout();
@@ -133,6 +141,12 @@ public class PlayerListener extends Logger implements Listener {
 			if (subject.hasPermission("slashplayer.exempt")) {
 				return;
 			}
+			if (Time.isExpired(Date.from(Instant.parse(subject.dataFile().getValue("UnmuteTime"))),
+					Long.parseLong(subject.dataFile().getValue("MuteDuration")))) {
+				subject.unmute();
+				return;
+			}
+
 			event.setCancelled(true);
 			if (!plugin.cooldowns.contains(subject.uuid())) {
 				new Message("Muted").send(subject, null);

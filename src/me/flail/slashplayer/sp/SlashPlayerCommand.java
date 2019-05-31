@@ -12,12 +12,14 @@ import me.flail.slashplayer.user.User;
 public class SlashPlayerCommand extends Logger {
 	private CommandSender sender;
 	private Command command;
+	private String label;
 	private String[] args;
 
 
-	public SlashPlayerCommand(CommandSender sender, Command command, String[] args) {
+	public SlashPlayerCommand(CommandSender sender, Command command, String label, String[] args) {
 		this.sender = sender;
 		this.command = command;
+		this.label = label.toLowerCase();
 		this.args = args;
 	}
 
@@ -25,7 +27,7 @@ public class SlashPlayerCommand extends Logger {
 		Message noPermission = new Message("NoPermission");
 		Message defaultUsage = Message.construct("%prefix% &7Use &e/slashplayer help &7for help on commands.");
 
-		if (command.getName().equalsIgnoreCase("slashplayer")) {
+		if (label.equals("sp") || label.equals("slashplayer") || label.equals("player")) {
 			if (!(sender instanceof Player)) {
 				console("&cYou must use SlashPlayer commands in-game!");
 				return true;

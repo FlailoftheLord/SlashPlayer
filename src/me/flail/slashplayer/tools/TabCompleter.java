@@ -36,6 +36,8 @@ public class TabCompleter extends ArrayList<String> {
 				completed = true;
 			} else if (label.equalsIgnoreCase("reports")) {
 				completed = true;
+			} else if (label.equalsIgnoreCase("players")) {
+				completed = true;
 			}
 
 			if (!completed) {
@@ -48,6 +50,12 @@ public class TabCompleter extends ArrayList<String> {
 					baseArgs.add("whitelist");
 					baseArgs.add("unban");
 					baseArgs.add("opengui");
+
+					for (String s : baseArgs) {
+						if (s.toLowerCase().startsWith(args[0].toLowerCase())) {
+							this.add(s);
+						}
+					}
 
 					break;
 				case 2:
@@ -77,7 +85,6 @@ public class TabCompleter extends ArrayList<String> {
 						}
 					}
 
-
 					break;
 				case 3:
 					switch (args[0].toLowerCase()) {
@@ -88,15 +95,18 @@ public class TabCompleter extends ArrayList<String> {
 						this.addAll(usernames());
 						break;
 					}
+
+					for (String s : baseArgs) {
+						if (s.toLowerCase().startsWith(args[2].toLowerCase())) {
+							this.add(s);
+						}
+					}
+
+					break;
 				}
 
 			}
 
-			for (String s : baseArgs) {
-				if (s.toLowerCase().startsWith(args[0].toLowerCase())) {
-					this.add(s);
-				}
-			}
 
 		}
 

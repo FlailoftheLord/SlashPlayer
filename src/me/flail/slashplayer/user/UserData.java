@@ -2,6 +2,7 @@ package me.flail.slashplayer.user;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -100,6 +101,10 @@ public class UserData extends Logger {
 			return Long.valueOf(getDataFile().getNumber("BanDuration"));
 		}
 		return Long.valueOf(-1L);
+	}
+
+	public boolean isBanExpired() {
+		return Time.isExpired(Date.from(Instant.parse(getDataFile().getValue("UnbanTime"))), banDuration().longValue());
 	}
 
 	public Message getBanMessage() {

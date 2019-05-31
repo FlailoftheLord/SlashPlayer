@@ -19,12 +19,12 @@ public class Time extends Logger {
 		return initial.plusSeconds(duration);
 	}
 
-	public static Instant initialTime(Instant initial, long duration) {
-		return initial.minusSeconds(duration);
+	public static Instant initialTime(Instant finalTime, long duration) {
+		return finalTime.minusSeconds(duration);
 	}
 
 	public static Long timeLeft(Instant initial, long duration) {
-		return Long.valueOf(finalTime(initial, duration).toEpochMilli() - currentInstant().toEpochMilli());
+		return Long.valueOf((finalTime(initial, duration).toEpochMilli() - currentInstant().toEpochMilli()) / 1000);
 	}
 
 	public static boolean isExpired(Date date, long duration) {
