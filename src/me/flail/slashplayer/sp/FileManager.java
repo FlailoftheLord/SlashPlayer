@@ -13,6 +13,7 @@ public class FileManager extends Logger {
 			new GuiControl().loadGui(fileName, true);
 		}
 
+		new GuiControl().loadGui("RestoreInvGui.yml", false);
 	}
 
 

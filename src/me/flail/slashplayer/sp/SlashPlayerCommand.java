@@ -12,22 +12,21 @@ import me.flail.slashplayer.user.User;
 public class SlashPlayerCommand extends Logger {
 	private CommandSender sender;
 	private Command command;
-	private String label;
 	private String[] args;
 
 
-	public SlashPlayerCommand(CommandSender sender, Command command, String label, String[] args) {
+	public SlashPlayerCommand(CommandSender sender, Command command, String[] args) {
 		this.sender = sender;
 		this.command = command;
-		this.label = label.toLowerCase();
 		this.args = args;
 	}
 
 	public boolean run() {
 		Message noPermission = new Message("NoPermission");
 		Message defaultUsage = Message.construct("%prefix% &7Use &e/slashplayer help &7for help on commands.");
+		Message invalidPlayer = new Message("InvalidPlayer");
 
-		if (label.equals("sp") || label.equals("slashplayer") || label.equals("player")) {
+		if (command.getName().equalsIgnoreCase("slashplayer")) {
 			if (!(sender instanceof Player)) {
 				console("&cYou must use SlashPlayer commands in-game!");
 				return true;
@@ -86,6 +85,16 @@ public class SlashPlayerCommand extends Logger {
 					}
 
 					break;
+				case "reports":
+					if (operator.isStaff()) {
+						Gui reportList = new Gui(plugin.loadedGuis.get("ReportGui.yml"));
+
+						reportList.open(operator, null);
+						break;
+					}
+
+					noPermission.send(operator, operator);
+					break;
 				case "unban":
 					if (operator.hasPermission("slashplayer.ban")) {
 						Message usage = Message
@@ -110,22 +119,23 @@ public class SlashPlayerCommand extends Logger {
 			case 2:
 				switch (args[0].toLowerCase()) {
 				case "rank":
-					for (User user : plugin.players.values()) {
-						if (args[1].toLowerCase().startsWith(user.name())) {
-							if (operator.rank() > user.rank()) {
-								Message rankMsg = new Message("RankCheck");
-								rankMsg = rankMsg.placeholders(user.commonPlaceholders());
+					Player player = plugin.server.getPlayer(args[1]);
+					if (player != null) {
+						User user = new User(player.getUniqueId());
 
-								rankMsg.send(operator, null);
-								break;
-							}
+						if (operator.hasPermission("slashplayer.rank")) {
+							Message rankMsg = new Message("RankCheckOther");
+							rankMsg = rankMsg.placeholders(user.commonPlaceholders());
 
-							noPermission.send(operator, null);
+							rankMsg.send(operator, null);
 							break;
 						}
 
+						noPermission.send(operator, null);
+						break;
 					}
 
+					invalidPlayer.replace("%player%", args[1]).send(operator, operator);
 					break;
 				case "help":
 					plugin.sendHelp(operator, command.getName());
@@ -247,6 +257,7 @@ public class SlashPlayerCommand extends Logger {
 
 			return true;
 		}
+
 		if (command.getName().equals("ouch")) {
 			if (sender instanceof Player) {
 				User user = new User(((Player) sender).getUniqueId());

@@ -104,7 +104,7 @@ public class UserData extends Logger {
 	}
 
 	public boolean isBanExpired() {
-		return Time.isExpired(Date.from(Instant.parse(getDataFile().getValue("UnbanTime"))), banDuration().longValue());
+		return Time.isExpired(Date.from(Instant.parse(getDataFile().getValue("UnbanTime"))));
 	}
 
 	public Message getBanMessage() {

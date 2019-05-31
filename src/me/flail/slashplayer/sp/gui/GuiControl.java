@@ -1,7 +1,12 @@
 package me.flail.slashplayer.sp.gui;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 import me.flail.slashplayer.executables.Executables.Exe;
@@ -88,7 +93,7 @@ public class GuiControl extends Logger {
 					new Executioner(subject, exe).execute(operator);
 				} else {
 					new Message("RankTooLow").placeholders(subject.commonPlaceholders()).replace("%executable%", exe.toString())
-							.send(operator, operator);
+					.send(operator, operator);
 				}
 			}
 
@@ -112,6 +117,38 @@ public class GuiControl extends Logger {
 		}
 
 		return true;
+	}
+
+	public void invRestoreGui(User subject, User operator) {
+		DataFile invGui = new DataFile("GuiConfigurations/RestoreInvGui.yml");
+		DataFile invData = new DataFile("InventoryData.yml");
+
+		if (!invData.keySet().isEmpty()) {
+			List<String> backupNames = new ArrayList<>();
+
+			for (String key : invData.keySet()) {
+				if (key.equalsIgnoreCase(subject.id())) {
+					key = key + ".InventoryData";
+					backupNames.addAll(invData.keySet(key));
+				}
+			}
+			int index = 0;
+
+			Map<Integer, ItemStack> items = new HashMap<>();
+
+			for (String name : backupNames) {
+				Material material = Material.matchMaterial("Format.Item");
+				if ((material == null) || material.equals(null)) {
+
+				}
+
+
+				ItemStack item = new ItemStack(material);
+
+			}
+
+		}
+
 	}
 
 }

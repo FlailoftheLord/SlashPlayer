@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -85,7 +86,7 @@ public class GuiGenerator extends Logger {
 			}
 
 			DataFile userListFile = null;
-			if (source.contains("%") || source.contains("online-players")) {
+			if (source.contains("online-players")) {
 				userList.clear();
 				userList.addAll(plugin.players.values());
 			} else {
@@ -166,15 +167,21 @@ public class GuiGenerator extends Logger {
 						name = name.concat(chat("  &c&l(Offline)"));
 					}
 
-					ItemStack userHead = user.getSkull();
-					ItemMeta meta = userHead.getItemMeta();
+					ItemStack item;
+
+					if (!file.hasValue("Format.Item")) {
+						item = user.getSkull();
+					} else {
+						item = new ItemStack(Material.matchMaterial(file.getValue("Foramt.Item")));
+					}
+					ItemMeta meta = item.getItemMeta();
 
 					meta.setDisplayName(name);
 					meta.setLore(actualLore);
-					userHead.setItemMeta(meta);
+					item.setItemMeta(meta);
 
 					if (index < 54) {
-						items.put(Integer.valueOf(index), userHead);
+						items.put(Integer.valueOf(index), item);
 					} else {
 						console("&cThere are more than 54 players online... "
 								+ "This may cause issues with some GUIs on SlashPlayer, "
@@ -208,12 +215,6 @@ public class GuiGenerator extends Logger {
 			new GeneratedGui(file, items).create(file.name());
 		}
 
-
-
-
-
 	}
-
-
 
 }

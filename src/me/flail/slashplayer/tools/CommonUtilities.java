@@ -89,6 +89,8 @@ public class CommonUtilities extends BaseUtilities {
 		ItemStack item = new ItemStack(Material.BARRIER);
 		ItemMeta meta = item.getItemMeta();
 
+		meta.setDisplayName(chat("&cInvalid Item in &7" + file.name()));
+
 		Material type = Material.matchMaterial(itemType);
 		if (type != null) {
 			item.setType(type);
@@ -99,9 +101,12 @@ public class CommonUtilities extends BaseUtilities {
 		for (String line : itemLore) {
 			lore.add(chat(line));
 		}
-		meta.setLore(lore);
 
-		meta.setDisplayName(itemName);
+		if (type != null) {
+			meta.setLore(lore);
+			meta.setDisplayName(itemName);
+		}
+
 		meta.setUnbreakable(unbreakable);
 		meta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
 		if (glowing) {

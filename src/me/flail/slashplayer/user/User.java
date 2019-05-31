@@ -31,6 +31,11 @@ import me.flail.slashplayer.sp.gui.GuiControl;
 import me.flail.slashplayer.tools.DataFile;
 import me.flail.slashplayer.tools.Time;
 
+/**
+ * Definitely <b>NOT</b> a user Object.
+ * 
+ * @author FlailoftheLord
+ */
 public class User extends UserData {
 
 	public enum KickReason {
@@ -386,7 +391,7 @@ public class User extends UserData {
 		}
 
 		if (!storedList.isEmpty()) {
-			invData.setValue(me().id() + ".InventoryBackup." + Time.currentDate().toString(), storedList);
+			invData.setValue(me().id() + ".InventoryBackup." + Time.currentDate().toString().replace(":", "_"), storedList);
 		}
 	}
 
@@ -398,7 +403,39 @@ public class User extends UserData {
 		player().getInventory().clear();
 	}
 
-	public void restoreInv() {
+	@SuppressWarnings("unchecked")
+	public void restoreInv(String date) {
+		DataFile invData = new DataFile("InventoryData.yml");
+		String key = id() + ".InventoryData." + date;
+		if (invData.hasValue(key)) {
+			List<ItemStack> itemList = (List<ItemStack>) invData.getObj(key);
+
+			ItemStack[] currentInv = player().getInventory().getContents();
+			for (ItemStack item : currentInv) {
+				if (item != null) {
+					player().getWorld().dropItemNaturally(player().getLocation(), item);
+				}
+			}
+			player().getInventory().clear();
+
+			for (ItemStack item : itemList) {
+				if (item != null) {
+					HashMap<Integer, ItemStack> leftovers = player().getInventory().addItem(item);
+
+					if (!leftovers.isEmpty()) {
+						for (ItemStack leftover : leftovers.values()) {
+							if (leftover != null) {
+								player().getWorld().dropItem(player().getLocation(), leftover);
+							}
+						}
+					}
+				}
+
+			}
+
+			invData.setValue(key, null);
+			return;
+		}
 
 	}
 

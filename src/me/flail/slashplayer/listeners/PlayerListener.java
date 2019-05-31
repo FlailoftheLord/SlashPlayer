@@ -141,8 +141,7 @@ public class PlayerListener extends Logger implements Listener {
 			if (subject.hasPermission("slashplayer.exempt")) {
 				return;
 			}
-			if (Time.isExpired(Date.from(Instant.parse(subject.dataFile().getValue("UnmuteTime"))),
-					Long.parseLong(subject.dataFile().getValue("MuteDuration")))) {
+			if (Time.isExpired(Date.from(Instant.parse(subject.dataFile().getValue("UnmuteTime"))))) {
 				subject.unmute();
 				return;
 			}

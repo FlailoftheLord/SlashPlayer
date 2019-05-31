@@ -42,7 +42,7 @@ HelpMessage:
 # = = = # Rank Messages # = = = #
 RankTooLow: "%prefix% &cYour rank is not high enough to use &7%executable% on &a%player%!"
 RankCheck: "%prefix% &7Your rank is &a%rank%"
-RankCheckOther: "%prefix% &7%player%'s rank is 7a%rank%"
+RankCheckOther: "%prefix% &7%player%'s rank is &a%rank%"
 
 # = = = # Ban Messages # = = = #
 BanPlayer: "%prefix% &abanned player for %ban-duration% seconds."

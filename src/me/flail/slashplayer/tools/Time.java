@@ -27,8 +27,8 @@ public class Time extends Logger {
 		return Long.valueOf((finalTime(initial, duration).toEpochMilli() - currentInstant().toEpochMilli()) / 1000);
 	}
 
-	public static boolean isExpired(Date date, long duration) {
-		return date.toInstant().plusSeconds(duration).isBefore(currentInstant());
+	public static boolean isExpired(Date date) {
+		return date.toInstant().isBefore(currentInstant());
 	}
 
 	public static String formatInstant(Instant i) {

@@ -1,0 +1,13 @@
+Title: "&8&lRestore %player%'s Inventory"
+Type: "List"
+Source: "%inventory-backups%"
+# %inventory-backup-date% will return the date that the inventory was backed up.
+# this is not a universal placeholder and will only work in this file... sorry :(
+Format:
+  Name: "&a%inventory-backup-date%"
+  Item: "chest"
+  Lore:
+  - "&cclick to restore this backup"
+  - ""
+  - "&8player must be online!"
+  FillerItem: "white_stained_glass_pane"
