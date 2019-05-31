@@ -243,11 +243,27 @@ public class User extends UserData {
 		this.logout();
 	}
 
+	public boolean mute(long duration) {
+		Instant instant = Time.currentInstant();
+
+		dataFile().setValue("MuteDuration", duration + "");
+		dataFile().setValue("UnmuteTime", Time.finalTime(instant, duration).toString());
+		dataFile().setValue("Mutened", "true");
+
+		return this.isMuted();
+	}
+
+	public void unmute() {
+		dataFile().setValue("MuteDuration", null);
+		dataFile().setValue("UnmuteTime", null);
+		dataFile().setValue("Muted", "false");
+	}
+
 	public boolean ban(long duration) {
 		Instant instant = Time.currentInstant();
 
 		dataFile().setValue("BanDuration", duration + "");
-		dataFile().setValue("UnbanTime", Time.finalBan(instant, duration).toString());
+		dataFile().setValue("UnbanTime", Time.finalTime(instant, duration).toString());
 		dataFile().setValue("Banned", "true");
 		if (isOnline()) {
 			kick(KickReason.BANNED);

@@ -15,12 +15,28 @@ public class Time extends Logger {
 		return currentDate().toInstant();
 	}
 
-	public static Instant finalBan(Instant initial, long duration) {
+	public static Instant finalTime(Instant initial, long duration) {
 		return initial.plusSeconds(duration);
+	}
+
+	public static Instant initialTime(Instant initial, long duration) {
+		return initial.minusSeconds(duration);
+	}
+
+	public static Long timeLeft(Instant initial, long duration) {
+		return Long.valueOf(finalTime(initial, duration).toEpochMilli() - currentInstant().toEpochMilli());
 	}
 
 	public static boolean isExpired(Date date, long duration) {
 		return date.toInstant().plusSeconds(duration).isBefore(currentInstant());
+	}
+
+	public static String formatInstant(Instant i) {
+		return new SimpleDateFormat("MMMMMMMMMMMMMM dd, yyyy '@' HH mm:ss").format(Date.from(i));
+	}
+
+	public static String formatTime(Date date) {
+		return new SimpleDateFormat("MMMMMMMMMMMMMM dd, yyyy '@' HH mm:ss").format(date);
 	}
 
 	public String monthName(int month) {
@@ -57,7 +73,6 @@ public class Time extends Logger {
 	}
 
 	public String currentDayTime() {
-
 		String time = new SimpleDateFormat("(HH:mm:ss)").format(Calendar.getInstance().getTime());
 
 		return time;

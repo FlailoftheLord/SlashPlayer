@@ -1,9 +1,7 @@
 package me.flail.slashplayer.user;
 
-import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +11,7 @@ import me.flail.slashplayer.SlashPlayer;
 import me.flail.slashplayer.sp.Message;
 import me.flail.slashplayer.tools.DataFile;
 import me.flail.slashplayer.tools.Logger;
+import me.flail.slashplayer.tools.Time;
 
 public class UserData extends Logger {
 	protected SlashPlayer plugin = SlashPlayer.getPlugin(SlashPlayer.class);
@@ -90,7 +89,7 @@ public class UserData extends Logger {
 			Instant instant = Instant.parse(getDataFile().getObj("UnbanTime").toString());
 
 			if (instant != null) {
-				return new SimpleDateFormat("MM/dd/yyyy 'at' HH:mm.ss").format(Date.from(instant));
+				return Time.formatInstant(instant);
 			}
 		}
 		return "";

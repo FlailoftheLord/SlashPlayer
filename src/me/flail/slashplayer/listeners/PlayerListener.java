@@ -10,6 +10,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
@@ -122,6 +123,19 @@ public class PlayerListener extends Logger implements Listener {
 		}
 
 		player.setInvulnerable(false);
+	}
+
+	@EventHandler
+	public void playerChat(AsyncPlayerChatEvent event) {
+		User subject = new User(event.getPlayer().getUniqueId());
+		if (subject.isMuted()) {
+			if (subject.hasPermission("slashplayer.exempt")) {
+				return;
+			}
+			event.setCancelled(true);
+
+		}
+
 	}
 
 

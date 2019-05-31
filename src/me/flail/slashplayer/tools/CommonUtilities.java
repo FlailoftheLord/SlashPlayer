@@ -1,8 +1,6 @@
 package me.flail.slashplayer.tools;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -25,10 +23,6 @@ public class CommonUtilities extends BaseUtilities {
 				plugin.config.get("Prefix", "").toString()).replace("%website%", plugin.config.get("Website", "").toString());
 
 		return ChatColor.translateAlternateColorCodes('&', message);
-	}
-
-	protected String formatTime(Date date) {
-		return new SimpleDateFormat("MMMMMMMMMMMMMM dd, yyyy @ HH mm:ss").format(date);
 	}
 
 	/**
