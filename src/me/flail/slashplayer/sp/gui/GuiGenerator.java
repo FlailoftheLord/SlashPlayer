@@ -89,6 +89,11 @@ public class GuiGenerator extends Logger {
 			if (source.contains("online-players")) {
 				userList.clear();
 				userList.addAll(plugin.players.values());
+			} else if (source.contains("inventory-backup")) {
+				new DataFile("GuiConfigurations/RestoreInvGui.yml");
+				new DataFile("InventoryData.yml");
+
+				return;
 			} else {
 				if (!source.endsWith(".yml")) {
 					source = source.concat(".yml");

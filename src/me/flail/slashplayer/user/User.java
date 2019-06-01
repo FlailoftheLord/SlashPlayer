@@ -110,7 +110,7 @@ public class User extends UserData {
 			setGamemode(GameMode.valueOf(gamemode().toUpperCase()));
 
 
-			new GuiControl().loadGui("PlayerListGui.yml", false);
+			new GuiControl().loadGui("PlayerListGui.yml", false, true);
 		}, 20L);
 	}
 
@@ -118,7 +118,7 @@ public class User extends UserData {
 		setOnline(false);
 		plugin.openGuis.remove(this.uuid());
 
-		new GuiControl().loadGui("PlayerListGui.yml", false);
+		new GuiControl().loadGui("PlayerListGui.yml", false, true);
 	}
 
 	/**
@@ -406,7 +406,7 @@ public class User extends UserData {
 	@SuppressWarnings("unchecked")
 	public void restoreInv(String date) {
 		DataFile invData = new DataFile("InventoryData.yml");
-		String key = id() + ".InventoryData." + date;
+		String key = id() + ".InventoryBackup." + date;
 		if (invData.hasValue(key)) {
 			List<ItemStack> itemList = (List<ItemStack>) invData.getObj(key);
 
@@ -437,6 +437,7 @@ public class User extends UserData {
 			return;
 		}
 
+		console("doesn't have value");
 	}
 
 	public ItemStack getSkull() {

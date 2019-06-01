@@ -8,6 +8,7 @@ import java.util.UUID;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import me.flail.slashplayer.executables.Executables.Exe;
 import me.flail.slashplayer.executables.Executioner;
@@ -29,9 +30,11 @@ public class GuiControl extends Logger {
 	public GuiControl() {
 	}
 
-	public GuiControl loadGui(String path, boolean verbose) {
+	public GuiControl loadGui(String path, boolean verbose, boolean generate) {
 		file = new DataFile("GuiConfigurations/" + path);
-		new GuiGenerator(file).run();
+		if (generate) {
+			new GuiGenerator(file).run();
+		}
 		if (verbose) {
 			console("loaded Gui file: " + path);
 		}
@@ -108,6 +111,17 @@ public class GuiControl extends Logger {
 			return true;
 		}
 
+		if (hasTag(clickedItem, "inv-backup")) {
+			User subject = new User(UUID.fromString(getTag(clickedItem, "uuid")));
+
+			subject.restoreInv(getTag(clickedItem, "inv-backup"));
+
+			new Message("InventoryRestored").send(subject, operator);
+			new Message("PlayerInventoryRestored").placeholders(subject.commonPlaceholders()).send(operator, operator);
+			operator.closeGui();
+			return true;
+		}
+
 		if (hasTag(clickedItem, "user")) {
 			UUID uuid = UUID.fromString(this.getTag(clickedItem, "user"));
 			User subject = new User(uuid);
@@ -123,13 +137,14 @@ public class GuiControl extends Logger {
 		DataFile invGui = new DataFile("GuiConfigurations/RestoreInvGui.yml");
 		DataFile invData = new DataFile("InventoryData.yml");
 
-		if (!invData.keySet().isEmpty()) {
+		if ((invData != null) && !invData.keySet().isEmpty()) {
 			List<String> backupNames = new ArrayList<>();
 
 			for (String key : invData.keySet()) {
 				if (key.equalsIgnoreCase(subject.id())) {
-					key = key + ".InventoryData";
+					key = key + ".InventoryBackup";
 					backupNames.addAll(invData.keySet(key));
+					break;
 				}
 			}
 			int index = 0;
@@ -137,16 +152,49 @@ public class GuiControl extends Logger {
 			Map<Integer, ItemStack> items = new HashMap<>();
 
 			for (String name : backupNames) {
-				Material material = Material.matchMaterial("Format.Item");
+				Material material = Material.matchMaterial(invGui.getValue("Format.Item"));
 				if ((material == null) || material.equals(null)) {
+					material = Material.BARRIER;
+				}
+				ItemStack item = new ItemStack(material);
+				ItemMeta meta = item.getItemMeta();
 
+				List<String> lore = invGui.getList("Format.Lore");
+				List<String> nLore = new ArrayList<>();
+				for (String line : lore) {
+					nLore.add(chat(line.replace("%player%", subject.name()).replace("%inventory-backup-date%", name)));
 				}
 
+				meta.setDisplayName(chat(invGui.getValue("Format.Name").replace("%player%", subject.name())
+						.replace("%inventory-backup-date%", name)));
+				meta.setLore(nLore);
+				item.setItemMeta(meta);
+				item = addTag(item, "inv-backup", name);
+				item = addTag(item, "uuid", subject.id());
 
-				ItemStack item = new ItemStack(material);
+				items.put(Integer.valueOf(index), item);
 
+				index++;
 			}
 
+			while (index < 54) {
+				ItemStack fillerItem = new ItemStack(Material.matchMaterial(invGui.getValue("Format.FillerItem")));
+				ItemMeta meta = fillerItem.getItemMeta();
+
+				meta.setDisplayName(" ");
+				fillerItem.setItemMeta(meta);
+
+				items.put(Integer.valueOf(index), fillerItem);
+
+				index++;
+			}
+
+			GeneratedGui invBackupGui = new GeneratedGui(invGui, items);
+			plugin.loadedGuis.put("RestoreInvGui.yml", invBackupGui);
+
+			Gui gui = new Gui(invBackupGui);
+
+			gui.open(operator, subject);
 		}
 
 	}

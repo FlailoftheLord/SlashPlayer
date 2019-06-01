@@ -283,7 +283,14 @@ public class Executioner extends Logger {
 				useCmdToReport.send(operator, null);
 				break;
 			case RESTOREINVENTORY:
-				// TODO: finish this last method
+				if (operator.hasPermission("slashplayer.clearinventory")) {
+					new GuiControl().invRestoreGui(subject, operator);
+					logAction("a");
+					break;
+				}
+
+				logAction("d");
+				accessDenied.send(operator, operator);
 				break;
 			case SUMMON:
 				if (operator.hasPermission("slashplayer.summon")) {

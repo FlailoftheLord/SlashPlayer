@@ -48,7 +48,7 @@ public class Gui extends Logger {
 	}
 
 	public Gui setTitle(String title) {
-		inv = Bukkit.createInventory(null, data.guiSet.size(), chat(title));
+		inv = Bukkit.createInventory(null, 54, chat(title));
 
 		for (Integer i : data.slots()) {
 			inv.setItem(i.intValue(), data.get(i));
@@ -59,6 +59,7 @@ public class Gui extends Logger {
 
 	public void open(User operator, User subject) {
 		if (subject != null) {
+			this.setTitle(this.data().dataFile().getValue("Title").replace("%player%", subject.name()));
 			this.setHeader(subject);
 			inv = this.updateItemPlaceholders(inv, subject.commonPlaceholders());
 		}
