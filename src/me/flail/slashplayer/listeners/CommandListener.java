@@ -24,6 +24,10 @@ public class CommandListener extends Logger implements Listener {
 			message = message.replace("/reports", "/slashplayer reports");
 		}
 
+		if (message.equals("/players")) {
+			message = message.replace("/players", "/slashplayer");
+		}
+
 		for (User user : plugin.players.values()) {
 			String pName = user.name().toLowerCase();
 
