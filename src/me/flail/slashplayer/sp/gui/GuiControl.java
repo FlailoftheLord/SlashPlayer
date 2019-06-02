@@ -81,7 +81,7 @@ public class GuiControl extends Logger {
 		return file;
 	}
 
-	public boolean processClick(User operator, Gui gui, ItemStack clickedItem) {
+	public boolean processClick(User operator, Gui gui, ItemStack clickedItem, int slot, boolean shiftClick) {
 		ItemStack header = gui.getHeader();
 
 		if (header != null) {
@@ -109,6 +109,17 @@ public class GuiControl extends Logger {
 			}
 
 			return true;
+		}
+
+		if (shiftClick && hasTag(clickedItem, "shift-click-remove")) {
+			if (gui.data().dataFile().name().equals("ReportGui.yml")) {
+				String id = getTag(clickedItem, "uuid");
+				DataFile reportedPlayers = new DataFile("ReportedPlayers.yml");
+
+				reportedPlayers.setValue(id, null);
+
+			}
+
 		}
 
 		if (hasTag(clickedItem, "inv-backup")) {

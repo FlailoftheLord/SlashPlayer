@@ -4,6 +4,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryType.SlotType;
@@ -35,7 +36,12 @@ public class GuiListener extends Logger implements Listener {
 
 					Gui gui = plugin.openGuis.get(user.uuid());
 
-					new GuiControl().processClick(user, gui, event.getCurrentItem());
+					if (event.getClick().equals(ClickType.SHIFT_RIGHT) || event.getClick().equals(ClickType.SHIFT_LEFT)) {
+						new GuiControl().processClick(user, gui, event.getCurrentItem(), event.getSlot(), true);
+						return;
+					}
+
+					new GuiControl().processClick(user, gui, event.getCurrentItem(), event.getSlot(), false);
 				}
 
 			}

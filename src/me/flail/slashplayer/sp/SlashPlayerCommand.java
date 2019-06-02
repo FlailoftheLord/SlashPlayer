@@ -111,6 +111,11 @@ public class SlashPlayerCommand extends Logger {
 
 					usage.send(operator, null);
 					break;
+				case "whitelist":
+					usage = Message.construct("%prefix% &cProper usage&8: &7/slashplayer whitelist [<player-name>]");
+
+					usage.send(operator, null);
+					break;
 				default:
 					plugin.userGui(operator, args);
 				}

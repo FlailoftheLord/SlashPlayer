@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
-import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -86,7 +85,7 @@ public class User extends UserData {
 	}
 
 	public OfflinePlayer offlinePlayer() {
-		return Bukkit.getOfflinePlayer(uuid());
+		return plugin.server.getOfflinePlayer(uuid());
 	}
 
 	public DataFile dataFile() {
@@ -112,6 +111,15 @@ public class User extends UserData {
 
 			new GuiControl().loadGui("PlayerListGui.yml", false, true);
 		}, 20L);
+	}
+
+	protected void setupOffline() {
+		if (!dataFile().hasList("Name")) {
+			List<String> names = new ArrayList<>();
+			names.add(name());
+
+			dataFile().setValue("Name", names);
+		}
 	}
 
 	public void logout() {
@@ -194,7 +202,7 @@ public class User extends UserData {
 		return isOnline() ? "online" : "offline";
 	}
 
-	protected void setOnline(boolean status) {
+	public void setOnline(boolean status) {
 		dataFile().setValue("Online", Boolean.valueOf(status));
 		if (!status) {
 			plugin.players.remove(uuid());
@@ -222,6 +230,7 @@ public class User extends UserData {
 		}
 
 		dataFile().setValue("Reported", "true");
+		new GuiControl().loadGui("ReportGui.yml", false, true);
 
 		return !reason.isEmpty();
 	}
@@ -478,14 +487,20 @@ public class User extends UserData {
 		placeholders.put("%uuid%", uuid().toString());
 		placeholders.put("%player%", name());
 		placeholders.put("%status-online%", onlineStatus());
+		placeholders.put("%gamemode%", gamemode());
+		placeholders.put("%status-mute%", isMuted() + "");
+		placeholders.put("%status-frozen%", isFrozen() + "");
+		placeholders.put("%status-ban%", isBanned() + "");
+		if (!isOnline()) {
+			placeholders.put("%food%", "user not online");
+			placeholders.put("%health%", "user not online");
+			placeholders.put("%rank%", "0");
+		}
 
 		if (this.isOnline()) {
 			placeholders.put("%health%", player().getHealth() + "");
 			placeholders.put("%food%", player().getFoodLevel() + "");
-			placeholders.put("%gamemode%", player().getGameMode().toString().toLowerCase());
-			placeholders.put("%status-mute%", isMuted() + "");
-			placeholders.put("%status-frozen%", isFrozen() + "");
-			placeholders.put("%status-ban%", isBanned() + "");
+
 			placeholders.put("%rank%", rank() + "");
 			if (isBanned()) {
 				placeholders.put("%ban-duration%", this.banDuration() + " seconds");

@@ -110,6 +110,7 @@ public class GuiGenerator extends Logger {
 
 			if (file.hasValue("Format")) {
 				for (User user : userList) {
+
 					String name = chat(file.getValue("Format.Name").replace("%player%", user.name()));
 					List<String> lore = file.getList("Format.Lore");
 
@@ -123,9 +124,15 @@ public class GuiGenerator extends Logger {
 						for (String line : lore.toArray(new String[] {})) {
 							if (line.contains("%information%")) {
 
-								lore.add(chat(line.replace("%information%", "")));
 								String info = userListFile.getValue(user.id() + ".Reason");
 								String color = getColor(info, "%information%");
+
+								if (info.length() < 19) {
+									actualLore.add(chat(line.replace("%information%", color + info)));
+									continue;
+								}
+
+								actualLore.add(chat(line.replace("%information%", "")));
 
 								/** BEGIN lore oranization **/
 								while (info.length() > 18) {
@@ -141,7 +148,7 @@ public class GuiGenerator extends Logger {
 										info = info.substring(lastIndex + 1, info.length());
 
 									} else {
-										lore.add(chat("  " + color + info));
+										actualLore.add(chat("  " + color + info));
 										break;
 									}
 
@@ -178,12 +185,17 @@ public class GuiGenerator extends Logger {
 						item = user.getSkull();
 					} else {
 						item = new ItemStack(Material.matchMaterial(file.getValue("Foramt.Item")));
+						item = addTag(item, "uuid", user.id());
 					}
 					ItemMeta meta = item.getItemMeta();
 
 					meta.setDisplayName(name);
 					meta.setLore(actualLore);
 					item.setItemMeta(meta);
+
+					if (source.equalsIgnoreCase("ReportedPlayers.yml")) {
+						item = addTag(item, "shift-click-remove", "true");
+					}
 
 					if (index < 54) {
 						items.put(Integer.valueOf(index), item);
