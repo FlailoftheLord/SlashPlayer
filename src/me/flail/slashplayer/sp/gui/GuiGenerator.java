@@ -110,6 +110,9 @@ public class GuiGenerator extends Logger {
 
 			if (file.hasValue("Format")) {
 				for (User user : userList) {
+					if ((user == null) || user.equals(null)) {
+						continue;
+					}
 
 					String name = chat(file.getValue("Format.Name").replace("%player%", user.name()));
 					List<String> lore = file.getList("Format.Lore");
@@ -127,16 +130,11 @@ public class GuiGenerator extends Logger {
 								String info = userListFile.getValue(user.id() + ".Reason");
 								String color = getColor(info, "%information%");
 
-								if (info.length() < 19) {
-									actualLore.add(chat(line.replace("%information%", color + info)));
-									continue;
-								}
-
 								actualLore.add(chat(line.replace("%information%", "")));
 
 								/** BEGIN lore oranization **/
-								while (info.length() > 18) {
-									int lastIndex = info.lastIndexOf(" ", 18);
+								while (info.length() > 24) {
+									int lastIndex = info.lastIndexOf(" ", 24);
 
 									if (lastIndex > -1) {
 										if (lastIndex >= 48) {
@@ -155,11 +153,17 @@ public class GuiGenerator extends Logger {
 								}
 								/** END of lore organization **/
 
+								if (info.length() < 25) {
+									actualLore.add(chat("  " + color + info));
+									continue;
+								}
+
 								continue;
 							}
 
-							actualLore.add(chat(line.replace("%reporter%",
-									userListFile.getValue(user.id() + ".Reporter").replace("%player%", user.name()))));
+							User reporter = new User(UUID.fromString(userListFile.getValue(user.id() + ".Reporter")));
+
+							actualLore.add(chat(line.replace("%reporter%", reporter.name())));
 						}
 
 						actualLore.add(chat("&8Shift Click to remove."));

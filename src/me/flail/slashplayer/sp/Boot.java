@@ -103,6 +103,7 @@ public class Boot extends Logger {
 	protected boolean loadCommands() {
 		for (String cmd : plugin.getDescription().getCommands().keySet()) {
 			plugin.getCommand(cmd).setExecutor(plugin);
+			plugin.getCommand(cmd).setTabCompleter(plugin);
 			if (!cmd.equals("ouch")) {
 				console("&eRegistered Command&8: &7/" + cmd);
 			}

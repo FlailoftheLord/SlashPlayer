@@ -29,9 +29,19 @@ public class TabCompleter extends ArrayList<String> {
 				switch (args.length) {
 				case 1:
 					baseArgs.addAll(usernames());
+
+					for (String s : baseArgs) {
+						if (s.toLowerCase().startsWith(args[0].toLowerCase())) {
+							this.add(s);
+						}
+					}
+					break;
+				case 2:
+					baseArgs.add("[<Report-Reason>]");
 					break;
 				default:
 					baseArgs.add("[<Report-Reason>]");
+
 				}
 				completed = true;
 			} else if (label.equalsIgnoreCase("reports")) {
