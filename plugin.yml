@@ -7,7 +7,7 @@ authors: [FlailoftheLord, WulfGamesYT]
 
 # no touchy pls
 main: me.flail.slashplayer.SlashPlayer
-version: 2.1.2
+version: 2.1.3
 api-version: 1.13
 softdepend: [MicroCommands]
 
