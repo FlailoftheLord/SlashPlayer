@@ -1,6 +1,7 @@
 package me.flail.slashplayer.listeners;
 
 import org.bukkit.Location;
+import org.bukkit.event.Event.Result;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -126,7 +127,7 @@ public class FreezeListener extends Logger implements Listener {
 	public void interactEvent(PlayerInteractEvent event) {
 		User subject = new User(event.getPlayer().getUniqueId());
 
-		if (!event.isCancelled()) {
+		if (event.useItemInHand().equals(Result.DEFAULT)) {
 			if (subject.isFrozen()) {
 				String canInteract = plugin.config.get("Frozen.Interact").toString().toLowerCase();
 

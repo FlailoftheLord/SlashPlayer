@@ -3,7 +3,6 @@ package me.flail.slashplayer.tools;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -17,6 +16,8 @@ import org.bukkit.ChatColor;
  * @author FlailoftheLord
  */
 public class Logger extends CommonUtilities {
+
+	private String logFilePath = plugin.getDataFolder() + "/logs/";
 
 	public void console(String string) {
 		plugin.server.getConsoleSender().sendMessage(chat("[" + plugin.getDescription().getPrefix() + "] " + string));
@@ -36,15 +37,14 @@ public class Logger extends CommonUtilities {
 		// create a temporary file
 		String timeLog = new SimpleDateFormat("MMM dd_yyyy").format(Calendar.getInstance().getTime()).toString();
 
-		File logFile = new File(plugin.getDataFolder() + "/logs/" + timeLog + ".txt");
+		File logFile = new File(logFilePath + timeLog + ".txt");
 		if (!logFile.exists()) {
-			try {
-				logFile.createNewFile();
-			} catch (IOException e) {
-			}
+			new File(logFilePath).mkdirs();
 		}
 
 		try {
+			logFile.createNewFile();
+
 			logWriter = new BufferedWriter(new FileWriter(logFile, true));
 
 			logWriter.newLine();

@@ -35,13 +35,13 @@ public class GuiListener extends Logger implements Listener {
 					}
 
 					Gui gui = plugin.openGuis.get(user.uuid());
+					boolean isShiftClick = false;
 
 					if (event.getClick().equals(ClickType.SHIFT_RIGHT) || event.getClick().equals(ClickType.SHIFT_LEFT)) {
-						new GuiControl().processClick(user, gui, event.getCurrentItem(), event.getSlot(), true);
-						return;
+						isShiftClick = true;
 					}
 
-					new GuiControl().processClick(user, gui, event.getCurrentItem(), event.getSlot(), false);
+					new GuiControl().processClick(user, gui, event.getCurrentItem(), event.getSlot(), isShiftClick);
 				}
 
 			}

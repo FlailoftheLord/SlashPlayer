@@ -7,9 +7,11 @@ import org.bukkit.inventory.meta.tags.ItemTagType;
 
 import me.flail.slashplayer.SlashPlayer;
 
+@SuppressWarnings("deprecation")
 public class LegacyUtils {
 	protected SlashPlayer plugin = SlashPlayer.getPlugin(SlashPlayer.class);
 
+	@Deprecated
 	protected ItemStack addLegacyTag(ItemStack item, String key, String tag) {
 		ItemMeta meta = item.getItemMeta();
 		NamespacedKey nkey = new NamespacedKey(plugin, "SlashPlayer-" + key);
@@ -20,6 +22,7 @@ public class LegacyUtils {
 		return item;
 	}
 
+	@Deprecated
 	protected ItemStack removeLegacyTag(ItemStack item, String key, String tag) {
 		ItemMeta meta = item.getItemMeta();
 		NamespacedKey nkey = new NamespacedKey(plugin, "SlashPlayer-" + key);
@@ -30,6 +33,7 @@ public class LegacyUtils {
 		return item;
 	}
 
+	@Deprecated
 	protected String getLegacyTag(ItemStack item, String key) {
 		ItemMeta meta = item.getItemMeta();
 		NamespacedKey nkey = new NamespacedKey(plugin, "SlashPlayer-" + key);
@@ -41,6 +45,7 @@ public class LegacyUtils {
 		return "null";
 	}
 
+	@Deprecated
 	protected boolean hasLegacyTag(ItemStack item, String key) {
 		if ((item != null) && item.hasItemMeta()) {
 

@@ -223,12 +223,21 @@ public class SlashPlayerCommand extends Logger {
 
 						if (args.length > 3) {
 							User subject = User.fromName(args[1]);
-							if ((operator.rank() <= subject.rank())
-									|| ((operator.rank() < subject.rank())
-											&& plugin.config.getBoolean("EqualsCanExecute", false))) {
+							if (operator.id().equals(subject.id()) && !operator.hasPermission("slashplayer.op")) {
+								operator.sendMessage("%prefix% &cYou can't report yourself!");
 
-								new Message("ReportDeny").placeholders(subject.commonPlaceholders()).send(operator, operator);
 								break;
+							}
+
+							if (!operator.id().equals(subject.id())) {
+								if (((operator.rank() < subject.rank())
+										&& plugin.config.getBoolean("EqualsCanExecute", false))
+										|| (operator.rank() <= subject.rank())) {
+
+									new Message("ReportDeny").placeholders(subject.commonPlaceholders()).send(operator, operator);
+									break;
+								}
+
 							}
 
 							String reportReason = this.convertArray(args, 2);

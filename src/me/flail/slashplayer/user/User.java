@@ -186,6 +186,10 @@ public class User extends UserData {
 		return false;
 	}
 
+	public void sendMessage(String message) {
+		player().sendMessage(chat(message));
+	}
+
 	public boolean command(String command) {
 		return isOnline() ? player().performCommand(command) : false;
 	}

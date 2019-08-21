@@ -10,6 +10,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import me.flail.slashplayer.SlashPlayer;
 
+@SuppressWarnings("deprecation")
 public class BaseUtilities extends LegacyUtils {
 	protected SlashPlayer plugin = SlashPlayer.getPlugin(SlashPlayer.class);
 
@@ -37,9 +38,8 @@ public class BaseUtilities extends LegacyUtils {
 	 * @param before
 	 */
 	public String getColor(String string, String before) {
-		String first = string.split(before)[0];
-		char c = first.charAt(first.lastIndexOf("&") + 1);
-		return "&" + c;
+
+		return "&" + string.charAt(string.indexOf(before) - 1);
 	}
 
 	public ItemStack fillerItem(DataFile file) {
