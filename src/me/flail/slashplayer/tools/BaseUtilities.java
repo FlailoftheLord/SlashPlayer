@@ -38,8 +38,10 @@ public class BaseUtilities extends LegacyUtils {
 	 * @param before
 	 */
 	public String getColor(String string, String before) {
+		String[] lines = string.split(before, 2);
+		char color = lines[0].charAt(lines[0].length() - 1);
 
-		return "&" + string.charAt(string.indexOf(before) - 1);
+		return ("&" + color);
 	}
 
 	public ItemStack fillerItem(DataFile file) {
