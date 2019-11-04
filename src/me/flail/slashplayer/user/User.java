@@ -393,7 +393,6 @@ public class User extends UserData {
 	}
 
 	public void backupInventory() {
-		DataFile invData = new DataFile("InventoryData.yml");
 		List<ItemStack> storedList = new ArrayList<>();
 
 		ItemStack[] invContents = player().getInventory().getContents();
@@ -404,7 +403,7 @@ public class User extends UserData {
 		}
 
 		if (!storedList.isEmpty()) {
-			invData.setValue(me().id() + ".InventoryBackup." + Time.currentDate().toString().replace(":", "_"), storedList);
+			dataFile().setValue("InventoryBackup." + Time.currentDate().toString().replace(":", "_"), storedList);
 		}
 	}
 
@@ -418,10 +417,9 @@ public class User extends UserData {
 
 	@SuppressWarnings("unchecked")
 	public void restoreInv(String date) {
-		DataFile invData = new DataFile("InventoryData.yml");
-		String key = id() + ".InventoryBackup." + date;
-		if (invData.hasValue(key)) {
-			List<ItemStack> itemList = (List<ItemStack>) invData.getObj(key);
+		String key = "InventoryBackup." + date;
+		if (dataFile().hasValue(key)) {
+			List<ItemStack> itemList = (List<ItemStack>) dataFile().getObj(key);
 
 			ItemStack[] currentInv = player().getInventory().getContents();
 			for (ItemStack item : currentInv) {
@@ -446,11 +444,19 @@ public class User extends UserData {
 
 			}
 
-			invData.setValue(key, null);
 			return;
 		}
 
 		console("doesn't have value");
+	}
+
+	public void removeInvBackup(String date) {
+		String key = "InventoryBackup." + date;
+		if (dataFile().hasValue(key)) {
+
+			dataFile().setValue(key, null);
+		}
+
 	}
 
 	public ItemStack getSkull() {

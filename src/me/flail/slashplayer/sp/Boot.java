@@ -28,7 +28,8 @@ public class Boot extends Logger {
 		try {
 			console("&aLoading Files...");
 			plugin.saveDefaultConfig();
-			plugin.verbose = plugin.getConfig().getBoolean("ConsoleVerbose");
+			plugin.verbose = plugin.config.getBoolean("ConsoleVerbose");
+			plugin.doInventoryBackups = plugin.config.getBoolean("InventoryBackups.Enabled", true);
 			new FileManager().setupGuiFiles(plugin.guiFiles);
 			plugin.messages = new DataFile("Messages.yml");
 			new DataFile("GuiConfig.yml");
@@ -57,32 +58,10 @@ public class Boot extends Logger {
 		long startTime = System.currentTimeMillis();
 		try {
 			console("&aReloading Slashplayer...");
-			plugin.server.getScheduler().getPendingTasks().clear();
-			plugin.server.getScheduler().cancelTasks(plugin);
+			plugin.onDisable();
 
-			plugin.players.clear();
-
-			for (User user : plugin.players.values()) {
-				user.player().closeInventory();
-			}
-
-			plugin.openGuis.clear();
-			plugin.loadedGuis.clear();
-			plugin.saveDefaultConfig();
-			plugin.verbose = plugin.getConfig().getBoolean("ConsoleVerbose");
-			plugin.messages = new DataFile("Messages.yml");
-
-			new FileManager().setupGuiFiles(plugin.guiFiles);
-			new DataFile("GuiConfig.yml");
-			nl();
-
-			switch (this.loadOnlinePlayers()) {
-			case 1:
-				console("&aLoaded &7one&a player...");
-				break;
-			default:
-				console("&aLoaded &7" + plugin.players.size() + " &aplayers...");
-			}
+			plugin.onLoad();
+			plugin.onEnable();
 
 		} catch (Exception e) {
 			return -1;

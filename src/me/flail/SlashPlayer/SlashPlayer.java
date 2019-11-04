@@ -41,6 +41,7 @@ public class SlashPlayer extends JavaPlugin {
 
 	public Server server;
 	public boolean verbose = false;
+	public boolean doInventoryBackups = true;
 
 	@Override
 	public void onLoad() {
@@ -64,6 +65,8 @@ public class SlashPlayer extends JavaPlugin {
 
 		openGuis.clear();
 		loadedGuis.clear();
+		reloadConfig();
+
 		if (!players.isEmpty()) {
 			for (User user : players.values()) {
 				if (user.isOnline()) {
