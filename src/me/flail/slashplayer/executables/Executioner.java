@@ -3,6 +3,7 @@ package me.flail.slashplayer.executables;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang.Validate;
 import org.bukkit.GameMode;
 
 import me.flail.slashplayer.executables.Executables.Exe;
@@ -36,6 +37,7 @@ public class Executioner extends Logger {
 	 */
 	public boolean execute(User operator) {
 		this.operator = operator;
+		Validate.notNull(subject);
 
 		return execute(executable, subject, this.operator);
 	}
@@ -385,7 +387,7 @@ public class Executioner extends Logger {
 				subject.unban();
 				logAction("a");
 
-				new Message("UnbanPlayer").placeholders(placeholders).send(operator, operator);
+				new Message("UnbanPlayer").placeholders(placeholders).send(operator, subject);
 				return true;
 			}
 
@@ -395,7 +397,7 @@ public class Executioner extends Logger {
 		}
 
 		operator.closeGui();
-		new Message("InvalidPlayer").placeholders(placeholders).send(operator, operator);
+		new Message("InvalidPlayer").replace("%player%", subject.name()).placeholders(placeholders).send(operator, subject);
 
 		return false;
 	}
