@@ -56,6 +56,15 @@ Broadcast:
 # How close to stay to your frend, to be invincible
 FrendProtectionRange: 3
 
+# InventoryBackup options
+InventoryBackups:
+  Enabled: true
+  Triggers:
+    Death: true
+    Login: true
+    Logout: true
+    WorldChange: true
+
 # More console output?
 # Note: All actions are logged in the logs files located under /logs/[Date]
 ConsoleVerbose: true
