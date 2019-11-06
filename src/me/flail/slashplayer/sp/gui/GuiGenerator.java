@@ -91,7 +91,6 @@ public class GuiGenerator extends Logger {
 				userList.addAll(plugin.players.values());
 			} else if (source.contains("inventory-backup")) {
 				new DataFile("GuiConfigurations/RestoreInvGui.yml");
-				new DataFile("InventoryData.yml");
 
 				return;
 			} else {

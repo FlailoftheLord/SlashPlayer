@@ -151,18 +151,12 @@ public class GuiControl extends Logger {
 
 	public void invRestoreGui(User subject, User operator) {
 		DataFile invGui = new DataFile("GuiConfigurations/RestoreInvGui.yml");
-		DataFile invData = new DataFile("InventoryData.yml");
+		DataFile invData = subject.dataFile();
 
 		if ((invData != null) && !invData.keySet().isEmpty()) {
 			List<String> backupNames = new ArrayList<>();
 
-			for (String key : invData.keySet()) {
-				if (key.equalsIgnoreCase(subject.id())) {
-					key = key + ".InventoryBackup";
-					backupNames.addAll(invData.keySet(key));
-					break;
-				}
-			}
+			backupNames.addAll(invData.keySet("InventoryBackups"));
 			int index = 0;
 
 			Map<Integer, ItemStack> items = new HashMap<>();

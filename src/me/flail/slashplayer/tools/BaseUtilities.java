@@ -12,7 +12,7 @@ import me.flail.slashplayer.SlashPlayer;
 
 @SuppressWarnings("deprecation")
 public class BaseUtilities extends LegacyUtils {
-	protected SlashPlayer plugin = SlashPlayer.getPlugin(SlashPlayer.class);
+	protected static SlashPlayer plugin = SlashPlayer.getPlugin(SlashPlayer.class);
 
 	protected ItemStack addTag(ItemStack item, String key, String tag) {
 		return addLegacyTag(item, key, tag);

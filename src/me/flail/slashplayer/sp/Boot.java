@@ -7,6 +7,8 @@ import me.flail.slashplayer.SlashPlayer;
 import me.flail.slashplayer.listeners.CommandListener;
 import me.flail.slashplayer.listeners.FreezeListener;
 import me.flail.slashplayer.listeners.GuiListener;
+import me.flail.slashplayer.listeners.InventoryBackupListener;
+import me.flail.slashplayer.listeners.InventoryBackupListener.InventoryBackups;
 import me.flail.slashplayer.listeners.PlayerListener;
 import me.flail.slashplayer.tools.DataFile;
 import me.flail.slashplayer.tools.Logger;
@@ -30,6 +32,12 @@ public class Boot extends Logger {
 			plugin.saveDefaultConfig();
 			plugin.verbose = plugin.config.getBoolean("ConsoleVerbose");
 			plugin.doInventoryBackups = plugin.config.getBoolean("InventoryBackups.Enabled", true);
+
+			InventoryBackups.death = plugin.config.getBoolean("InventoryBackups.Triggers.Death", true);
+			InventoryBackups.login = plugin.config.getBoolean("InventoryBackups.Triggers.Login", true);
+			InventoryBackups.logout = plugin.config.getBoolean("InventoryBackups.Triggers.Logout", true);
+			InventoryBackups.worldChange = plugin.config.getBoolean("InventoryBackups.Triggers.WorldChange", true);
+
 			new FileManager().setupGuiFiles(plugin.guiFiles);
 			plugin.messages = new DataFile("Messages.yml");
 			new DataFile("GuiConfig.yml");
@@ -77,6 +85,8 @@ public class Boot extends Logger {
 		pm.registerEvents(new GuiListener(), plugin);
 		pm.registerEvents(new CommandListener(), plugin);
 		pm.registerEvents(new FreezeListener(), plugin);
+
+		InventoryBackupListener.load();
 	}
 
 	protected boolean loadCommands() {

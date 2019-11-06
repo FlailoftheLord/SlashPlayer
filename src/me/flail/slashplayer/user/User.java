@@ -45,6 +45,10 @@ public class User extends UserData {
 		super(uuid);
 	}
 
+	public User(Player player) {
+		super(player.getUniqueId());
+	}
+
 	public static User fromName(String username) {
 		return SlashPlayer.offlinePlayer(username);
 	}
@@ -402,8 +406,13 @@ public class User extends UserData {
 			}
 		}
 
-		if (!storedList.isEmpty()) {
-			dataFile().setValue("InventoryBackup." + Time.currentDate().toString().replace(":", "_"), storedList);
+		manualInventoryBackup(storedList);
+	}
+
+	public void manualInventoryBackup(List<ItemStack> items) {
+		if (!items.isEmpty()) {
+			dataFile().setValue("InventoryBackup." + Time.currentDate().toString().replace(":", "_"),
+					items.toArray(new ItemStack[] {}));
 		}
 	}
 
@@ -415,11 +424,10 @@ public class User extends UserData {
 		player().getInventory().clear();
 	}
 
-	@SuppressWarnings("unchecked")
 	public void restoreInv(String date) {
 		String key = "InventoryBackup." + date;
 		if (dataFile().hasValue(key)) {
-			List<ItemStack> itemList = (List<ItemStack>) dataFile().getObj(key);
+			ItemStack[] itemList = (ItemStack[]) dataFile().getObj(key);
 
 			ItemStack[] currentInv = player().getInventory().getContents();
 			for (ItemStack item : currentInv) {
