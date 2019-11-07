@@ -411,7 +411,7 @@ public class User extends UserData {
 
 	public void manualInventoryBackup(List<ItemStack> items) {
 		if (!items.isEmpty()) {
-			dataFile().setValue("InventoryBackup." + Time.currentDate().toString().replace(":", "_"),
+			dataFile().setValue("InventoryBackups." + Time.currentDate().toString().replace(":", "_"),
 					items.toArray(new ItemStack[] {}));
 		}
 	}
@@ -424,10 +424,11 @@ public class User extends UserData {
 		player().getInventory().clear();
 	}
 
+	@SuppressWarnings("unchecked")
 	public void restoreInv(String date) {
-		String key = "InventoryBackup." + date;
+		String key = "InventoryBackups." + date;
 		if (dataFile().hasValue(key)) {
-			ItemStack[] itemList = (ItemStack[]) dataFile().getObj(key);
+			List<ItemStack> itemList = (List<ItemStack>) dataFile().getObj(key);
 
 			ItemStack[] currentInv = player().getInventory().getContents();
 			for (ItemStack item : currentInv) {

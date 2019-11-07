@@ -53,7 +53,7 @@ public class SlashPlayerCommand extends Logger {
 			switch (args.length) {
 			case 0:
 				if (operator.hasPermission("slashplayer.command")) {
-					new Gui(plugin.loadedGuis.get("PlayerListGui.yml")).open(operator, null);
+					new Gui(plugin.loadedGuis.get("PlayerListGui.yml"), "").open(operator, null);
 					break;
 				}
 
@@ -87,7 +87,7 @@ public class SlashPlayerCommand extends Logger {
 					break;
 				case "reports":
 					if (operator.isStaff()) {
-						Gui reportList = new Gui(plugin.loadedGuis.get("ReportGui.yml"));
+						Gui reportList = new Gui(plugin.loadedGuis.get("ReportGui.yml"), "");
 
 						reportList.open(operator, null);
 						break;
@@ -197,7 +197,7 @@ public class SlashPlayerCommand extends Logger {
 					for (String s : plugin.guiFiles) {
 						if (s.equals(args[1])) {
 							if (plugin.loadedGuis.containsKey(args[1])) {
-								Gui gui = new Gui(plugin.loadedGuis.get(args[1]));
+								Gui gui = new Gui(plugin.loadedGuis.get(args[1]), "");
 								User subject = User.fromName(args[2]);
 
 								gui.open(operator, subject);

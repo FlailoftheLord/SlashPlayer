@@ -38,6 +38,7 @@ public class UserData extends Logger {
 		values.put("Frozen", "false");
 		values.put("Muted", "false");
 		values.put("Banned", "false");
+		values.put("InventoryBackups", "");
 		/************* YOINK, tyvm! ******************/
 		for (String key : values.keySet()) {
 			if (!file.hasValue(key)) {

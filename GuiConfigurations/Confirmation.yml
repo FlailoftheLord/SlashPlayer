@@ -1,0 +1,20 @@
+Title: "&8%action%"
+Type: "Plain"
+HeaderSlot: 5
+    
+Format:
+
+  21:
+    Item: "green_shulker_box"
+    Name: "&a&lYes"
+    Lore:
+    - "&8click confirm"
+    Execute: "confirm-action"
+    
+  23:
+    Item: "red_shulker_box"
+    Name: "&c&lNo"
+    Lore:
+    - "&8click to cancel"
+    Execute: "cancel-action"
+    

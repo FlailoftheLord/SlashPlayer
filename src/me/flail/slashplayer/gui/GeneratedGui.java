@@ -22,6 +22,8 @@ public class GeneratedGui extends Logger {
 		file = gui;
 		guiSet.clear();
 		guiSet.putAll(itemSet);
+
+		title = file.getValue("Title");
 	}
 
 	public DataFile dataFile() {
@@ -55,8 +57,8 @@ public class GeneratedGui extends Logger {
 		return plugin.loadedGuis.put(name, this) != null;
 	}
 
-	public Inventory generatedInv() {
-		title = file.getValue("Title");
+	public Inventory generatedInv(String action) {
+		title = title.replace("%action%", action);
 		Inventory inv = Bukkit.createInventory(null, 54, chat(title));
 		for (Integer i : slots()) {
 			inv.setItem(i.intValue(), get(i));

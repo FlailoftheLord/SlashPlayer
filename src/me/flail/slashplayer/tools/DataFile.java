@@ -1,6 +1,7 @@
 package me.flail.slashplayer.tools;
 
 import java.io.File;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -72,7 +73,13 @@ public class DataFile extends Logger {
 	}
 
 	public Set<String> keySet(String path) {
-		return config.getConfigurationSection(path).getKeys(false);
+		Set<String> keys = new HashSet<>();
+		try {
+			keys = config.getConfigurationSection(path).getKeys(false);
+		} catch (Exception e) {
+		}
+
+		return keys;
 	}
 
 	/**

@@ -10,11 +10,13 @@ import me.flail.slashplayer.user.User;
 public class Gui extends Logger {
 	private Inventory inv;
 	private GeneratedGui data;
+	private String actionStringValue;
 
-
-	public Gui(GeneratedGui data) {
+	public Gui(GeneratedGui data, String actionData) {
 		this.data = data;
-		inv = data.generatedInv();
+		actionStringValue = actionData;
+
+		inv = data.generatedInv(actionData);
 	}
 
 	public GeneratedGui data() {
@@ -23,7 +25,7 @@ public class Gui extends Logger {
 
 	@Override
 	public Gui clone() {
-		return new Gui(data);
+		return new Gui(data, actionStringValue);
 	}
 
 	public void setItem(int slot, ItemStack item) {

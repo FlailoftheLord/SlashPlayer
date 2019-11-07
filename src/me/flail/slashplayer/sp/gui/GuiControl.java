@@ -44,7 +44,7 @@ public class GuiControl extends Logger {
 	public void openModerationGui(User operator, User subject) {
 		if (operator.player().hasPermission("slashplayer.command")) {
 			GeneratedGui guiData = plugin.loadedGuis.get("PlayerGui.yml");
-			Gui gui = new Gui(guiData);
+			Gui gui = new Gui(guiData, "");
 			gui = gui.setTitle(guiData.title().replace("%player%", subject.name()));
 
 			gui.open(operator, subject);
@@ -54,7 +54,7 @@ public class GuiControl extends Logger {
 	public void openGamemodeGui(User operator, User subject) {
 		if (operator.player().hasPermission("slashplayer.gamemode")) {
 			GeneratedGui guiData = plugin.loadedGuis.get("GamemodeGui.yml");
-			Gui gui = new Gui(guiData);
+			Gui gui = new Gui(guiData, "");
 			gui = gui.setTitle(guiData.title().replace("%player%", subject.name()));
 
 			gui.open(operator, subject);
@@ -64,7 +64,7 @@ public class GuiControl extends Logger {
 	public void playerListGui(User operator) {
 		if (operator.hasPermission("slashplayer.command")) {
 			GeneratedGui guiData = plugin.loadedGuis.get("PlayerListGui.yml");
-			Gui gui = new Gui(guiData);
+			Gui gui = new Gui(guiData, "");
 			gui.open(operator, null);
 		}
 	}
@@ -72,7 +72,7 @@ public class GuiControl extends Logger {
 	public void reportListGui(User operator) {
 		if (operator.hasPermission("slashplayer.command")) {
 			GeneratedGui guiData = plugin.loadedGuis.get("ReportGui.yml");
-			Gui gui = new Gui(guiData);
+			Gui gui = new Gui(guiData, "");
 			gui.open(operator, null);
 		}
 	}
@@ -90,8 +90,6 @@ public class GuiControl extends Logger {
 				DataFile reportedPlayers = new DataFile("ReportedPlayers.yml");
 
 				reportedPlayers.setValue(id, null);
-
-
 			}
 
 			return true;
@@ -156,7 +154,10 @@ public class GuiControl extends Logger {
 		if ((invData != null) && !invData.keySet().isEmpty()) {
 			List<String> backupNames = new ArrayList<>();
 
-			backupNames.addAll(invData.keySet("InventoryBackups"));
+			if (invData.hasValue("InventoryBackups")) {
+				backupNames.addAll(invData.keySet("InventoryBackups"));
+			}
+
 			int index = 0;
 
 			Map<Integer, ItemStack> items = new HashMap<>();
@@ -202,10 +203,20 @@ public class GuiControl extends Logger {
 			GeneratedGui invBackupGui = new GeneratedGui(invGui, items);
 			plugin.loadedGuis.put("RestoreInvGui.yml", invBackupGui);
 
-			Gui gui = new Gui(invBackupGui);
+			Gui gui = new Gui(invBackupGui, "");
 
 			gui.open(operator, subject);
 		}
+
+	}
+
+	public void confirmGui(User operator, User subject, String confirmMsg) {
+		Map<Integer, ItemStack> items = new HashMap<>();
+
+		GeneratedGui confirmGui = new GeneratedGui(new DataFile("GuiConfigurations/Confirmation.yml"), items);
+		Gui gui = new Gui(confirmGui, confirmMsg);
+
+		gui.open(operator, subject);
 
 	}
 
