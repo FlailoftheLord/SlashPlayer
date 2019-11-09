@@ -35,8 +35,9 @@ public class SlashPlayer extends JavaPlugin {
 
 	public Map<String, GeneratedGui> loadedGuis = new HashMap<>(4);
 	public Map<UUID, Gui> openGuis = new HashMap<>();
+	public Map<UUID, String> confirmations = new HashMap<>();
 	public Map<UUID, User> players = Collections.synchronizedMap(new HashMap<>());
-	public String[] guiFiles = { "GamemodeGui.yml", "PlayerListGui.yml", "PlayerGui.yml", "ReportGui.yml" };
+	public String[] guiFiles = { "GamemodeGui.yml", "PlayerListGui.yml", "PlayerGui.yml", "ReportGui.yml", "Confirmation.yml" };
 	public String[] commandArgs = { "rank", "report", "whitelist", "moderate", "reload", "opengui", "unban" };
 
 	public Server server;

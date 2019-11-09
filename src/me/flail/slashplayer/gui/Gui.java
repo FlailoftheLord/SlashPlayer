@@ -50,7 +50,7 @@ public class Gui extends Logger {
 	}
 
 	public Gui setTitle(String title) {
-		inv = Bukkit.createInventory(null, 54, chat(title));
+		inv = Bukkit.createInventory(null, data.guiSize(), chat(title));
 
 		for (Integer i : data.slots()) {
 			inv.setItem(i.intValue(), data.get(i));
@@ -61,7 +61,8 @@ public class Gui extends Logger {
 
 	public void open(User operator, User subject) {
 		if (subject != null) {
-			this.setTitle(this.data().dataFile().getValue("Title").replace("%player%", subject.name()));
+			this.setTitle(this.data().dataFile().getValue("Title").replace("%player%", subject.name()).replace("%action%",
+					actionStringValue));
 			this.setHeader(subject);
 			inv = this.updateItemPlaceholders(inv, subject.commonPlaceholders());
 		}
@@ -69,7 +70,7 @@ public class Gui extends Logger {
 		plugin.server.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
 			operator.player().openInventory(inv);
 			plugin.openGuis.put(operator.uuid(), this);
-		}, 2L);
+		}, 1L);
 
 
 	}

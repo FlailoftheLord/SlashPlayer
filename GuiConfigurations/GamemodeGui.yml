@@ -1,6 +1,7 @@
-Title: "&aSet %player%'s gamemode"
+Title: "&2Set %player%'s gamemode"
 Type: "Plain"
 HeaderSlot: 5
+Size: 36
     
 Format:
 

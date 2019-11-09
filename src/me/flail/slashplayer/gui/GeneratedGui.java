@@ -48,6 +48,24 @@ public class GeneratedGui extends Logger {
 		return guiSet.keySet();
 	}
 
+	public int guiSize() {
+		int size = 54;
+
+		if (!file.hasValue("Size")) {
+			return size;
+		}
+
+		for (int s : new int[] { 9, 18, 27, 36, 45, 54 }) {
+			if (file.getNumber("Size") <= s) {
+
+				size = s;
+				break;
+			}
+		}
+
+		return size;
+	}
+
 	public ItemStack get(Integer slot) {
 		return guiSet.get(slot);
 	}
@@ -58,9 +76,12 @@ public class GeneratedGui extends Logger {
 	}
 
 	public Inventory generatedInv(String action) {
-		title = title.replace("%action%", action);
-		Inventory inv = Bukkit.createInventory(null, 54, chat(title));
+		Inventory inv = Bukkit.createInventory(null, guiSize(), chat(title));
+
 		for (Integer i : slots()) {
+			if (i >= inv.getSize()) {
+				break;
+			}
 			inv.setItem(i.intValue(), get(i));
 		}
 

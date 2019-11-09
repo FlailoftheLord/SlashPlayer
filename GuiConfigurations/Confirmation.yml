@@ -1,6 +1,7 @@
 Title: "&8%action%"
 Type: "Plain"
 HeaderSlot: 5
+Size: 36
     
 Format:
 
@@ -9,12 +10,12 @@ Format:
     Name: "&a&lYes"
     Lore:
     - "&8click confirm"
-    Execute: "confirm-action"
+    Execute: "confirmaction"
     
-  23:
+  25:
     Item: "red_shulker_box"
     Name: "&c&lNo"
     Lore:
     - "&8click to cancel"
-    Execute: "cancel-action"
+    Execute: "cancelaction"
     

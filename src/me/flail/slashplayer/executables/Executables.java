@@ -34,7 +34,9 @@ public class Executables extends Logger {
 		GAMEMODECREATIVE,
 		GAMEMODESPECTATOR,
 		GAMEMODEADVENTURE,
-		BACKBUTTON;
+		BACKBUTTON,
+		CONFIRMACTION,
+		CANCELACTION;
 
 		@Override
 		public String toString() {

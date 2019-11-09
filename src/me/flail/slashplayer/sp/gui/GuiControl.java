@@ -128,6 +128,13 @@ public class GuiControl extends Logger {
 		if (hasTag(clickedItem, "inv-backup")) {
 			User subject = new User(UUID.fromString(getTag(clickedItem, "uuid")));
 
+			if (shiftClick) {
+				this.confirmGui(operator, subject, "&lDelete this Backup?");
+				plugin.confirmations.put(subject.uuid(), getTag(clickedItem, "inv-backup"));
+
+				return true;
+			}
+
 			subject.restoreInv(getTag(clickedItem, "inv-backup"));
 
 			new Message("InventoryRestored").send(subject, operator);
@@ -211,13 +218,13 @@ public class GuiControl extends Logger {
 	}
 
 	public void confirmGui(User operator, User subject, String confirmMsg) {
-		Map<Integer, ItemStack> items = new HashMap<>();
+		if (!plugin.loadedGuis.containsKey("Confirmation.yml")) {
+			new GuiGenerator("Confirmation.yml").run();
+		}
 
-		GeneratedGui confirmGui = new GeneratedGui(new DataFile("GuiConfigurations/Confirmation.yml"), items);
-		Gui gui = new Gui(confirmGui, confirmMsg);
+		Gui gui = new Gui(plugin.loadedGuis.get("Confirmation.yml"), confirmMsg);
 
 		gui.open(operator, subject);
-
 	}
 
 }

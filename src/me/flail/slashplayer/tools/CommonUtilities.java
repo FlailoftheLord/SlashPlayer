@@ -119,7 +119,9 @@ public class CommonUtilities extends BaseUtilities {
 
 
 		item = this.addTag(item, "close-after-click", closeAfterClick + "");
-		item = this.addTag(item, "execute", exe.toString());
+		if (exe != null) {
+			item = this.addTag(item, "execute", exe.toString());
+		}
 
 		return item;
 	}
